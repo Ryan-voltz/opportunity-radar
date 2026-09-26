@@ -1,0 +1,94 @@
+import React from 'react';
+import { TrendTopic } from '../types';
+import { Badge } from '../components/common/Badge';
+import { TrendingUp, ArrowUpRight, Search, Zap, Layers } from 'lucide-react';
+
+interface MarketTrendsViewProps {
+  trends: TrendTopic[];
+}
+
+export const MarketTrendsView: React.FC<MarketTrendsViewProps> = ({ trends }) => {
+  const getMaturityBadge = (maturity: string) => {
+    switch (maturity) {
+      case 'Emergente':
+        return 'cyan';
+      case 'Acelerando':
+        return 'emerald';
+      case 'Pico Inicial':
+        return 'amber';
+      default:
+        return 'slate';
+    }
+  };
+
+  return (
+    <div className="space-y-6 animate-fade-in">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-2xl bg-gradient-to-r from-amber-950/30 to-slate-900 border border-amber-500/20">
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <Badge variant="amber" size="sm">
+              Sinais Preditivos
+            </Badge>
+            <span className="text-2xs font-mono text-slate-400">
+              Dados agregados de Google Trends, GitHub e Discussões
+            </span>
+          </div>
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-100">
+            Market Trends & Tecnologias Emergentes
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
+            Monitore tópicos e APIs que estão sofrendo inflexão exponencial antes de se tornarem saturados no mercado.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <div className="p-3 rounded-xl bg-slate-900/80 border border-white/[0.08] text-center">
+            <span className="text-2xs font-mono text-slate-500 uppercase block">Aceleração Média</span>
+            <span className="text-lg font-bold font-mono text-emerald-400">+243.7%</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Trends List / Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {trends.map((trend) => (
+          <div
+            key={trend.id}
+            className="p-5 rounded-xl bg-slate-900/60 border border-white/[0.08] hover:border-amber-500/30 transition-all flex flex-col justify-between group"
+          >
+            <div>
+              <div className="flex items-center justify-between gap-2 mb-3">
+                <Badge variant={getMaturityBadge(trend.maturity) as any} size="xs">
+                  {trend.maturity}
+                </Badge>
+                <div className="flex items-center gap-1 text-emerald-400 font-mono text-xs font-bold">
+                  <ArrowUpRight className="w-4 h-4" />
+                  <span>+{trend.growthPercentage}% YoY</span>
+                </div>
+              </div>
+
+              <h3 className="text-base font-semibold text-slate-100 group-hover:text-amber-300 transition-colors mb-2">
+                {trend.name}
+              </h3>
+
+              <p className="text-xs text-slate-400 leading-relaxed mb-4">
+                {trend.description}
+              </p>
+            </div>
+
+            <div className="pt-4 border-t border-white/[0.04] flex items-center justify-between text-2xs font-mono text-slate-500">
+              <div className="flex items-center gap-1.5 text-slate-400">
+                <Search className="w-3.5 h-3.5 text-slate-500" />
+                <span>Volume: {trend.searchVolume}</span>
+              </div>
+              <div className="truncate max-w-[180px] text-right">
+                {trend.signalOrigin}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
