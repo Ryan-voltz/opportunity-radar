@@ -3163,8 +3163,20 @@ var index_default = app;
 
 // server/api-handler.ts
 function handler(req, res) {
+  if (req.url) {
+    try {
+      const urlObj = new URL(req.url, "http://localhost");
+      const rewrittenPath = urlObj.searchParams.get("__url");
+      if (rewrittenPath) {
+        urlObj.searchParams.delete("__url");
+        const remainingQuery = urlObj.searchParams.toString();
+        req.url = `${rewrittenPath}${remainingQuery ? `?${remainingQuery}` : ""}`;
+      }
+    } catch {
+    }
+  }
   const matchedPath = req.headers["x-matched-path"] || req.headers["x-forwarded-uri"];
-  if (matchedPath && matchedPath.startsWith("/api")) {
+  if (matchedPath && matchedPath.startsWith("/api") && (!req.url || req.url === "/api" || req.url === "/api/")) {
     const originalUrl = req.url || "";
     const queryIndex = originalUrl.indexOf("?");
     const queryString = queryIndex !== -1 ? originalUrl.slice(queryIndex) : "";
