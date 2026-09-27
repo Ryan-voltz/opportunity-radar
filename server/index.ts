@@ -77,6 +77,31 @@ let newsDb = [...MOCK_MARKET_NEWS];
 // API ROUTES
 // ====================================================================
 
+// API Gateway Root
+app.get('/api', (req: Request, res: Response) => {
+  res.json({
+    status: 'ok',
+    service: 'Opportunity Radar Intelligence API',
+    version: '1.0.0',
+    endpoints: [
+      '/api/health',
+      '/api/pulse',
+      '/api/countries',
+      '/api/opportunities',
+      '/api/market-news',
+      '/api/trends',
+      '/api/brief',
+      '/api/alerts',
+      '/api/signals/live',
+      '/api/hypotheses',
+      '/api/sources',
+      '/api/ai/analyze-project',
+      '/api/ai/detect-opportunities'
+    ],
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Health Check & Telemetry
 app.get('/api/health', (req: Request, res: Response) => {
   res.json({

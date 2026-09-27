@@ -2807,6 +2807,29 @@ var opportunitiesDb = [...MOCK_OPPORTUNITIES];
 var alertsDb = [...MOCK_ALERTS];
 var hypothesesDb = [...MOCK_HYPOTHESES];
 var newsDb = [...MOCK_MARKET_NEWS];
+app.get("/api", (req, res) => {
+  res.json({
+    status: "ok",
+    service: "Opportunity Radar Intelligence API",
+    version: "1.0.0",
+    endpoints: [
+      "/api/health",
+      "/api/pulse",
+      "/api/countries",
+      "/api/opportunities",
+      "/api/market-news",
+      "/api/trends",
+      "/api/brief",
+      "/api/alerts",
+      "/api/signals/live",
+      "/api/hypotheses",
+      "/api/sources",
+      "/api/ai/analyze-project",
+      "/api/ai/detect-opportunities"
+    ],
+    timestamp: (/* @__PURE__ */ new Date()).toISOString()
+  });
+});
 app.get("/api/health", (req, res) => {
   res.json({
     status: "ok",
@@ -3140,7 +3163,13 @@ var index_default = app;
 
 // server/api-handler.ts
 function handler(req, res) {
-  if (req.url && !req.url.startsWith("/api")) {
+  const matchedPath = req.headers["x-matched-path"] || req.headers["x-forwarded-uri"];
+  if (matchedPath && matchedPath.startsWith("/api")) {
+    const originalUrl = req.url || "";
+    const queryIndex = originalUrl.indexOf("?");
+    const queryString = queryIndex !== -1 ? originalUrl.slice(queryIndex) : "";
+    req.url = `${matchedPath}${queryString}`;
+  } else if (req.url && !req.url.startsWith("/api")) {
     req.url = `/api${req.url.startsWith("/") ? "" : "/"}${req.url}`;
   }
   return index_default(req, res);
