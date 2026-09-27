@@ -121,35 +121,61 @@ html.light ::-webkit-scrollbar-thumb {
 }
 
 /* ====================================================================
-   LIGHT MODE ADAPTATION & HIGH-CONTRAST PALETTE OVERRIDES
+   LIGHT MODE DESIGN SYSTEM — CRISP, HIGH-CONTRAST & COMFORTABLE
    ==================================================================== */
-html.light .bg-slate-950 {
-  background-color: #ffffff !important;
+html.light {
+  color-scheme: light;
 }
 
-html.light .bg-slate-950\/80,
+html.light body {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+/* Base Surfaces & Cards (Multi-layered depth) */
+html.light .bg-slate-950 {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light .bg-slate-950\/90,
+html.light .bg-slate-950\/80 {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
 html.light .bg-slate-950\/60,
 html.light .bg-slate-950\/40 {
-  background-color: #f8fafc !important;
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
 }
 
 html.light .bg-slate-900 {
   background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
 }
 
 html.light .bg-slate-900\/90,
-html.light .bg-slate-900\/80,
+html.light .bg-slate-900\/80 {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
 html.light .bg-slate-900\/70,
 html.light .bg-slate-900\/60,
+html.light .bg-slate-900\/50,
 html.light .bg-slate-900\/40 {
-  background-color: #ffffff !important;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05), 0 8px 20px -4px rgba(15, 23, 42, 0.03) !important;
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
 }
 
 html.light .bg-slate-800,
+html.light .bg-slate-800\/80,
+html.light .bg-slate-800\/60,
 html.light .bg-slate-800\/40,
-html.light .bg-slate-800\/60 {
+html.light .bg-slate-800\/20 {
   background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
 }
 
 html.light .bg-white\/\[0\.02\],
@@ -157,33 +183,74 @@ html.light .bg-white\/\[0\.03\],
 html.light .bg-white\/\[0\.04\],
 html.light .bg-white\/\[0\.05\],
 html.light .bg-white\/5 {
-  background-color: #f8fafc !important;
+  background-color: #ffffff !important;
   border-color: #e2e8f0 !important;
 }
 
-/* Light Mode Typography Contrast */
+/* Gradients Overrides for Light Mode (eliminating dark blotches) */
+html.light .from-emerald-950\/30,
+html.light .from-emerald-950\/40 {
+  --tw-gradient-from: #ecfdf5 !important;
+}
+html.light .to-slate-900\/90,
+html.light .to-slate-900\/80,
+html.light .to-slate-900 {
+  --tw-gradient-to: #f8fafc !important;
+}
+html.light .from-cyan-950\/30,
+html.light .from-cyan-950\/40 {
+  --tw-gradient-from: #eff6ff !important;
+}
+html.light .from-violet-950\/30,
+html.light .from-violet-950\/40 {
+  --tw-gradient-from: #faf5ff !important;
+}
+html.light .from-amber-950\/30,
+html.light .from-amber-950\/40,
+html.light .from-amber-950\/70 {
+  --tw-gradient-from: #fffbeb !important;
+}
+html.light .from-rose-950\/20,
+html.light .from-rose-950\/30 {
+  --tw-gradient-from: #fff1f2 !important;
+}
+html.light .via-slate-900 {
+  --tw-gradient-via: #f1f5f9 !important;
+}
+html.light .to-emerald-950\/40,
+html.light .to-emerald-950\/20 {
+  --tw-gradient-to: #ecfdf5 !important;
+}
+html.light .to-cyan-950\/20 {
+  --tw-gradient-to: #eff6ff !important;
+}
+html.light .to-purple-950\/20 {
+  --tw-gradient-to: #faf5ff !important;
+}
+
+/* Typography Contrast in Light Mode */
 html.light .text-white,
 html.light .text-slate-100 {
-  color: #0f172a !important;
+  color: #0f172a !important; /* Deep charcoal black */
 }
 
 html.light .text-slate-200 {
-  color: #1e293b !important;
+  color: #1e293b !important; /* Slate-800 */
 }
 
 html.light .text-slate-300 {
-  color: #334155 !important;
+  color: #334155 !important; /* Slate-700 */
 }
 
 html.light .text-slate-400 {
-  color: #475569 !important;
+  color: #475569 !important; /* Slate-600 */
 }
 
 html.light .text-slate-500 {
-  color: #64748b !important;
+  color: #64748b !important; /* Slate-500 */
 }
 
-/* Light Mode Borders */
+/* Borders in Light Mode */
 html.light .border-white\/\[0\.08\],
 html.light .border-white\/\[0\.06\],
 html.light .border-white\/\[0\.07\],
@@ -198,17 +265,16 @@ html.light .border-white\/15 {
   border-color: #cbd5e1 !important;
 }
 
-/* Accent Color Variations for Light Mode (eliminating neon cyan wash) */
+/* Accents in Light Mode */
 html.light .text-cyan-400,
 html.light .text-cyan-300 {
-  color: #2563eb !important; /* Professional Royal Sapphire */
+  color: #1d4ed8 !important; /* Royal Blue */
 }
-
 html.light .bg-cyan-500\/10 {
   background-color: #eff6ff !important;
 }
-
 html.light .border-cyan-500\/20,
+html.light .border-cyan-500\/25,
 html.light .border-cyan-500\/30,
 html.light .border-cyan-500\/40 {
   border-color: #bfdbfe !important;
@@ -216,16 +282,16 @@ html.light .border-cyan-500\/40 {
 
 html.light .text-emerald-400,
 html.light .text-emerald-300 {
-  color: #059669 !important; /* Deep Emerald */
+  color: #047857 !important; /* Deep Emerald */
 }
-
 html.light .bg-emerald-500\/10,
+html.light .bg-emerald-500\/\[0\.05\],
 html.light .bg-emerald-950\/20,
 html.light .bg-emerald-950\/30 {
   background-color: #ecfdf5 !important;
 }
-
 html.light .border-emerald-500\/20,
+html.light .border-emerald-500\/25,
 html.light .border-emerald-500\/30,
 html.light .border-emerald-500\/40 {
   border-color: #a7f3d0 !important;
@@ -233,16 +299,12 @@ html.light .border-emerald-500\/40 {
 
 html.light .text-amber-400,
 html.light .text-amber-300 {
-  color: #d97706 !important; /* Warm Amber */
+  color: #b45309 !important; /* Warm Amber */
 }
-
 html.light .bg-amber-500\/10,
-html.light .bg-amber-500\/20,
-html.light .bg-amber-950\/40,
-html.light .bg-amber-950\/70 {
+html.light .bg-amber-500\/20 {
   background-color: #fffbeb !important;
 }
-
 html.light .border-amber-500\/20,
 html.light .border-amber-500\/30,
 html.light .border-amber-500\/40 {
@@ -251,15 +313,11 @@ html.light .border-amber-500\/40 {
 
 html.light .text-violet-400,
 html.light .text-violet-300 {
-  color: #7c3aed !important; /* Royal Violet */
+  color: #6d28d9 !important; /* Royal Violet */
 }
-
-html.light .bg-violet-500\/10,
-html.light .bg-violet-950\/20,
-html.light .bg-violet-950\/30 {
+html.light .bg-violet-500\/10 {
   background-color: #f5f3ff !important;
 }
-
 html.light .border-violet-500\/20,
 html.light .border-violet-500\/30,
 html.light .border-violet-500\/40 {
@@ -268,17 +326,27 @@ html.light .border-violet-500\/40 {
 
 html.light .text-rose-400,
 html.light .text-rose-300 {
-  color: #e11d48 !important; /* Clean Crimson */
+  color: #be123c !important; /* Crisp Rose */
 }
-
-html.light .bg-rose-500\/10,
-html.light .bg-rose-950\/20 {
+html.light .bg-rose-500\/10 {
   background-color: #fff1f2 !important;
 }
-
 html.light .border-rose-500\/20,
 html.light .border-rose-500\/30 {
   border-color: #fecdd3 !important;
+}
+
+/* Inputs, Selects & Textareas */
+html.light input,
+html.light select,
+html.light textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94a3b8 !important;
 }
 
 /* Light mode Header and Sidebar */
