@@ -124,38 +124,38 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
         </div>
 
         {/* Title & Tagline */}
-        <h3 className="text-base font-semibold text-slate-100 group-hover:text-cyan-300 transition-colors leading-snug mb-1.5">
+        <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-cyan-300 transition-colors leading-snug mb-1.5">
           {opportunity.title}
         </h3>
-        <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-3.5">
+        <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed mb-3.5">
           {opportunity.tagline}
         </p>
 
         {/* 3 Core Highlighted Metrics: Lucro, Velocidade, Investimento */}
         <div className="grid grid-cols-3 gap-2 mb-3.5">
-          <div className="p-2 rounded-lg bg-emerald-950/20 border border-emerald-500/20">
-            <span className="text-[9px] font-mono uppercase text-emerald-400 font-bold block truncate">
+          <div className="p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-500/20">
+            <span className="text-[9px] font-mono uppercase text-emerald-700 dark:text-emerald-400 font-bold block truncate">
               Lucro Estimado
             </span>
-            <span className="text-xs font-bold font-mono text-emerald-300 truncate block">
+            <span className="text-xs font-bold font-mono text-emerald-800 dark:text-emerald-300 truncate block">
               {opportunity.financials?.estimatedMonthlyProfit.split(' ')[0] || opportunity.potentialMrr.split(' ')[0]} {opportunity.financials?.estimatedMonthlyProfit.split(' ')[1] || 'MRR'}
             </span>
           </div>
 
-          <div className="p-2 rounded-lg bg-cyan-950/20 border border-cyan-500/20">
-            <span className="text-[9px] font-mono uppercase text-cyan-400 font-bold block truncate">
+          <div className="p-2 rounded-lg bg-blue-50 dark:bg-cyan-950/20 border border-blue-200 dark:border-cyan-500/20">
+            <span className="text-[9px] font-mono uppercase text-blue-700 dark:text-cyan-400 font-bold block truncate">
               Velocidade
             </span>
-            <span className="text-xs font-bold font-mono text-cyan-200 truncate block">
+            <span className="text-xs font-bold font-mono text-blue-800 dark:text-cyan-200 truncate block">
               MVP {opportunity.executionSpeed?.mvpDays || opportunity.timeToMvpDays} dias
             </span>
           </div>
 
-          <div className="p-2 rounded-lg bg-violet-950/20 border border-violet-500/20">
-            <span className="text-[9px] font-mono uppercase text-violet-400 font-bold block truncate">
+          <div className="p-2 rounded-lg bg-purple-50 dark:bg-violet-950/20 border border-purple-200 dark:border-violet-500/20">
+            <span className="text-[9px] font-mono uppercase text-purple-700 dark:text-violet-400 font-bold block truncate">
               Investimento
             </span>
-            <span className="text-xs font-bold font-mono text-violet-200 truncate block">
+            <span className="text-xs font-bold font-mono text-purple-800 dark:text-violet-200 truncate block">
               {opportunity.investment?.initialCapitalEstimated.split(' ')[0] || 'R$ 180'}
             </span>
           </div>
@@ -163,25 +163,25 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
 
         {/* 3-Tier Intelligence Badge Row (DADO | ANÁLISE | HIPÓTESE) */}
         <div className="flex items-center gap-1.5 mb-3.5 flex-wrap">
-          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-blue-500/10 text-blue-300 border border-blue-500/20">
-            <span className="font-bold text-[9px] px-1 py-0.2 rounded bg-blue-500/20 text-blue-200 uppercase">Dado</span>
+          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-blue-500/10 text-blue-800 dark:text-blue-300 border border-blue-500/20">
+            <span className="font-bold text-[9px] px-1 py-0.2 rounded bg-blue-500/20 text-blue-900 dark:text-blue-200 uppercase">Dado</span>
             <span className="truncate max-w-[90px]">{primarySource}</span>
           </span>
-          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-violet-500/10 text-violet-300 border border-violet-500/20">
-            <span className="font-bold text-[9px] px-1 py-0.2 rounded bg-violet-500/20 text-violet-200 uppercase">Análise</span>
+          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-violet-500/10 text-purple-800 dark:text-violet-300 border border-violet-500/20">
+            <span className="font-bold text-[9px] px-1 py-0.2 rounded bg-violet-500/20 text-purple-900 dark:text-violet-200 uppercase">Análise</span>
             <span>{opportunity.score}/100</span>
           </span>
-          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
-            <span className="font-bold text-[9px] px-1 py-0.2 rounded bg-emerald-500/20 text-emerald-200 uppercase">Hipótese</span>
+          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
+            <span className="font-bold text-[9px] px-1 py-0.2 rounded bg-emerald-500/20 text-emerald-900 dark:text-emerald-200 uppercase">Hipótese</span>
             <span className="truncate max-w-[80px]">{opportunity.businessModel || 'Micro-SaaS'}</span>
           </span>
         </div>
 
         {/* Momentum & Sparkline */}
-        <div className="p-2.5 rounded-lg bg-white/[0.02] border border-white/[0.04] flex items-center justify-between mb-3.5">
-          <div className="flex items-center gap-1.5 text-xs font-mono text-cyan-300">
-            <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="text-emerald-400 font-bold">{opportunity.trendingGrowth.split(' ')[0]}</span>
+        <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/[0.04] flex items-center justify-between mb-3.5">
+          <div className="flex items-center gap-1.5 text-xs font-mono text-slate-800 dark:text-cyan-300">
+            <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+            <span className="text-emerald-700 dark:text-emerald-400 font-bold">{opportunity.trendingGrowth.split(' ')[0]}</span>
             <span className="text-[10px] text-slate-500">tração</span>
           </div>
           <Sparkline data={opportunity.sparkline || [20, 30, 45, 60, 80, 110]} color="emerald" width={80} height={20} />

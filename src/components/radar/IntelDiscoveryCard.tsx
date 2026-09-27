@@ -124,59 +124,59 @@ export const IntelDiscoveryCard: React.FC<IntelDiscoveryCardProps> = ({
           className="cursor-pointer group/title"
           title="Clique para abrir detalhes completos, checklist passo a passo e estimativas"
         >
-          <h3 className="text-lg font-bold text-slate-100 group-hover/title:text-cyan-300 transition-colors leading-snug flex items-center justify-between">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 group-hover/title:text-blue-600 dark:group-hover/title:text-cyan-300 transition-colors leading-snug flex items-center justify-between">
             <span>{opportunity.title}</span>
-            <span className="text-xs font-mono text-cyan-400 font-normal opacity-0 group-hover/title:opacity-100 transition-opacity shrink-0 ml-2">
+            <span className="text-xs font-mono text-blue-600 dark:text-cyan-400 font-semibold opacity-0 group-hover/title:opacity-100 transition-opacity shrink-0 ml-2">
               Ver Passo a Passo →
             </span>
           </h3>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1 leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
             {opportunity.tagline}
           </p>
         </div>
 
         {/* 3 User-Requested Highlighted Metrics: Lucro, Velocidade, Investimento */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 p-3 rounded-xl bg-gradient-to-r from-white/[0.03] to-white/[0.01] border border-white/[0.06]">
-          <div className="p-2 rounded-lg bg-emerald-950/20 border border-emerald-500/20">
-            <span className="text-[10px] font-mono uppercase text-emerald-400 font-bold flex items-center gap-1">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 p-3 rounded-xl bg-slate-50/80 dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.06]">
+          <div className="p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-500/20">
+            <span className="text-[10px] font-mono uppercase text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1">
               <DollarSign className="w-3 h-3" /> Lucro Estimado
             </span>
-            <span className="text-xs font-bold font-mono text-emerald-300 block truncate mt-0.5" title={opportunity.financials?.estimatedMonthlyProfit || opportunity.potentialMrr}>
+            <span className="text-xs font-bold font-mono text-emerald-800 dark:text-emerald-300 block truncate mt-0.5" title={opportunity.financials?.estimatedMonthlyProfit || opportunity.potentialMrr}>
               {opportunity.financials?.estimatedMonthlyProfit || opportunity.potentialMrr}
             </span>
-            <span className="text-[10px] font-mono text-slate-400">
-              Margem: {opportunity.financials?.profitMargin || '85%'}
+            <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">
+              Margem: <strong className="text-emerald-700 dark:text-emerald-400 font-bold">{opportunity.financials?.profitMargin || '85%'}</strong>
             </span>
           </div>
 
-          <div className="p-2 rounded-lg bg-cyan-950/20 border border-cyan-500/20">
-            <span className="text-[10px] font-mono uppercase text-cyan-400 font-bold flex items-center gap-1">
+          <div className="p-2 rounded-lg bg-blue-50 dark:bg-cyan-950/20 border border-blue-200 dark:border-cyan-500/20">
+            <span className="text-[10px] font-mono uppercase text-blue-700 dark:text-cyan-400 font-bold flex items-center gap-1">
               <Clock className="w-3 h-3" /> Velocidade / Prazo
             </span>
-            <span className="text-xs font-bold font-mono text-cyan-200 block truncate mt-0.5">
+            <span className="text-xs font-bold font-mono text-blue-800 dark:text-cyan-200 block truncate mt-0.5">
               MVP em {opportunity.executionSpeed?.mvpDays || opportunity.timeToMvpDays} dias
             </span>
-            <span className="text-[10px] font-mono text-slate-400">
-              1ª Venda: {opportunity.executionSpeed?.firstSaleDays || 18}d
+            <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">
+              1ª Venda: <strong className="text-blue-700 dark:text-cyan-300 font-bold">{opportunity.executionSpeed?.firstSaleDays || 18}d</strong>
             </span>
           </div>
 
-          <div className="p-2 rounded-lg bg-violet-950/20 border border-violet-500/20">
-            <span className="text-[10px] font-mono uppercase text-violet-400 font-bold flex items-center gap-1">
+          <div className="p-2 rounded-lg bg-purple-50 dark:bg-violet-950/20 border border-purple-200 dark:border-violet-500/20">
+            <span className="text-[10px] font-mono uppercase text-purple-700 dark:text-violet-400 font-bold flex items-center gap-1">
               <ShieldCheck className="w-3 h-3" /> Investimento
             </span>
-            <span className="text-xs font-bold font-mono text-violet-200 block truncate mt-0.5" title={opportunity.investment?.initialCapitalEstimated || 'R$ 180'}>
+            <span className="text-xs font-bold font-mono text-purple-800 dark:text-violet-200 block truncate mt-0.5" title={opportunity.investment?.initialCapitalEstimated || 'R$ 180'}>
               {opportunity.investment?.initialCapitalEstimated || 'R$ 180 ($35 USD)'}
             </span>
-            <span className="text-[10px] font-mono text-slate-400 truncate block">
+            <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 truncate block">
               {opportunity.investment?.budgetTier || 'Bootstrap'}
             </span>
           </div>
         </div>
 
         {/* Brief Hook: What was detected preview */}
-        <div className="text-xs text-slate-300 leading-relaxed bg-slate-950/40 p-3 rounded-xl border border-white/[0.04]">
-          <strong className="text-cyan-400 font-mono text-[11px] uppercase mr-1">
+        <div className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed bg-slate-50/70 dark:bg-slate-950/40 p-3 rounded-xl border border-slate-200 dark:border-white/[0.04]">
+          <strong className="text-blue-600 dark:text-cyan-400 font-mono text-[11px] uppercase mr-1">
             Síntese do Sinal:
           </strong>
           {opportunity.whatDetected}

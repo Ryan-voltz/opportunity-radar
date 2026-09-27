@@ -133,57 +133,24 @@ html.light body {
 }
 
 /* Base Surfaces & Cards (Multi-layered depth) */
-html.light .bg-slate-950 {
+html.light .bg-slate-950,
+html.light .bg-slate-900,
+html.light [class*="bg-slate-950/"],
+html.light [class*="bg-slate-900/"] {
   background-color: #ffffff !important;
   border-color: #e2e8f0 !important;
 }
 
-html.light .bg-slate-950\/90,
-html.light .bg-slate-950\/80 {
-  background-color: #ffffff !important;
-  border-color: #e2e8f0 !important;
-}
-
-html.light .bg-slate-950\/60,
-html.light .bg-slate-950\/40 {
-  background-color: #f1f5f9 !important;
-  border-color: #e2e8f0 !important;
-}
-
-html.light .bg-slate-900 {
-  background-color: #ffffff !important;
-  border-color: #e2e8f0 !important;
-}
-
-html.light .bg-slate-900\/90,
-html.light .bg-slate-900\/80 {
-  background-color: #ffffff !important;
-  border-color: #e2e8f0 !important;
-}
-
-html.light .bg-slate-900\/70,
-html.light .bg-slate-900\/60,
-html.light .bg-slate-900\/50,
-html.light .bg-slate-900\/40 {
-  background-color: #f8fafc !important;
-  border-color: #e2e8f0 !important;
-}
-
+/* Inner wells, sub-cards and pills */
 html.light .bg-slate-800,
-html.light .bg-slate-800\/80,
-html.light .bg-slate-800\/60,
-html.light .bg-slate-800\/40,
-html.light .bg-slate-800\/20 {
+html.light [class*="bg-slate-800/"] {
   background-color: #f1f5f9 !important;
   border-color: #e2e8f0 !important;
 }
 
-html.light .bg-white\/\[0\.02\],
-html.light .bg-white\/\[0\.03\],
-html.light .bg-white\/\[0\.04\],
-html.light .bg-white\/\[0\.05\],
-html.light .bg-white\/5 {
-  background-color: #ffffff !important;
+/* Dark tints adapted to subtle light tints */
+html.light [class*="bg-white/"] {
+  background-color: #f8fafc !important;
   border-color: #e2e8f0 !important;
 }
 
@@ -195,35 +162,40 @@ html.light .rounded-xl[class*="bg-gradient-"] {
 }
 
 html.light [class*="from-blue-"],
-html.light [class*="from-cyan-"] {
+html.light [class*="from-cyan-"],
+html.light [class*="from-sky-"] {
   background-image: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%) !important;
   border-color: #bfdbfe !important;
 }
 
-html.light [class*="from-emerald-"] {
+html.light [class*="from-emerald-"],
+html.light [class*="from-green-"] {
   background-image: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%) !important;
   border-color: #a7f3d0 !important;
 }
 
 html.light [class*="from-violet-"],
-html.light [class*="from-purple-"] {
+html.light [class*="from-purple-"],
+html.light [class*="from-indigo-"] {
   background-image: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%) !important;
   border-color: #ddd6fe !important;
 }
 
-html.light [class*="from-amber-"] {
+html.light [class*="from-amber-"],
+html.light [class*="from-yellow-"] {
   background-image: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%) !important;
   border-color: #fde68a !important;
 }
 
-html.light [class*="from-rose-"] {
+html.light [class*="from-rose-"],
+html.light [class*="from-red-"] {
   background-image: linear-gradient(135deg, #fff1f2 0%, #ffffff 100%) !important;
   border-color: #fecdd3 !important;
 }
 
-/* Ensure progress bars keep their colorful gradient */
+/* Progress bars keep rich gradient */
 html.light .h-full[class*="bg-gradient-"] {
-  background-image: linear-gradient(to right, #06b6d4, #10b981) !important;
+  background-image: linear-gradient(to right, #0284c7, #059669) !important;
 }
 
 /* Ensure avatar pills keep their gradient */
@@ -231,10 +203,10 @@ html.light .rounded-full[class*="bg-gradient-tr"] {
   background-image: linear-gradient(to top right, #2563eb, #4f46e5) !important;
 }
 
-/* Typography Contrast in Light Mode */
+/* Typography Contrast in Light Mode — Deep Charcoal and High Contrast */
 html.light .text-white,
 html.light .text-slate-100 {
-  color: #0f172a !important; /* Deep charcoal black */
+  color: #0f172a !important; /* Charcoal Black */
 }
 
 html.light .text-slate-200 {
@@ -254,89 +226,145 @@ html.light .text-slate-500 {
 }
 
 /* Borders in Light Mode */
-html.light .border-white\/\[0\.08\],
-html.light .border-white\/\[0\.06\],
-html.light .border-white\/\[0\.07\],
-html.light .border-white\/\[0\.05\],
-html.light .border-white\/\[0\.04\],
-html.light .border-white\/10 {
+html.light [class*="border-white"] {
   border-color: #e2e8f0 !important;
 }
 
-html.light .border-white\/20,
-html.light .border-white\/15 {
-  border-color: #cbd5e1 !important;
-}
-
-/* Accents in Light Mode */
+/* ACCENTS: CYAN & BLUE (Converted to high-contrast deep Royal Blue) */
+html.light .text-cyan-500,
 html.light .text-cyan-400,
-html.light .text-cyan-300 {
-  color: #1d4ed8 !important; /* Royal Blue */
-}
-html.light .bg-cyan-500\/10 {
-  background-color: #eff6ff !important;
-}
-html.light .border-cyan-500\/20,
-html.light .border-cyan-500\/25,
-html.light .border-cyan-500\/30,
-html.light .border-cyan-500\/40 {
-  border-color: #bfdbfe !important;
+html.light .text-cyan-300,
+html.light .text-cyan-200,
+html.light .text-cyan-100,
+html.light .text-sky-500,
+html.light .text-sky-400,
+html.light .text-sky-300,
+html.light .text-sky-200,
+html.light .text-blue-500,
+html.light .text-blue-400,
+html.light .text-blue-300,
+html.light .text-blue-200 {
+  color: #1d4ed8 !important; /* Rich Royal Blue */
 }
 
+html.light [class*="bg-cyan-500/"],
+html.light [class*="bg-cyan-950/"],
+html.light [class*="bg-blue-500/"],
+html.light [class*="bg-blue-950/"] {
+  background-color: #eff6ff !important; /* Blue-50 */
+}
+
+html.light [class*="border-cyan-"],
+html.light [class*="border-blue-"] {
+  border-color: #bfdbfe !important; /* Blue-200 */
+}
+
+/* ACCENTS: EMERALD & GREEN (Converted to high-contrast deep Forest Emerald) */
+html.light .text-emerald-500,
 html.light .text-emerald-400,
-html.light .text-emerald-300 {
-  color: #047857 !important; /* Deep Emerald */
-}
-html.light .bg-emerald-500\/10,
-html.light .bg-emerald-500\/\[0\.05\],
-html.light .bg-emerald-950\/20,
-html.light .bg-emerald-950\/30 {
-  background-color: #ecfdf5 !important;
-}
-html.light .border-emerald-500\/20,
-html.light .border-emerald-500\/25,
-html.light .border-emerald-500\/30,
-html.light .border-emerald-500\/40 {
-  border-color: #a7f3d0 !important;
+html.light .text-emerald-300,
+html.light .text-emerald-200,
+html.light .text-emerald-100,
+html.light .text-green-500,
+html.light .text-green-400,
+html.light .text-green-300,
+html.light .text-green-200 {
+  color: #047857 !important; /* Deep Forest Emerald */
 }
 
+html.light [class*="bg-emerald-500/"],
+html.light [class*="bg-emerald-950/"],
+html.light [class*="bg-green-500/"],
+html.light [class*="bg-green-950/"] {
+  background-color: #ecfdf5 !important; /* Emerald-50 */
+}
+
+html.light [class*="border-emerald-"],
+html.light [class*="border-green-"] {
+  border-color: #a7f3d0 !important; /* Emerald-200 */
+}
+
+/* ACCENTS: AMBER & YELLOW (Converted to high-contrast warm Amber) */
+html.light .text-amber-500,
 html.light .text-amber-400,
-html.light .text-amber-300 {
+html.light .text-amber-300,
+html.light .text-amber-200,
+html.light .text-amber-100,
+html.light .text-yellow-500,
+html.light .text-yellow-400,
+html.light .text-yellow-300,
+html.light .text-orange-500,
+html.light .text-orange-400 {
   color: #b45309 !important; /* Warm Amber */
 }
-html.light .bg-amber-500\/10,
-html.light .bg-amber-500\/20 {
-  background-color: #fffbeb !important;
-}
-html.light .border-amber-500\/20,
-html.light .border-amber-500\/30,
-html.light .border-amber-500\/40 {
-  border-color: #fde68a !important;
+
+html.light [class*="bg-amber-500/"],
+html.light [class*="bg-amber-950/"],
+html.light [class*="bg-yellow-500/"],
+html.light [class*="bg-yellow-950/"] {
+  background-color: #fffbeb !important; /* Amber-50 */
 }
 
+html.light [class*="border-amber-"],
+html.light [class*="border-yellow-"] {
+  border-color: #fde68a !important; /* Amber-200 */
+}
+
+/* ACCENTS: VIOLET & PURPLE & INDIGO (Converted to high-contrast Royal Violet) */
+html.light .text-violet-500,
 html.light .text-violet-400,
-html.light .text-violet-300 {
+html.light .text-violet-300,
+html.light .text-violet-200,
+html.light .text-violet-100,
+html.light .text-purple-500,
+html.light .text-purple-400,
+html.light .text-purple-300,
+html.light .text-purple-200,
+html.light .text-indigo-500,
+html.light .text-indigo-400,
+html.light .text-indigo-300,
+html.light .text-indigo-200 {
   color: #6d28d9 !important; /* Royal Violet */
 }
-html.light .bg-violet-500\/10 {
-  background-color: #f5f3ff !important;
-}
-html.light .border-violet-500\/20,
-html.light .border-violet-500\/30,
-html.light .border-violet-500\/40 {
-  border-color: #ddd6fe !important;
+
+html.light [class*="bg-violet-500/"],
+html.light [class*="bg-violet-950/"],
+html.light [class*="bg-purple-500/"],
+html.light [class*="bg-purple-950/"],
+html.light [class*="bg-indigo-500/"],
+html.light [class*="bg-indigo-950/"] {
+  background-color: #faf5ff !important; /* Purple-50 */
 }
 
+html.light [class*="border-violet-"],
+html.light [class*="border-purple-"],
+html.light [class*="border-indigo-"] {
+  border-color: #ddd6fe !important; /* Purple-200 */
+}
+
+/* ACCENTS: ROSE & RED (Converted to high-contrast Ruby Rose) */
+html.light .text-rose-500,
 html.light .text-rose-400,
-html.light .text-rose-300 {
-  color: #be123c !important; /* Crisp Rose */
+html.light .text-rose-300,
+html.light .text-rose-200,
+html.light .text-rose-100,
+html.light .text-red-500,
+html.light .text-red-400,
+html.light .text-red-300,
+html.light .text-red-200 {
+  color: #be123c !important; /* Ruby Rose */
 }
-html.light .bg-rose-500\/10 {
-  background-color: #fff1f2 !important;
+
+html.light [class*="bg-rose-500/"],
+html.light [class*="bg-rose-950/"],
+html.light [class*="bg-red-500/"],
+html.light [class*="bg-red-950/"] {
+  background-color: #fff1f2 !important; /* Rose-50 */
 }
-html.light .border-rose-500\/20,
-html.light .border-rose-500\/30 {
-  border-color: #fecdd3 !important;
+
+html.light [class*="border-rose-"],
+html.light [class*="border-red-"] {
+  border-color: #fecdd3 !important; /* Rose-200 */
 }
 
 /* Inputs, Selects & Textareas */
@@ -354,15 +382,43 @@ html.light textarea::placeholder {
 
 /* Light mode Header and Sidebar */
 html.light header {
-  background-color: rgba(255, 255, 255, 0.9) !important;
+  background-color: rgba(255, 255, 255, 0.92) !important;
   border-color: #e2e8f0 !important;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
 }
 
 html.light aside {
   background-color: #ffffff !important;
   border-color: #e2e8f0 !important;
-  box-shadow: 1px 0 4px rgba(15, 23, 42, 0.02);
+  box-shadow: 1px 0 4px rgba(15, 23, 42, 0.03);
+}
+
+/* Sidebar navigation buttons in light mode */
+html.light aside button {
+  color: #475569;
+}
+html.light aside button:hover {
+  color: #0f172a;
+  background-color: #f1f5f9;
+}
+html.light aside button[class*="bg-blue-600"] {
+  background-color: #eff6ff !important;
+  color: #1d4ed8 !important;
+  border-color: #bfdbfe !important;
+}
+
+/* Secondary Button Adaptation in Light Mode */
+html.light button.bg-slate-900\/90,
+html.light .bg-slate-900\/90 {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  border-color: #cbd5e1 !important;
+}
+html.light button.bg-slate-900\/90:hover,
+html.light .bg-slate-900\/90:hover {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #94a3b8 !important;
 }
 
 /* Light mode drawer and modals */
