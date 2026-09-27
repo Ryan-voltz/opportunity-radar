@@ -191,21 +191,21 @@ export const RadarView: React.FC<RadarViewProps> = ({
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Terminal Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-950 border border-white/[0.08]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-gradient-to-r from-blue-50/90 via-indigo-50/40 to-white dark:from-slate-900 dark:via-slate-900/90 dark:to-slate-950 border border-slate-200 dark:border-white/[0.08] shadow-sm dark:shadow-none">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse" />
-            <span className="text-2xs font-mono uppercase tracking-widest text-cyan-300">
+            <span className="w-2.5 h-2.5 rounded-full bg-blue-600 dark:bg-cyan-400 animate-pulse" />
+            <span className="text-2xs font-mono uppercase tracking-widest text-blue-700 dark:text-cyan-300 font-bold">
               TERMINAL MILITAR / FINANCEIRO DE OPORTUNIDADES
             </span>
           </div>
 
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-100 font-mono tracking-tight flex items-center gap-2.5">
-            <Terminal className="w-5 h-5 text-cyan-400" />
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 font-mono tracking-tight flex items-center gap-2.5">
+            <Terminal className="w-5 h-5 text-blue-600 dark:text-cyan-400" />
             Global Opportunity Radar
           </h1>
 
-          <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 max-w-2xl leading-relaxed">
             Feed contínuo de inteligência de mercado estruturado no modelo de 6 dimensões (O que foi detectado, Por que é importante, Mercado envolvido, Problema, Oportunidade e Monetização).
           </p>
         </div>

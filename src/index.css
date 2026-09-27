@@ -187,45 +187,48 @@ html.light .bg-white\/5 {
   border-color: #e2e8f0 !important;
 }
 
-/* Gradients Overrides for Light Mode (eliminating dark blotches) */
-html.light .from-emerald-950\/30,
-html.light .from-emerald-950\/40 {
-  --tw-gradient-from: #ecfdf5 !important;
+/* Universal Background Gradient Adapter for Light Mode */
+html.light .rounded-2xl[class*="bg-gradient-"],
+html.light .rounded-xl[class*="bg-gradient-"] {
+  background-image: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+  border-color: #e2e8f0 !important;
 }
-html.light .to-slate-900\/90,
-html.light .to-slate-900\/80,
-html.light .to-slate-900 {
-  --tw-gradient-to: #f8fafc !important;
+
+html.light [class*="from-blue-"],
+html.light [class*="from-cyan-"] {
+  background-image: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%) !important;
+  border-color: #bfdbfe !important;
 }
-html.light .from-cyan-950\/30,
-html.light .from-cyan-950\/40 {
-  --tw-gradient-from: #eff6ff !important;
+
+html.light [class*="from-emerald-"] {
+  background-image: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%) !important;
+  border-color: #a7f3d0 !important;
 }
-html.light .from-violet-950\/30,
-html.light .from-violet-950\/40 {
-  --tw-gradient-from: #faf5ff !important;
+
+html.light [class*="from-violet-"],
+html.light [class*="from-purple-"] {
+  background-image: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%) !important;
+  border-color: #ddd6fe !important;
 }
-html.light .from-amber-950\/30,
-html.light .from-amber-950\/40,
-html.light .from-amber-950\/70 {
-  --tw-gradient-from: #fffbeb !important;
+
+html.light [class*="from-amber-"] {
+  background-image: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%) !important;
+  border-color: #fde68a !important;
 }
-html.light .from-rose-950\/20,
-html.light .from-rose-950\/30 {
-  --tw-gradient-from: #fff1f2 !important;
+
+html.light [class*="from-rose-"] {
+  background-image: linear-gradient(135deg, #fff1f2 0%, #ffffff 100%) !important;
+  border-color: #fecdd3 !important;
 }
-html.light .via-slate-900 {
-  --tw-gradient-via: #f1f5f9 !important;
+
+/* Ensure progress bars keep their colorful gradient */
+html.light .h-full[class*="bg-gradient-"] {
+  background-image: linear-gradient(to right, #06b6d4, #10b981) !important;
 }
-html.light .to-emerald-950\/40,
-html.light .to-emerald-950\/20 {
-  --tw-gradient-to: #ecfdf5 !important;
-}
-html.light .to-cyan-950\/20 {
-  --tw-gradient-to: #eff6ff !important;
-}
-html.light .to-purple-950\/20 {
-  --tw-gradient-to: #faf5ff !important;
+
+/* Ensure avatar pills keep their gradient */
+html.light .rounded-full[class*="bg-gradient-tr"] {
+  background-image: linear-gradient(to top right, #2563eb, #4f46e5) !important;
 }
 
 /* Typography Contrast in Light Mode */

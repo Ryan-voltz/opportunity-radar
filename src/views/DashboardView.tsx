@@ -47,20 +47,20 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   return (
     <div className="space-y-9 animate-fade-in">
       {/* Executive Market Question & Hero Banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-950 border border-white/[0.08] p-6 sm:p-8">
-        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-cyan-500/10 via-emerald-500/5 to-transparent pointer-events-none" />
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-50/90 via-indigo-50/40 to-white dark:from-slate-900 dark:via-slate-900/95 dark:to-slate-950 border border-slate-200 dark:border-white/[0.08] p-6 sm:p-8 shadow-sm dark:shadow-none">
+        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-blue-500/10 via-indigo-500/5 to-transparent dark:from-cyan-500/10 dark:via-emerald-500/5 pointer-events-none" />
 
         <div className="relative z-10 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-mono mb-3.5">
-            <Radio className="w-3.5 h-3.5 animate-pulse text-cyan-400" />
+          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 border border-blue-200 dark:bg-cyan-500/10 dark:border-cyan-500/20 dark:text-cyan-300 text-xs font-mono mb-3.5">
+            <Radio className="w-3.5 h-3.5 animate-pulse text-blue-600 dark:text-cyan-400" />
             <span>TERMINAL DE INTELIGÊNCIA EM TEMPO REAL // 142 FONTES ATIVAS</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-100 tracking-tight leading-tight mb-2">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight leading-tight mb-2">
             O que está acontecendo no mercado agora e quais oportunidades posso explorar?
           </h2>
 
-          <p className="text-sm text-slate-400 leading-relaxed mb-6">
+          <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
             O Opportunity Radar processa discussões globais, queixas recorrentes em ERPs legados e dados de busca acelerados para entregar teses estruturadas de Micro-SaaS, B2B e arbitragem internacional.
           </p>
 
@@ -76,7 +76,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <Button
               variant="secondary"
               size="md"
-              iconLeft={<Layers className="w-4 h-4 text-cyan-400" />}
+              iconLeft={<Layers className="w-4 h-4 text-blue-600 dark:text-cyan-400" />}
               onClick={() => onNavigate('opportunities')}
             >
               Explorar Catálogo ({opportunities.length})
@@ -238,18 +238,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
 
         {/* Quick Strategic Focus */}
-        <div className="rounded-2xl bg-gradient-to-br from-violet-950/30 to-slate-900/60 border border-violet-500/20 p-5 flex flex-col justify-between space-y-4">
+        <div className="rounded-2xl bg-gradient-to-br from-purple-50 via-violet-50/50 to-white dark:from-violet-950/30 dark:to-slate-900/60 border border-purple-200 dark:border-violet-500/20 p-5 flex flex-col justify-between space-y-4 shadow-sm dark:shadow-none">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Badge variant="violet" size="xs">
                 AI Playbook
               </Badge>
-              <span className="text-2xs font-mono text-slate-400">Validação Imediata</span>
+              <span className="text-2xs font-mono text-slate-500 dark:text-slate-400">Validação Imediata</span>
             </div>
-            <h4 className="text-sm font-bold text-slate-100 mb-1.5">
+            <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-1.5">
               Valide antes de programar
             </h4>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               Use nossos roteiros enxutos de 4 fases no <strong>My Lab</strong> para testar a disposição a pagar de clientes reais antes de escrever uma única linha de código.
             </p>
           </div>

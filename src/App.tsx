@@ -294,7 +294,7 @@ export function App() {
   const savedCount = useMemo(() => opportunities.filter((o) => o.isSaved).length, [opportunities]);
 
   return (
-    <div className="min-h-screen bg-[#090D16] text-[#F8FAFC] flex font-sans selection:bg-cyan-500/20 selection:text-cyan-200">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#090D16] text-slate-900 dark:text-[#F8FAFC] flex font-sans selection:bg-cyan-500/20 selection:text-cyan-200">
       {/* Desktop & Tablet Sidebar */}
       <Sidebar
         currentSection={currentSection}
