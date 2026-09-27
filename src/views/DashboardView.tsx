@@ -47,20 +47,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   return (
     <div className="space-y-9 animate-fade-in">
       {/* Executive Market Question & Hero Banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-50/90 via-indigo-50/40 to-white dark:from-slate-900 dark:via-slate-900/95 dark:to-slate-950 border border-slate-200 dark:border-white/[0.08] p-6 sm:p-8 shadow-sm dark:shadow-none">
-        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-blue-500/10 via-indigo-500/5 to-transparent dark:from-cyan-500/10 dark:via-emerald-500/5 pointer-events-none" />
-
+      <div className="relative overflow-hidden rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/[0.08] p-6 sm:p-8 shadow-card-subtle">
         <div className="relative z-10 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 border border-blue-200 dark:bg-cyan-500/10 dark:border-cyan-500/20 dark:text-cyan-300 text-xs font-mono mb-3.5">
-            <Radio className="w-3.5 h-3.5 animate-pulse text-blue-600 dark:text-cyan-400" />
-            <span>TERMINAL DE INTELIGÊNCIA EM TEMPO REAL // 142 FONTES ATIVAS</span>
+          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] text-slate-700 dark:text-slate-300 text-xs font-sans font-medium mb-3.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span>Terminal de Inteligência em Tempo Real • 142 Fontes Ativas</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight leading-tight mb-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight leading-tight mb-2 font-sans">
             O que está acontecendo no mercado agora e quais oportunidades posso explorar?
           </h2>
 
-          <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+          <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-6 font-sans">
             O Opportunity Radar processa discussões globais, queixas recorrentes em ERPs legados e dados de busca acelerados para entregar teses estruturadas de Micro-SaaS, B2B e arbitragem internacional.
           </p>
 
@@ -76,7 +74,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <Button
               variant="secondary"
               size="md"
-              iconLeft={<Layers className="w-4 h-4 text-blue-600 dark:text-cyan-400" />}
+              iconLeft={<Layers className="w-4 h-4 text-slate-500" />}
               onClick={() => onNavigate('opportunities')}
             >
               Explorar Catálogo ({opportunities.length})
@@ -108,16 +106,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         />
 
         {selectedCountryFilter && (
-          <div className="p-2.5 rounded-lg bg-cyan-500/10 border border-cyan-500/25 flex items-center justify-between text-xs font-mono text-cyan-300">
+          <div className="p-2.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-white/[0.08] flex items-center justify-between text-xs font-medium text-slate-700 dark:text-slate-300">
             <span>
               Filtrando oportunidades originadas em:{' '}
-              <strong>
+              <strong className="text-slate-900 dark:text-white">
                 {MOCK_COUNTRY_SIGNALS.find((c) => c.code === selectedCountryFilter)?.name}
               </strong>
             </span>
             <button
               onClick={() => setSelectedCountryFilter('')}
-              className="p-1 hover:text-white flex items-center gap-1"
+              className="p-1 hover:text-slate-900 dark:hover:text-white flex items-center gap-1"
             >
               <X className="w-3.5 h-3.5" />
               <span>Remover filtro</span>
@@ -131,15 +129,15 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-emerald-400" />
-              <h3 className="text-base font-bold text-slate-100 tracking-tight">
+              <Sparkles className="w-4 h-4 text-slate-500" />
+              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
                 Trending Opportunities
               </h3>
-              <Badge variant="emerald" size="xs">
+              <Badge variant="neutral" size="xs">
                 {trendingOpportunities.length} selecionadas
               </Badge>
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
               Oportunidades em destaque com alto score de viabilidade, demanda comprovada e potencial de monetização
             </p>
           </div>
@@ -147,7 +145,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={() => onNavigate('opportunities')}
-              className="text-xs font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1 transition-colors"
+              className="text-xs font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-1 transition-colors"
             >
               <span>Ver catálogo completo</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -186,17 +184,17 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
       {/* 4. Live Signals Ticker Preview & Quick Jump */}
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
-        <div className="lg:col-span-2 rounded-2xl bg-slate-900/50 border border-white/[0.08] p-5 space-y-4">
-          <div className="flex items-center justify-between pb-2 border-b border-white/[0.06]">
+        <div className="lg:col-span-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/[0.08] p-5 space-y-4 shadow-card-subtle">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-white/[0.06]">
             <div className="flex items-center gap-2">
-              <Radio className="w-4 h-4 text-cyan-400 animate-pulse" />
-              <h4 className="text-xs font-bold font-mono text-slate-200 uppercase tracking-wider">
-                Fluxo Contínuo de Sinais // Últimas Ingestões
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <h4 className="text-xs font-bold font-sans text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+                Fluxo Contínuo de Sinais • Últimas Ingestões
               </h4>
             </div>
             <button
               onClick={() => onNavigate('radar')}
-              className="text-2xs font-mono text-cyan-400 hover:text-cyan-300"
+              className="text-xs font-sans font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
             >
               Ver Radar Completo →
             </button>
@@ -207,29 +205,29 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div
                 key={sig.id}
                 onClick={() => onNavigate('radar')}
-                className="p-3.5 rounded-xl bg-slate-950/60 border border-white/[0.04] hover:border-cyan-500/30 transition-all cursor-pointer group flex items-start justify-between gap-3"
+                className="p-3.5 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200/70 dark:border-white/[0.04] hover:border-slate-300 dark:hover:border-white/20 transition-all cursor-pointer group flex items-start justify-between gap-3"
               >
                 <div className="space-y-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <Badge variant="slate" size="xs">
                       {sig.source}
                     </Badge>
-                    <span className="text-2xs font-mono text-slate-500">
+                    <span className="text-[11px] font-sans text-slate-400">
                       {sig.detectedAt}
                     </span>
-                    <span className="text-2xs font-mono text-slate-400">
+                    <span className="text-[11px] font-sans text-slate-400">
                       {sig.geoScope}
                     </span>
                   </div>
-                  <h5 className="text-xs font-semibold text-slate-200 group-hover:text-cyan-300 transition-colors truncate">
+                  <h5 className="text-xs font-semibold text-slate-900 dark:text-slate-100 group-hover:text-slate-700 dark:group-hover:text-white transition-colors truncate font-sans">
                     {sig.title}
                   </h5>
-                  <p className="text-2xs text-slate-400 line-clamp-1 italic">
+                  <p className="text-xs text-slate-500 line-clamp-1 italic font-sans">
                     "{sig.excerpt}"
                   </p>
                 </div>
 
-                <span className="text-xs font-mono font-bold text-emerald-400 shrink-0">
+                <span className="text-xs font-sans font-bold text-slate-900 dark:text-slate-100 shrink-0">
                   +{sig.scoreImpact}
                 </span>
               </div>
@@ -238,24 +236,24 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
 
         {/* Quick Strategic Focus */}
-        <div className="rounded-2xl bg-gradient-to-br from-purple-50 via-violet-50/50 to-white dark:from-violet-950/30 dark:to-slate-900/60 border border-purple-200 dark:border-violet-500/20 p-5 flex flex-col justify-between space-y-4 shadow-sm dark:shadow-none">
+        <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/[0.08] p-5 flex flex-col justify-between space-y-4 shadow-card-subtle">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Badge variant="violet" size="xs">
+              <Badge variant="slate" size="xs">
                 AI Playbook
               </Badge>
-              <span className="text-2xs font-mono text-slate-500 dark:text-slate-400">Validação Imediata</span>
+              <span className="text-xs font-sans text-slate-400">Validação Imediata</span>
             </div>
-            <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-1.5">
+            <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-1.5 font-sans">
               Valide antes de programar
             </h4>
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
               Use nossos roteiros enxutos de 4 fases no <strong>My Lab</strong> para testar a disposição a pagar de clientes reais antes de escrever uma única linha de código.
             </p>
           </div>
 
           <Button
-            variant="emerald"
+            variant="primary"
             size="sm"
             onClick={() => onNavigate('my-lab')}
             iconRight={<ArrowRight className="w-3.5 h-3.5" />}

@@ -72,23 +72,23 @@ export const RadarFilterConsole: React.FC<RadarFilterConsoleProps> = ({
     (filters.freshness !== 'all' ? 1 : 0);
 
   return (
-    <div className="rounded-2xl bg-slate-900/80 border border-white/[0.08] backdrop-blur-md p-4 space-y-3.5 shadow-panel">
+    <div className="rounded-2xl bg-card-bg border border-card-border p-4 space-y-3.5 shadow-xs">
       {/* Primary Bar: Search + Quick Category + Country + Toggle Advanced */}
       <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
         {/* Search */}
         <div className="relative flex-1">
-          <Search className="w-4 h-4 text-cyan-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             value={filters.searchQuery}
             onChange={(e) => update('searchQuery', e.target.value)}
             placeholder="Buscar por sinal, tecnologia, problema ou tese de mercado..."
-            className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-950/70 border border-white/[0.08] text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500/50 focus:bg-slate-950 transition-colors font-sans"
+            className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-white/[0.08] text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500 transition-colors font-sans"
           />
           {filters.searchQuery && (
             <button
               onClick={() => update('searchQuery', '')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 dark:hover:text-white"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -101,7 +101,7 @@ export const RadarFilterConsole: React.FC<RadarFilterConsoleProps> = ({
           <select
             value={filters.country}
             onChange={(e) => update('country', e.target.value)}
-            className="px-3 py-2 rounded-xl bg-slate-950/70 border border-white/[0.08] text-xs text-slate-300 focus:outline-none focus:border-cyan-500 cursor-pointer font-mono"
+            className="px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-white/[0.08] text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500 cursor-pointer font-sans"
           >
             <option value="all">🌍 Todos os Países</option>
             <option value="US">🇺🇸 Estados Unidos</option>
@@ -118,7 +118,7 @@ export const RadarFilterConsole: React.FC<RadarFilterConsoleProps> = ({
           <select
             value={filters.category}
             onChange={(e) => update('category', e.target.value)}
-            className="px-3 py-2 rounded-xl bg-slate-950/70 border border-white/[0.08] text-xs text-slate-300 focus:outline-none focus:border-cyan-500 cursor-pointer"
+            className="px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-white/[0.08] text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500 cursor-pointer font-sans"
           >
             <option value="all">Todas Categorias</option>
             <option value="Micro-SaaS">Micro-SaaS</option>
@@ -133,7 +133,7 @@ export const RadarFilterConsole: React.FC<RadarFilterConsoleProps> = ({
           <select
             value={filters.sortBy}
             onChange={(e) => update('sortBy', e.target.value as any)}
-            className="px-3 py-2 rounded-xl bg-slate-950/70 border border-white/[0.08] text-xs text-slate-300 focus:outline-none focus:border-cyan-500 cursor-pointer font-mono"
+            className="px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-white/[0.08] text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500 cursor-pointer font-sans"
           >
             <option value="score">Score Radar (Maior)</option>
             <option value="growth">Crescimento Mais Rápido</option>
@@ -144,16 +144,20 @@ export const RadarFilterConsole: React.FC<RadarFilterConsoleProps> = ({
           {/* Toggle Advanced Filters Button */}
           <button
             onClick={() => setIsExpanded((prev) => !prev)}
-            className={`px-3 py-2 rounded-xl border text-xs font-mono flex items-center gap-1.5 transition-colors ${
+            className={`px-3 py-2 rounded-xl border text-xs font-medium font-sans flex items-center gap-1.5 transition-colors ${
               isExpanded || activeFiltersCount > 0
-                ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-300'
-                : 'bg-slate-950/70 border-white/[0.08] text-slate-400 hover:text-slate-200'
+                ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-950 border-slate-900 dark:border-white shadow-xs'
+                : 'bg-slate-50 dark:bg-slate-950/70 border-slate-200 dark:border-white/[0.08] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
             <SlidersHorizontal className="w-3.5 h-3.5" />
             <span>Filtros</span>
             {activeFiltersCount > 0 && (
-              <span className="w-4 h-4 rounded-full bg-cyan-400 text-slate-950 text-[10px] font-bold flex items-center justify-center">
+              <span className={`w-4 h-4 rounded-full text-[10px] font-bold flex items-center justify-center ${
+                isExpanded || activeFiltersCount > 0
+                  ? 'bg-white text-slate-950 dark:bg-slate-950 dark:text-white'
+                  : 'bg-slate-900 text-white dark:bg-white dark:text-slate-950'
+              }`}>
                 {activeFiltersCount}
               </span>
             )}
@@ -164,16 +168,16 @@ export const RadarFilterConsole: React.FC<RadarFilterConsoleProps> = ({
 
       {/* Expanded Multi-Filter Drawer Section */}
       {isExpanded && (
-        <div className="pt-3 border-t border-white/[0.06] grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 animate-fade-in">
+        <div className="pt-3 border-t border-card-border grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 animate-fade-in">
           {/* Continente */}
           <div>
-            <label className="text-[10px] font-mono uppercase text-slate-400 block mb-1">
+            <label className="text-2xs font-semibold uppercase text-slate-500 block mb-1 font-sans">
               Continente:
             </label>
             <select
               value={filters.continent}
               onChange={(e) => update('continent', e.target.value)}
-              className="w-full px-2.5 py-1.5 rounded-lg bg-slate-950 border border-white/[0.08] text-xs text-slate-300 focus:outline-none focus:border-cyan-500"
+              className="w-full px-2.5 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/[0.08] text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500 font-sans"
             >
               <option value="all">Todos</option>
               <option value="América do Norte">América do Norte</option>
@@ -186,13 +190,13 @@ export const RadarFilterConsole: React.FC<RadarFilterConsoleProps> = ({
 
           {/* Moeda */}
           <div>
-            <label className="text-[10px] font-mono uppercase text-slate-400 block mb-1">
+            <label className="text-2xs font-semibold uppercase text-slate-500 block mb-1 font-sans">
               Moeda Alvo:
             </label>
             <select
               value={filters.currency}
               onChange={(e) => update('currency', e.target.value)}
-              className="w-full px-2.5 py-1.5 rounded-lg bg-slate-950 border border-white/[0.08] text-xs text-slate-300 focus:outline-none focus:border-cyan-500 font-mono"
+              className="w-full px-2.5 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/[0.08] text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500 font-sans"
             >
               <option value="all">Todas</option>
               <option value="USD">USD ($)</option>
@@ -204,13 +208,13 @@ export const RadarFilterConsole: React.FC<RadarFilterConsoleProps> = ({
 
           {/* Dificuldade */}
           <div>
-            <label className="text-[10px] font-mono uppercase text-slate-400 block mb-1">
+            <label className="text-2xs font-semibold uppercase text-slate-500 block mb-1 font-sans">
               Dificuldade:
             </label>
             <select
               value={filters.difficulty}
               onChange={(e) => update('difficulty', e.target.value)}
-              className="w-full px-2.5 py-1.5 rounded-lg bg-slate-950 border border-white/[0.08] text-xs text-slate-300 focus:outline-none focus:border-cyan-500"
+              className="w-full px-2.5 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/[0.08] text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500 font-sans"
             >
               <option value="all">Qualquer</option>
               <option value="Baixa">Baixa (Solo Dev)</option>
@@ -221,13 +225,13 @@ export const RadarFilterConsole: React.FC<RadarFilterConsoleProps> = ({
 
           {/* Modelo B2B / B2C */}
           <div>
-            <label className="text-[10px] font-mono uppercase text-slate-400 block mb-1">
+            <label className="text-2xs font-semibold uppercase text-slate-500 block mb-1 font-sans">
               Público Alvo:
             </label>
             <select
               value={filters.audience}
               onChange={(e) => update('audience', e.target.value)}
-              className="w-full px-2.5 py-1.5 rounded-lg bg-slate-950 border border-white/[0.08] text-xs text-slate-300 focus:outline-none focus:border-cyan-500"
+              className="w-full px-2.5 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/[0.08] text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500 font-sans"
             >
               <option value="all">B2B e B2C</option>
               <option value="B2B">Apenas B2B</option>
@@ -237,13 +241,13 @@ export const RadarFilterConsole: React.FC<RadarFilterConsoleProps> = ({
 
           {/* Investimento */}
           <div>
-            <label className="text-[10px] font-mono uppercase text-slate-400 block mb-1">
+            <label className="text-2xs font-semibold uppercase text-slate-500 block mb-1 font-sans">
               Investimento:
             </label>
             <select
               value={filters.investment}
               onChange={(e) => update('investment', e.target.value)}
-              className="w-full px-2.5 py-1.5 rounded-lg bg-slate-950 border border-white/[0.08] text-xs text-slate-300 focus:outline-none focus:border-cyan-500"
+              className="w-full px-2.5 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/[0.08] text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500 font-sans"
             >
               <option value="all">Qualquer</option>
               <option value="Bootstrapped (Baixo)">Bootstrapped ($0 - $500)</option>
@@ -253,13 +257,13 @@ export const RadarFilterConsole: React.FC<RadarFilterConsoleProps> = ({
 
           {/* Recência / Novidade */}
           <div>
-            <label className="text-[10px] font-mono uppercase text-slate-400 block mb-1">
+            <label className="text-2xs font-semibold uppercase text-slate-500 block mb-1 font-sans">
               Janela Temporal:
             </label>
             <select
               value={filters.freshness}
               onChange={(e) => update('freshness', e.target.value)}
-              className="w-full px-2.5 py-1.5 rounded-lg bg-slate-950 border border-white/[0.08] text-xs text-slate-300 focus:outline-none focus:border-cyan-500"
+              className="w-full px-2.5 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/[0.08] text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500 font-sans"
             >
               <option value="all">Todo Histórico</option>
               <option value="24h">Últimas 24 horas</option>
@@ -269,24 +273,24 @@ export const RadarFilterConsole: React.FC<RadarFilterConsoleProps> = ({
           </div>
 
           {/* IA Switch & Remote Switch Row */}
-          <div className="col-span-2 sm:col-span-3 lg:col-span-6 pt-2 border-t border-white/[0.04] flex items-center gap-4 flex-wrap">
-            <label className="flex items-center gap-2 cursor-pointer select-none text-xs text-slate-300">
+          <div className="col-span-2 sm:col-span-3 lg:col-span-6 pt-2 border-t border-card-border flex items-center gap-4 flex-wrap">
+            <label className="flex items-center gap-2 cursor-pointer select-none text-xs text-slate-600 dark:text-slate-300">
               <input
                 type="checkbox"
                 checked={filters.isAiOnly === true}
                 onChange={(e) => update('isAiOnly', e.target.checked ? true : null)}
-                className="rounded bg-slate-950 border-white/20 text-cyan-500 focus:ring-cyan-500/20"
+                className="rounded bg-slate-100 dark:bg-slate-950 border-slate-300 dark:border-white/20 text-slate-900 focus:ring-slate-400"
               />
-              <Sparkles className="w-3.5 h-3.5 text-violet-400" />
+              <Sparkles className="w-3.5 h-3.5 text-slate-500" />
               <span>Apenas produtos baseados em IA</span>
             </label>
 
-            <label className="flex items-center gap-2 cursor-pointer select-none text-xs text-slate-300">
+            <label className="flex items-center gap-2 cursor-pointer select-none text-xs text-slate-600 dark:text-slate-300">
               <input
                 type="checkbox"
                 checked={filters.isRemoteOnly}
                 onChange={(e) => update('isRemoteOnly', e.target.checked)}
-                className="rounded bg-slate-950 border-white/20 text-cyan-500 focus:ring-cyan-500/20"
+                className="rounded bg-slate-100 dark:bg-slate-950 border-slate-300 dark:border-white/20 text-slate-900 focus:ring-slate-400"
               />
               <span>Trabalho Remoto & Contratos Globais</span>
             </label>
@@ -295,21 +299,21 @@ export const RadarFilterConsole: React.FC<RadarFilterConsoleProps> = ({
       )}
 
       {/* Footer Info & Reset */}
-      <div className="flex items-center justify-between text-2xs font-mono text-slate-500 pt-1 border-t border-white/[0.04]">
+      <div className="flex items-center justify-between text-2xs font-sans text-slate-500 pt-1 border-t border-card-border">
         <div className="flex items-center gap-2">
           <span>
-            Exibindo <strong className="text-cyan-400">{totalFiltered}</strong> de{' '}
+            Exibindo <strong className="text-slate-800 dark:text-slate-200">{totalFiltered}</strong> de{' '}
             <strong>{totalAvailable}</strong> descobertas catalogadas
           </span>
           {activeFiltersCount > 0 && (
-            <span className="text-emerald-400">({activeFiltersCount} parâmetros aplicados)</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-medium">({activeFiltersCount} parâmetros aplicados)</span>
           )}
         </div>
 
         {activeFiltersCount > 0 && (
           <button
             onClick={onReset}
-            className="text-rose-400 hover:text-rose-300 flex items-center gap-1 transition-colors"
+            className="text-rose-500 hover:text-rose-600 dark:text-rose-400 flex items-center gap-1 transition-colors font-medium"
           >
             <X className="w-3 h-3" />
             <span>Resetar Filtros</span>

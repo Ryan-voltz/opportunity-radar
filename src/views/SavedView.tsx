@@ -23,19 +23,19 @@ export const SavedView: React.FC<SavedViewProps> = ({
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-cyan-950/40 to-slate-900 border border-cyan-500/20">
+      <div className="p-6 rounded-2xl bg-card-bg border border-card-border shadow-sm">
         <div className="flex items-center gap-2 mb-2">
-          <Badge variant="cyan" size="sm">
+          <Badge variant="neutral" size="sm">
             Pipeline Pessoal
           </Badge>
-          <span className="text-2xs font-mono text-slate-400">
+          <span className="text-2xs font-medium text-slate-500 dark:text-slate-400">
             Oportunidades em Monitoramento Ativo
           </span>
         </div>
-        <h2 className="text-xl sm:text-2xl font-bold text-slate-100">
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">
           Oportunidades Salvas & Priorizadas
         </h2>
-        <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl leading-relaxed">
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 max-w-2xl leading-relaxed">
           Seu repositório pessoal de ideias que passaram pelo primeiro filtro e estão aguardando validação ou execução.
         </p>
       </div>
@@ -44,8 +44,8 @@ export const SavedView: React.FC<SavedViewProps> = ({
       {savedOpportunities.length > 0 ? (
         <div>
           <div className="flex items-center justify-between mb-4">
-            <span className="text-xs font-mono text-slate-400">
-              Total Salvas: <strong className="text-cyan-400">{savedOpportunities.length}</strong>
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+              Total Salvas: <strong className="text-slate-900 dark:text-white">{savedOpportunities.length}</strong>
             </span>
           </div>
 

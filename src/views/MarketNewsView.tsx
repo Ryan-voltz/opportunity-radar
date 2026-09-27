@@ -313,9 +313,9 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
     <div className="space-y-8 animate-fade-in">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 p-4 rounded-xl bg-slate-900 border border-cyan-500/40 shadow-2xl text-xs font-mono text-cyan-300 flex items-center justify-between gap-3 animate-slide-in-right max-w-md">
+        <div className="fixed bottom-6 right-6 z-50 p-4 rounded-xl bg-card-bg border border-card-border shadow-2xl text-xs font-medium text-slate-900 dark:text-slate-100 flex items-center justify-between gap-3 animate-slide-in-right max-w-md">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span>{toastMessage}</span>
           </div>
           {onNavigateToMyLab && (
@@ -330,65 +330,65 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
       )}
 
       {/* Header & Sub-Navigation */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/[0.08]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-card-border">
         <div>
           <div className="flex items-center gap-2.5 mb-1.5">
-            <span className="p-2 rounded-xl bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-cyan-500/30 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+            <span className="p-2 rounded-xl bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/[0.08] text-slate-700 dark:text-slate-200 shadow-sm">
               <Compass className="w-5 h-5" />
             </span>
-            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
               Market News & Discovery
             </h1>
-            <span className="px-2 py-0.5 rounded-full text-2xs font-mono font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
+            <span className="px-2 py-0.5 rounded-full text-2xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/[0.08]">
               Live Intel
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-slate-400 max-w-2xl leading-relaxed">
-            Monitoramento de notícias globais, mudanças de plataformas e anúncios técnicos convertidos automaticamente em <strong>hipóteses de oportunidade de negócio</strong>.
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
+            Monitoramento de notícias globais, mudanças de plataformas e anúncios técnicos convertidos automaticamente em <strong className="text-slate-800 dark:text-slate-200">hipóteses de oportunidade de negócio</strong>.
           </p>
         </div>
 
         {/* View Tabs Switcher */}
-        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-900 border border-white/[0.08] shrink-0">
+        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/[0.08] shrink-0">
           <button
             onClick={() => setActiveTab('feed')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium font-mono transition-all flex items-center gap-1.5 ${
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
               activeTab === 'feed'
-                ? 'bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
             }`}
           >
             <Activity className="w-3.5 h-3.5" />
             <span>Feed Inteligente</span>
-            <span className="px-1.5 py-0.2 rounded-full bg-slate-800 text-[10px] text-slate-300">
+            <span className="px-1.5 py-0.2 rounded-full bg-slate-200 dark:bg-slate-800 text-[10px] text-slate-700 dark:text-slate-300">
               {news.length}
             </span>
           </button>
 
           <button
             onClick={() => setActiveTab('trends')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium font-mono transition-all flex items-center gap-1.5 ${
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
               activeTab === 'trends'
-                ? 'bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
             }`}
           >
-            <Flame className="w-3.5 h-3.5 text-amber-400" />
+            <Flame className="w-3.5 h-3.5" />
             <span>Emerging Trends</span>
-            <span className="px-1.5 py-0.2 rounded-full bg-slate-800 text-[10px] text-slate-300">
+            <span className="px-1.5 py-0.2 rounded-full bg-slate-200 dark:bg-slate-800 text-[10px] text-slate-700 dark:text-slate-300">
               {trends.length}
             </span>
           </button>
 
           <button
             onClick={() => setActiveTab('brief')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium font-mono transition-all flex items-center gap-1.5 ${
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
               activeTab === 'brief'
-                ? 'bg-violet-500/20 text-violet-300 font-bold border border-violet-500/30 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
             }`}
           >
-            <Calendar className="w-3.5 h-3.5 text-violet-400" />
+            <Calendar className="w-3.5 h-3.5" />
             <span>Daily Market Brief</span>
           </button>
         </div>
@@ -400,18 +400,18 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
       {activeTab === 'feed' && (
         <div className="space-y-6">
           {/* Personalization / Interests Bar */}
-          <div className="p-4 rounded-xl bg-slate-900/60 border border-white/[0.08] space-y-3">
+          <div className="p-4 rounded-xl bg-card-bg border border-card-border space-y-3 shadow-sm">
             <div className="flex items-center justify-between text-xs flex-wrap gap-2">
-              <span className="font-mono text-slate-300 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="text-slate-700 dark:text-slate-300 flex items-center gap-1.5 font-medium">
+                <Sparkles className="w-3.5 h-3.5 text-slate-500" />
                 <span>Personalize seu radar clicando nos seus interesses:</span>
               </span>
               <button
                 onClick={() => setFilterOnlyInterests(!filterOnlyInterests)}
-                className={`px-2.5 py-0.5 rounded-full text-2xs font-mono transition-colors border ${
+                className={`px-2.5 py-1 rounded-full text-2xs transition-colors border font-medium ${
                   filterOnlyInterests
-                    ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 font-bold'
-                    : 'bg-white/[0.04] text-slate-400 border-white/[0.08] hover:text-slate-200'
+                    ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 border-slate-900 dark:border-white'
+                    : 'bg-slate-100 dark:bg-white/[0.04] text-slate-600 dark:text-slate-400 border-slate-200 dark:border-white/[0.08] hover:text-slate-900 dark:hover:text-slate-200'
                 }`}
               >
                 {filterOnlyInterests
@@ -427,13 +427,13 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
                   <button
                     key={interest}
                     onClick={() => handleToggleInterest(interest)}
-                    className={`px-3 py-1 rounded-lg text-xs font-mono transition-all flex items-center gap-1.5 ${
+                    className={`px-3 py-1 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
                       isSelected
-                        ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-semibold shadow-[0_0_10px_rgba(6,182,212,0.15)]'
-                        : 'bg-white/[0.03] border border-white/[0.06] text-slate-400 hover:text-slate-200 hover:bg-white/[0.06]'
+                        ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 border border-slate-900 dark:border-white shadow-sm'
+                        : 'bg-slate-100 dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.06] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                     }`}
                   >
-                    {isSelected && <Check className="w-3 h-3 text-cyan-400" />}
+                    {isSelected && <Check className="w-3 h-3 text-white dark:text-slate-900" />}
                     <span>{interest}</span>
                   </button>
                 );
@@ -445,18 +445,18 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
           <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
             {/* Search Input */}
             <div className="relative flex-1">
-              <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Buscar notícias por título, palavra-chave ou API..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-900 border border-white/[0.08] text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 font-sans"
+                className="w-full pl-9 pr-4 py-2 rounded-xl bg-card-bg border border-card-border text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-slate-500 font-sans"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-white"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -469,7 +469,7 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="px-3 py-2 rounded-xl bg-slate-900 border border-white/[0.08] text-xs font-mono text-slate-200 focus:outline-none focus:border-cyan-400"
+                className="px-3 py-2 rounded-xl bg-card-bg border border-card-border text-xs text-slate-700 dark:text-slate-200 focus:outline-none focus:border-slate-500 font-sans"
               >
                 <option value="all">Todas Categorias ({ALL_CATEGORIES.length})</option>
                 {ALL_CATEGORIES.map((c) => (
@@ -483,7 +483,7 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
               <select
                 value={selectedCountry}
                 onChange={(e) => setSelectedCountry(e.target.value)}
-                className="px-3 py-2 rounded-xl bg-slate-900 border border-white/[0.08] text-xs font-mono text-slate-200 focus:outline-none focus:border-cyan-400"
+                className="px-3 py-2 rounded-xl bg-card-bg border border-card-border text-xs text-slate-700 dark:text-slate-200 focus:outline-none focus:border-slate-500 font-sans"
               >
                 <option value="all">Todos os Países</option>
                 <option value="US">🇺🇸 Estados Unidos</option>
@@ -498,10 +498,10 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
               {/* Only with Hypotheses Toggle */}
               <button
                 onClick={() => setOnlyWithHypotheses(!onlyWithHypotheses)}
-                className={`px-3 py-2 rounded-xl text-xs font-mono transition-colors flex items-center gap-1.5 ${
+                className={`px-3 py-2 rounded-xl text-xs transition-colors flex items-center gap-1.5 font-medium ${
                   onlyWithHypotheses
-                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold'
-                    : 'bg-slate-900 border border-white/[0.08] text-slate-400 hover:text-slate-200'
+                    ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 border border-slate-900 dark:border-white shadow-sm'
+                    : 'bg-card-bg border border-card-border text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                 }`}
               >
                 <Lightbulb className="w-3.5 h-3.5" />
@@ -509,13 +509,13 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
               </button>
 
               {/* View Mode Switcher */}
-              <div className="flex items-center p-1 rounded-xl bg-slate-900 border border-white/[0.08]">
+              <div className="flex items-center p-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/[0.08]">
                 <button
                   onClick={() => setViewMode('grid')}
                   className={`p-1.5 rounded-lg text-xs transition-colors ${
                     viewMode === 'grid'
-                      ? 'bg-cyan-500/20 text-cyan-300'
-                      : 'text-slate-500 hover:text-slate-300'
+                      ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm'
+                      : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
                   }`}
                   title="Visualização em Grade"
                 >
@@ -525,8 +525,8 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
                   onClick={() => setViewMode('timeline')}
                   className={`p-1.5 rounded-lg text-xs transition-colors ${
                     viewMode === 'timeline'
-                      ? 'bg-cyan-500/20 text-cyan-300'
-                      : 'text-slate-500 hover:text-slate-300'
+                      ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm'
+                      : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
                   }`}
                   title="Visualização em Linha do Tempo"
                 >
@@ -570,10 +570,10 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
                 return (
                   <article
                     key={item.id}
-                    className={`rounded-2xl border transition-all duration-200 p-5 flex flex-col justify-between hover:shadow-card-subtle ${
+                    className={`rounded-2xl border transition-all duration-200 p-5 flex flex-col justify-between hover:shadow-card-subtle bg-card-bg ${
                       isInterestMatch
-                        ? 'bg-slate-900/80 border-cyan-500/30 hover:border-cyan-500/60'
-                        : 'bg-slate-900/50 border-white/[0.08] hover:border-white/20'
+                        ? 'border-slate-300 dark:border-slate-700'
+                        : 'border-card-border hover:border-slate-300 dark:hover:border-slate-700'
                     }`}
                   >
                     <div>
@@ -582,7 +582,7 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
                         <div className="flex items-center gap-2 flex-wrap">
                           {/* Country */}
                           <span
-                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-2xs font-mono text-slate-300"
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] text-2xs font-medium text-slate-700 dark:text-slate-300"
                             title={item.country}
                           >
                             <span>{item.countryFlag}</span>
@@ -599,14 +599,14 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
 
                           {/* Personalized Match Pill */}
                           {isInterestMatch && (
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/25 flex items-center gap-1 font-semibold">
+                            <span className="text-2xs font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/[0.06] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/[0.08] flex items-center gap-1">
                               <Sparkles className="w-2.5 h-2.5" />
                               Interesse
                             </span>
                           )}
 
                           {/* Impact Score */}
-                          <span className="text-2xs font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold">
+                          <span className="text-2xs font-medium px-1.5 py-0.5 rounded bg-slate-100 dark:bg-white/[0.06] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/[0.08]">
                             Impacto {item.impactScore}
                           </span>
                         </div>
@@ -618,8 +618,8 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
                             onClick={(e) => handleToggleSave(item.id, e)}
                             className={`p-1.5 rounded-lg border transition-colors ${
                               item.isSaved
-                                ? 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30'
-                                : 'text-slate-500 border-white/[0.06] hover:text-slate-300 hover:bg-white/[0.04]'
+                                ? 'text-slate-900 bg-slate-200 dark:text-white dark:bg-slate-800 border-slate-300 dark:border-slate-700'
+                                : 'text-slate-400 border-slate-200 dark:border-white/[0.06] hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/[0.04]'
                             }`}
                             title={item.isSaved ? 'Notícia Salva' : 'Salvar Notícia'}
                           >
@@ -629,17 +629,17 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
                       </div>
 
                       {/* Title & Summary */}
-                      <h3 className="text-base font-semibold text-slate-100 hover:text-cyan-300 transition-colors leading-snug mb-2">
+                      <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100 hover:text-slate-700 dark:hover:text-slate-300 transition-colors leading-snug mb-2 font-sans">
                         {item.title}
                       </h3>
-                      <p className="text-xs text-slate-300 line-clamp-3 leading-relaxed mb-4 font-sans">
+                      <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-3 leading-relaxed mb-4 font-sans">
                         {item.summary}
                       </p>
 
                       {/* Origin Source & Read Time */}
-                      <div className="flex items-center justify-between text-2xs font-mono text-slate-400 pb-3 mb-3 border-b border-white/[0.06]">
+                      <div className="flex items-center justify-between text-2xs font-sans text-slate-500 pb-3 mb-3 border-b border-card-border">
                         <div className="flex items-center gap-2">
-                          <span className="text-slate-300 font-medium">via {item.source}</span>
+                          <span className="text-slate-700 dark:text-slate-300 font-medium">via {item.source}</span>
                           <span>•</span>
                           <span>{item.date}</span>
                         </div>
@@ -649,7 +649,7 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
                             href={item.originalUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1 transition-colors"
+                            className="text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white underline underline-offset-2 flex items-center gap-1 transition-colors"
                           >
                             <span>Link Original</span>
                             <ExternalLink className="w-3 h-3" />
@@ -660,22 +660,22 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
                       {/* ======================================================= */}
                       {/* AI OPPORTUNITY DETECTION ENGINE SECTION                 */}
                       {/* ======================================================= */}
-                      <div className="p-3.5 rounded-xl bg-violet-950/20 border border-violet-500/25 space-y-2.5 mb-4">
+                      <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/[0.06] space-y-2.5 mb-4">
                         <div className="flex items-center justify-between gap-2">
-                          <span className="text-xs font-mono font-bold text-violet-300 flex items-center gap-1.5">
-                            <Bot className="w-4 h-4 text-violet-400" />
+                          <span className="text-xs font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-1.5 font-sans">
+                            <Bot className="w-4 h-4 text-slate-600 dark:text-slate-400" />
                             {item.aiQuestion}
                           </span>
-                          <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-violet-500/20 text-violet-300">
+                          <span className="px-2 py-0.5 rounded text-2xs font-medium bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                             {item.possibleOpportunities.length} hipóteses
                           </span>
                         </div>
 
-                        <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                        <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
                           {item.aiAnalysisSummary}
                         </p>
 
-                        {/* List of Possible Opportunities (Labeled strictly as "Hipótese de oportunidade") */}
+                        {/* List of Possible Opportunities */}
                         <div className="space-y-2 pt-1">
                           {(isExpanded
                             ? item.possibleOpportunities
@@ -683,25 +683,25 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
                           ).map((hyp) => (
                             <div
                               key={hyp.id}
-                              className="p-3 rounded-lg bg-slate-900/90 border border-white/[0.08] space-y-1.5"
+                              className="p-3 rounded-lg bg-card-bg border border-card-border space-y-1.5 shadow-sm"
                             >
                               <div className="flex items-center justify-between gap-2">
-                                <span className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded text-[10px] font-mono uppercase font-bold bg-emerald-500/10 text-emerald-300 border border-emerald-500/25">
+                                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-2xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/[0.08]">
                                   [Hipótese de oportunidade] • {hyp.type}
                                 </span>
-                                <span className="text-2xs font-mono text-emerald-400">
+                                <span className="text-2xs font-medium text-slate-600 dark:text-slate-400">
                                   Confiança: {hyp.confidenceScore}%
                                 </span>
                               </div>
 
-                              <h5 className="text-xs font-semibold text-slate-100">
+                              <h5 className="text-xs font-semibold text-slate-900 dark:text-slate-100 font-sans">
                                 {hyp.title}
                               </h5>
-                              <p className="text-2xs text-slate-400 leading-relaxed font-sans">
+                              <p className="text-2xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
                                 {hyp.description}
                               </p>
 
-                              <div className="flex items-center justify-between text-[11px] font-mono pt-1 text-slate-500">
+                              <div className="flex items-center justify-between text-2xs font-sans pt-1 text-slate-500">
                                 <span>Público: {hyp.targetAudience}</span>
                                 <span>Monetização: {hyp.monetizationModel}</span>
                               </div>
@@ -709,7 +709,7 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
                               <div className="pt-2 flex items-center justify-end">
                                 <button
                                   onClick={() => handleCreateProject(item, hyp)}
-                                  className="px-2.5 py-1 rounded-md text-[11px] font-mono bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1 transition-colors"
+                                  className="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-900 text-white dark:bg-white dark:text-slate-900 flex items-center gap-1 transition-colors shadow-sm"
                                   title="Enviar para sandbox do My Lab"
                                 >
                                   <PlusCircle className="w-3 h-3" />
@@ -722,7 +722,7 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
                           {item.possibleOpportunities.length > 1 && (
                             <button
                               onClick={() => toggleExpandHypotheses(item.id)}
-                              className="w-full py-1 text-[11px] font-mono text-violet-300 hover:text-violet-200 flex items-center justify-center gap-1 transition-colors"
+                              className="w-full py-1 text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center justify-center gap-1 transition-colors"
                             >
                               <span>
                                 {isExpanded
@@ -741,46 +741,46 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
                     </div>
 
                     {/* Bottom Quick Actions Toolbar */}
-                    <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between gap-2">
+                    <div className="pt-3 border-t border-card-border flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleToggleSave(item.id)}
-                          className={`px-2.5 py-1.5 rounded-lg text-xs font-mono border transition-colors flex items-center gap-1.5 ${
+                          className={`px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-colors flex items-center gap-1.5 ${
                             item.isSaved
-                              ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-300'
-                              : 'border-white/[0.08] text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
+                              ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 border-slate-900 dark:border-white shadow-sm'
+                              : 'border-card-border text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/[0.04]'
                           }`}
                         >
                           <Bookmark className="w-3.5 h-3.5" />
-                          <span>{item.isSaved ? 'Salva' : 'Save'}</span>
+                          <span>{item.isSaved ? 'Salva' : 'Salvar'}</span>
                         </button>
 
                         <button
                           onClick={() => handleOpenAnalysis(item)}
-                          className="px-2.5 py-1.5 rounded-lg text-xs font-mono border border-violet-500/30 bg-violet-500/10 text-violet-300 hover:bg-violet-500/20 transition-colors flex items-center gap-1.5"
+                          className="px-2.5 py-1.5 rounded-lg text-xs font-medium border border-card-border bg-card-bg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center gap-1.5"
                         >
-                          <Bot className="w-3.5 h-3.5 text-violet-400" />
-                          <span>Analyze</span>
+                          <Bot className="w-3.5 h-3.5 text-slate-500" />
+                          <span>Análise IA</span>
                         </button>
                       </div>
 
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => toggleExpandHypotheses(item.id)}
-                          className="px-2.5 py-1.5 rounded-lg text-xs font-mono border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20 transition-colors flex items-center gap-1.5"
+                          className="px-2.5 py-1.5 rounded-lg text-xs font-medium border border-card-border bg-card-bg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center gap-1.5"
                         >
-                          <Lightbulb className="w-3.5 h-3.5 text-cyan-400" />
-                          <span>Find Opportunity</span>
+                          <Lightbulb className="w-3.5 h-3.5 text-slate-500" />
+                          <span>Ver Hipótese</span>
                         </button>
 
                         <button
                           onClick={() =>
                             handleCreateProject(item, item.possibleOpportunities[0])
                           }
-                          className="px-3 py-1.5 rounded-lg text-xs font-mono bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 transition-colors flex items-center gap-1.5 font-medium"
+                          className="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900 text-white dark:bg-white dark:text-slate-900 hover:opacity-90 transition-colors flex items-center gap-1.5 shadow-sm"
                         >
-                          <PlusCircle className="w-3.5 h-3.5" />
-                          <span>Create Project</span>
+                          <span>Executar</span>
+                          <ArrowRight className="w-3 h-3" />
                         </button>
                       </div>
                     </div>
@@ -797,21 +797,21 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
 
                 return (
                   <div key={item.id} className="relative">
-                    {/* Glowing Timeline Node */}
-                    <div className="absolute -left-[31px] sm:-left-[39px] top-6 w-4 h-4 rounded-full bg-slate-950 border-2 border-cyan-400 flex items-center justify-center shadow-[0_0_8px_rgba(6,182,212,0.6)]">
-                      <div className="w-1.5 h-1.5 rounded-full bg-cyan-300" />
+                    {/* Timeline Node */}
+                    <div className="absolute -left-[31px] sm:-left-[39px] top-6 w-4 h-4 rounded-full bg-card-bg border-2 border-slate-400 dark:border-slate-500 flex items-center justify-center shadow-sm">
+                      <div className="w-1.5 h-1.5 rounded-full bg-slate-600 dark:bg-slate-300" />
                     </div>
 
                     <article
-                      className={`rounded-2xl border transition-all duration-200 p-5 space-y-3 ${
+                      className={`rounded-2xl border transition-all duration-200 p-5 space-y-3 bg-card-bg ${
                         isInterestMatch
-                          ? 'bg-slate-900/80 border-cyan-500/30'
-                          : 'bg-slate-900/50 border-white/[0.08]'
+                          ? 'border-slate-300 dark:border-slate-700'
+                          : 'border-card-border hover:border-slate-300 dark:hover:border-slate-700'
                       }`}
                     >
-                      <div className="flex items-center justify-between text-2xs font-mono text-slate-400">
+                      <div className="flex items-center justify-between text-2xs font-sans text-slate-500">
                         <div className="flex items-center gap-2">
-                          <span className="text-cyan-400 font-bold">{item.date}</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-200">{item.date}</span>
                           <span>•</span>
                           <span>{item.source}</span>
                           <span>•</span>
@@ -822,25 +822,25 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
                         </Badge>
                       </div>
 
-                      <h3 className="text-base font-semibold text-slate-100 hover:text-cyan-300 transition-colors">
+                      <h3 className="text-base font-semibold text-slate-900 dark:text-white hover:text-slate-700 dark:hover:text-slate-300 transition-colors font-sans">
                         {item.title}
                       </h3>
-                      <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
                         {item.summary}
                       </p>
 
                       {/* AI Opportunity Box inline */}
-                      <div className="p-3 rounded-xl bg-violet-950/20 border border-violet-500/25 text-xs">
-                        <span className="font-mono font-bold text-violet-300 block mb-1">
+                      <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-white/[0.06] text-xs">
+                        <span className="font-semibold text-slate-900 dark:text-white block mb-1">
                           {item.aiQuestion}
                         </span>
-                        <p className="text-slate-300 mb-2">{item.aiAnalysisSummary}</p>
+                        <p className="text-slate-600 dark:text-slate-300 mb-2 leading-relaxed">{item.aiAnalysisSummary}</p>
 
-                        <div className="flex items-center justify-between pt-2 border-t border-white/[0.06]">
+                        <div className="flex items-center justify-between pt-2 border-t border-card-border">
                           <button
                             type="button"
                             onClick={() => toggleExpandHypotheses(item.id)}
-                            className="text-emerald-400 hover:text-emerald-300 font-mono text-2xs flex items-center gap-1"
+                            className="text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-2xs flex items-center gap-1 font-medium"
                           >
                             <span>{item.possibleOpportunities.length} hipóteses de oportunidade</span>
                             {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
@@ -848,13 +848,13 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
                           <div className="flex items-center gap-2">
                             <button
                               onClick={() => handleOpenAnalysis(item)}
-                              className="text-2xs font-mono text-violet-300 hover:underline"
+                              className="text-2xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white underline"
                             >
                               Análise Completa →
                             </button>
                             <button
                               onClick={() => handleCreateProject(item, item.possibleOpportunities[0])}
-                              className="px-2 py-1 rounded text-2xs font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20"
+                              className="px-2 py-1 rounded text-2xs bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-medium shadow-sm"
                             >
                               Criar Projeto
                             </button>
@@ -863,26 +863,26 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
 
                         {/* Collapsible hypotheses cards in timeline */}
                         {isExpanded && (
-                          <div className="space-y-2 pt-3 border-t border-white/[0.06]">
+                          <div className="space-y-2 pt-3 border-t border-card-border">
                             {item.possibleOpportunities.map((hyp) => (
                               <div
                                 key={hyp.id}
-                                className="p-2.5 rounded-lg bg-slate-900/90 border border-white/[0.08] flex items-center justify-between gap-3"
+                                className="p-2.5 rounded-lg bg-card-bg border border-card-border flex items-center justify-between gap-3 shadow-sm"
                               >
                                 <div>
                                   <div className="flex items-center gap-2">
-                                    <span className="text-[10px] font-mono font-bold text-emerald-400">
+                                    <span className="text-2xs font-semibold text-slate-800 dark:text-slate-200">
                                       [Hipótese] • {hyp.type}
                                     </span>
-                                    <span className="text-[10px] text-slate-500 font-mono">
+                                    <span className="text-2xs text-slate-500">
                                       {hyp.targetAudience}
                                     </span>
                                   </div>
-                                  <p className="text-2xs text-slate-200 font-medium">{hyp.title}</p>
+                                  <p className="text-2xs text-slate-700 dark:text-slate-300 font-medium">{hyp.title}</p>
                                 </div>
                                 <button
                                   onClick={() => handleCreateProject(item, hyp)}
-                                  className="px-2 py-1 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 shrink-0"
+                                  className="px-2 py-1 rounded text-2xs bg-slate-900 text-white dark:bg-white dark:text-slate-900 shrink-0 font-medium shadow-sm"
                                 >
                                   {hyp.status === 'Promovido a Projeto' ? 'No My Lab ✓' : '+ Projeto'}
                                 </button>
@@ -907,15 +907,15 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
         <div className="space-y-6">
           <div className="p-4 rounded-xl bg-slate-900/60 border border-white/[0.08] flex items-center justify-between gap-4">
             <div>
-              <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2">
-                <Flame className="w-4 h-4 text-amber-400" />
+              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                <Flame className="w-4 h-4 text-slate-500" />
                 Pipeline de Detecção de Tendências Emergentes
               </h3>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
                 Rastreamento contínuo de assuntos em ascensão, comportamentos de compra e problemas recorrentes mapeados até a oportunidade acionável.
               </p>
             </div>
-            <span className="text-xs font-mono text-amber-300 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/25 shrink-0">
+            <span className="text-2xs font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full border border-slate-200 dark:border-white/[0.08] shrink-0">
               5 Etapas de Validação
             </span>
           </div>
@@ -924,21 +924,21 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
             {trends.map((tr) => (
               <div
                 key={tr.id}
-                className="p-6 rounded-2xl bg-slate-900/80 border border-white/[0.08] hover:border-amber-500/30 transition-all space-y-5"
+                className="p-6 rounded-2xl bg-card-bg border border-card-border hover:border-slate-300 dark:hover:border-slate-700 transition-all space-y-5 shadow-sm"
               >
                 {/* Header with Category and Maturity */}
-                <div className="flex items-center justify-between gap-2 flex-wrap pb-3 border-b border-white/[0.06]">
+                <div className="flex items-center justify-between gap-2 flex-wrap pb-3 border-b border-card-border">
                   <div className="flex items-center gap-2">
                     <Badge variant={getCategoryColor(tr.category) as any} size="sm">
                       {tr.category}
                     </Badge>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/10 text-amber-300 border border-amber-500/25 font-bold">
+                    <span className="px-2 py-0.5 rounded text-2xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/[0.08]">
                       Fase: {tr.maturity}
                     </span>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <span className="text-xs font-mono text-slate-400">
+                    <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
                       {tr.relatedNewsCount} notícias correlacionadas
                     </span>
                     <Sparkline
@@ -950,100 +950,100 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
                   </div>
                 </div>
 
-                {/* The 5-Step Pipeline Visualization with Stylish Connectors */}
+                {/* The 5-Step Pipeline Visualization */}
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-3 relative">
                   {/* 1. TREND */}
-                  <div className="p-3.5 rounded-xl bg-slate-950/80 border border-cyan-500/25 space-y-2 flex flex-col justify-between">
+                  <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-white/[0.08] space-y-2 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-cyan-400">
-                          1. Trend
+                        <span className="text-2xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                          1. Tendência
                         </span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
                       </div>
-                      <p className="text-xs font-semibold text-slate-100 leading-snug">
+                      <p className="text-xs font-semibold text-slate-900 dark:text-slate-100 leading-snug">
                         {tr.trend}
                       </p>
                     </div>
-                    <div className="pt-2 text-2xs font-mono text-slate-500">
+                    <div className="pt-2 text-2xs text-slate-500">
                       Assunto emergente
                     </div>
                   </div>
 
                   {/* 2. GROWTH */}
-                  <div className="p-3.5 rounded-xl bg-slate-950/80 border border-emerald-500/25 space-y-2 flex flex-col justify-between">
+                  <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-white/[0.08] space-y-2 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-400">
-                          2. Growth
+                        <span className="text-2xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                          2. Crescimento
                         </span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
                       </div>
-                      <div className="flex items-center gap-1 text-sm font-mono font-bold text-emerald-300">
-                        <TrendingUp className="w-3.5 h-3.5" />
+                      <div className="flex items-center gap-1 text-sm font-bold text-slate-900 dark:text-slate-100">
+                        <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                         <span>+{tr.growthPercentage}%</span>
                       </div>
-                      <p className="text-2xs text-slate-400 mt-1 leading-relaxed">
+                      <p className="text-2xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
                         {tr.growth}
                       </p>
                     </div>
-                    <div className="pt-2 text-2xs font-mono text-slate-500">
+                    <div className="pt-2 text-2xs text-slate-500">
                       Aceleração de interesse
                     </div>
                   </div>
 
                   {/* 3. MARKET */}
-                  <div className="p-3.5 rounded-xl bg-slate-950/80 border border-violet-500/25 space-y-2 flex flex-col justify-between">
+                  <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-white/[0.08] space-y-2 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-violet-400">
-                          3. Market
+                        <span className="text-2xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                          3. Mercado
                         </span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-violet-400" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
                       </div>
-                      <p className="text-xs text-slate-200 leading-snug">
+                      <p className="text-xs text-slate-900 dark:text-slate-200 leading-snug font-medium">
                         {tr.market}
                       </p>
                     </div>
-                    <div className="pt-2 text-2xs font-mono text-slate-500">
+                    <div className="pt-2 text-2xs text-slate-500">
                       Público & Nicho
                     </div>
                   </div>
 
                   {/* 4. PROBLEM */}
-                  <div className="p-3.5 rounded-xl bg-slate-950/80 border border-rose-500/25 space-y-2 flex flex-col justify-between">
+                  <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-white/[0.08] space-y-2 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-rose-400">
-                          4. Problem
+                        <span className="text-2xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                          4. Gargalo / Dor
                         </span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
                       </div>
-                      <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                      <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
                         {tr.problem}
                       </p>
                     </div>
-                    <div className="pt-2 text-2xs font-mono text-slate-500">
+                    <div className="pt-2 text-2xs text-slate-500">
                       Gargalo recorrente
                     </div>
                   </div>
 
                   {/* 5. OPPORTUNITY */}
-                  <div className="p-3.5 rounded-xl bg-amber-950/20 border-2 border-amber-500/40 shadow-[0_0_12px_rgba(245,158,11,0.15)] space-y-2 flex flex-col justify-between">
+                  <div className="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 space-y-2 flex flex-col justify-between shadow-sm">
                     <div>
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-400">
-                          5. Opportunity
+                        <span className="text-2xs font-semibold uppercase tracking-wider text-slate-900 dark:text-white">
+                          5. Oportunidade
                         </span>
-                        <Sparkles className="w-3 h-3 text-amber-400" />
+                        <Sparkles className="w-3 h-3 text-slate-700 dark:text-slate-300" />
                       </div>
-                      <p className="text-xs font-semibold text-amber-200 leading-snug font-sans">
+                      <p className="text-xs font-semibold text-slate-900 dark:text-white leading-snug font-sans">
                         {tr.opportunity}
                       </p>
                     </div>
                     <div className="pt-2 flex justify-end">
                       <Button
-                        variant="secondary"
+                        variant="primary"
                         size="xs"
                         iconLeft={<PlusCircle className="w-3 h-3" />}
                         onClick={() => {
@@ -1067,14 +1067,14 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
       {activeTab === 'brief' && (
         <div className="space-y-6 max-w-4xl mx-auto">
           {/* Executive Header */}
-          <div className="p-6 rounded-2xl bg-gradient-to-br from-violet-950/40 via-slate-900 to-slate-950 border border-violet-500/30 space-y-4 shadow-xl">
+          <div className="p-6 rounded-2xl bg-card-bg border border-card-border space-y-4 shadow-sm">
             <div className="flex items-center justify-between gap-3 flex-wrap">
               <div className="flex items-center gap-2">
-                <span className="px-2.5 py-1 rounded-full text-xs font-mono font-bold bg-violet-500/20 text-violet-300 border border-violet-500/30 flex items-center gap-1.5">
-                  <Bot className="w-3.5 h-3.5 text-violet-400" />
+                <span className="px-2.5 py-1 rounded-full text-2xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/[0.08] flex items-center gap-1.5">
+                  <Bot className="w-3.5 h-3.5 text-slate-500" />
                   AI Executive Daily Brief
                 </span>
-                <span className="text-xs font-mono text-slate-400">
+                <span className="text-xs text-slate-500 dark:text-slate-400">
                   {dailyBrief.date}
                 </span>
               </div>
@@ -1095,61 +1095,61 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
             </div>
 
             <div>
-              <h2 className="text-lg sm:text-xl font-bold text-white mb-2 leading-snug">
+              <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-2 leading-snug">
                 {dailyBrief.aiExecutiveInsight.highlightTitle}
               </h2>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
                 {dailyBrief.aiExecutiveInsight.overview}
               </p>
             </div>
 
             {/* KPI Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2">
-              <div className="p-3 rounded-xl bg-slate-900/90 border border-white/[0.08] text-center">
-                <span className="text-[10px] font-mono text-slate-400 uppercase block">Sinais Hoje</span>
-                <span className="text-lg font-bold font-mono text-cyan-400">
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-white/[0.06] text-center">
+                <span className="text-2xs font-medium text-slate-500 dark:text-slate-400 uppercase block">Sinais Hoje</span>
+                <span className="text-lg font-bold text-slate-900 dark:text-white">
                   {dailyBrief.todaySignalsCount} novos
                 </span>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-900/90 border border-white/[0.08] text-center">
-                <span className="text-[10px] font-mono text-slate-400 uppercase block">Tendências</span>
-                <span className="text-lg font-bold font-mono text-amber-400">
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-white/[0.06] text-center">
+                <span className="text-2xs font-medium text-slate-500 dark:text-slate-400 uppercase block">Tendências</span>
+                <span className="text-lg font-bold text-slate-900 dark:text-white">
                   {dailyBrief.emergingTrendsCount} acelerando
                 </span>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-900/90 border border-white/[0.08] text-center">
-                <span className="text-[10px] font-mono text-slate-400 uppercase block">Oportunidades SaaS</span>
-                <span className="text-lg font-bold font-mono text-emerald-400">
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-white/[0.06] text-center">
+                <span className="text-2xs font-medium text-slate-500 dark:text-slate-400 uppercase block">Oportunidades SaaS</span>
+                <span className="text-lg font-bold text-slate-900 dark:text-white">
                   {dailyBrief.saasOpportunitiesCount} ativas
                 </span>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-900/90 border border-white/[0.08] text-center">
-                <span className="text-[10px] font-mono text-slate-400 uppercase block">Transferência Global</span>
-                <span className="text-lg font-bold font-mono text-violet-400">
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-white/[0.06] text-center">
+                <span className="text-2xs font-medium text-slate-500 dark:text-slate-400 uppercase block">Transferência Global</span>
+                <span className="text-lg font-bold text-slate-900 dark:text-white">
                   {dailyBrief.globalOpportunitiesCount} identificadas
                 </span>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-900/90 border border-white/[0.08] text-center col-span-2 sm:col-span-1">
-                <span className="text-[10px] font-mono text-slate-400 uppercase block">Notícias Chave</span>
-                <span className="text-lg font-bold font-mono text-slate-200">
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-white/[0.06] text-center col-span-2 sm:col-span-1">
+                <span className="text-2xs font-medium text-slate-500 dark:text-slate-400 uppercase block">Notícias Chave</span>
+                <span className="text-lg font-bold text-slate-900 dark:text-white">
                   {dailyBrief.newsWorthWatchingCount} relevantes
                 </span>
               </div>
             </div>
 
             {/* Key Takeaways */}
-            <div className="pt-3 border-t border-white/[0.08] space-y-2">
-              <span className="text-xs font-mono font-bold text-violet-300 uppercase tracking-wider block">
+            <div className="pt-3 border-t border-card-border space-y-2">
+              <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">
                 Principais Pontos de Atenção para Fundadores:
               </span>
-              <ul className="space-y-1.5 text-xs text-slate-300 font-sans">
+              <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300 font-sans">
                 {dailyBrief.aiExecutiveInsight.keyTakeaways.map((takeaway, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className="text-violet-400 font-bold">•</span>
+                    <span className="text-slate-400 font-bold">•</span>
                     <span>{takeaway}</span>
                   </li>
                 ))}
@@ -1157,15 +1157,15 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
             </div>
 
             {/* Recommended Next Step Callout */}
-            <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2 text-xs text-emerald-300 font-sans">
-                <Zap className="w-4 h-4 text-emerald-400 shrink-0" />
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-white/[0.06] flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 font-sans">
+                <Zap className="w-4 h-4 text-slate-600 dark:text-slate-400 shrink-0" />
                 <span>
-                  <strong>Ação Recomendada:</strong> {dailyBrief.aiExecutiveInsight.recommendedNextStep}
+                  <strong className="text-slate-900 dark:text-white">Ação Recomendada:</strong> {dailyBrief.aiExecutiveInsight.recommendedNextStep}
                 </span>
               </div>
               <Button
-                variant="emerald"
+                variant="primary"
                 size="xs"
                 onClick={() => {
                   if (onNavigateToMyLab) onNavigateToMyLab();
@@ -1179,8 +1179,8 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
 
           {/* Spotlight News Section */}
           <div className="space-y-4">
-            <h3 className="text-sm font-mono uppercase tracking-wider text-slate-400 flex items-center gap-2">
-              <Activity className="w-4 h-4 text-cyan-400" />
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-2">
+              <Activity className="w-4 h-4 text-slate-500" />
               Notícias Essenciais para Acompanhar Hoje
             </h3>
 
@@ -1188,28 +1188,28 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
               {news.slice(0, 3).map((n) => (
                 <div
                   key={n.id}
-                  className="p-4 rounded-xl bg-slate-900/60 border border-white/[0.08] hover:border-cyan-500/30 transition-colors flex items-center justify-between gap-4"
+                  className="p-4 rounded-xl bg-card-bg border border-card-border hover:border-slate-300 dark:hover:border-slate-700 transition-colors flex items-center justify-between gap-4 shadow-sm"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <Badge variant={getCategoryColor(n.category) as any} size="xs">
                         {n.category}
                       </Badge>
-                      <span className="text-2xs font-mono text-slate-400">
+                      <span className="text-2xs text-slate-500 dark:text-slate-400">
                         {n.source} • {n.countryFlag} {n.countryCode}
                       </span>
                     </div>
-                    <h4 className="text-xs sm:text-sm font-semibold text-slate-100">
+                    <h4 className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
                       {n.title}
                     </h4>
-                    <p className="text-2xs text-slate-400 line-clamp-1 font-sans">
+                    <p className="text-2xs text-slate-600 dark:text-slate-400 line-clamp-1 font-sans">
                       {n.summary}
                     </p>
                   </div>
 
                   <button
                     onClick={() => handleOpenAnalysis(n)}
-                    className="px-3 py-1.5 rounded-lg text-xs font-mono bg-violet-500/10 hover:bg-violet-500/20 text-violet-300 border border-violet-500/30 shrink-0 flex items-center gap-1 transition-colors"
+                    className="px-3 py-1.5 rounded-lg text-xs font-medium border border-card-border bg-card-bg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 shrink-0 flex items-center gap-1 transition-colors"
                   >
                     <span>Ver Análise</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -1231,21 +1231,21 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
             onClick={() => setAnalysisNewsItem(null)}
           />
 
-          <div className="relative w-full max-w-xl bg-slate-950 border-l border-white/10 shadow-2xl flex flex-col h-full z-10 animate-slide-in-right overflow-y-auto">
+          <div className="relative w-full max-w-xl bg-card-bg border-l border-card-border shadow-2xl flex flex-col h-full z-10 animate-slide-in-right overflow-y-auto">
             {/* Header */}
-            <div className="p-6 border-b border-white/[0.08] bg-slate-900/80 backdrop-blur-md flex items-center justify-between gap-3 sticky top-0 z-20">
+            <div className="p-6 border-b border-card-border bg-card-bg/80 backdrop-blur-md flex items-center justify-between gap-3 sticky top-0 z-20">
               <div className="flex items-center gap-2">
-                <span className="p-1.5 rounded-lg bg-violet-500/20 text-violet-300 border border-violet-500/30">
+                <span className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/[0.08]">
                   <Bot className="w-4 h-4" />
                 </span>
-                <span className="text-sm font-bold text-white font-mono uppercase tracking-wide">
+                <span className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wide">
                   Dossiê de Análise da Notícia
                 </span>
               </div>
 
               <button
                 onClick={() => setAnalysisNewsItem(null)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1261,27 +1261,27 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
                   >
                     {analysisNewsItem.category}
                   </Badge>
-                  <span className="text-xs font-mono text-slate-400">
+                  <span className="text-xs text-slate-500 dark:text-slate-400">
                     {analysisNewsItem.countryFlag} {analysisNewsItem.country} • {analysisNewsItem.date}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-white leading-snug mb-2">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white leading-snug mb-2 font-sans">
                   {analysisNewsItem.title}
                 </h3>
-                <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
                   {analysisNewsItem.summary}
                 </p>
               </div>
 
               {/* Source & Audit Link */}
-              <div className="p-3 rounded-xl bg-slate-900/60 border border-white/[0.08] flex items-center justify-between text-xs font-mono">
-                <span className="text-slate-400">Fonte: {analysisNewsItem.source}</span>
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-white/[0.06] flex items-center justify-between text-xs">
+                <span className="text-slate-600 dark:text-slate-400">Fonte: {analysisNewsItem.source}</span>
                 {analysisNewsItem.originalUrl && (
                   <a
                     href={analysisNewsItem.originalUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-cyan-400 hover:underline flex items-center gap-1"
+                    className="text-slate-900 dark:text-white hover:underline flex items-center gap-1 font-medium"
                   >
                     <span>Artigo Original</span>
                     <ExternalLink className="w-3 h-3" />
@@ -1290,26 +1290,26 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
               </div>
 
               {/* AI Opportunity Verdict */}
-              <div className="p-4 rounded-xl bg-violet-950/30 border border-violet-500/30 space-y-2">
-                <span className="text-xs font-mono font-bold text-violet-300 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-violet-400" />
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-white/[0.06] space-y-2">
+                <span className="text-xs font-semibold text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-slate-500" />
                   {analysisNewsItem.aiQuestion}
                 </span>
-                <p className="text-xs text-slate-200 leading-relaxed font-sans">
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
                   {analysisNewsItem.aiAnalysisSummary}
                 </p>
               </div>
 
               {/* Deep AI Analysis Button & Results */}
-              <div className="p-4 rounded-xl bg-slate-900/70 border border-white/[0.08] space-y-3">
+              <div className="p-4 rounded-xl bg-card-bg border border-card-border space-y-3 shadow-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono uppercase font-bold text-cyan-300 flex items-center gap-1.5">
-                    <Activity className="w-3.5 h-3.5" />
+                  <span className="text-xs uppercase font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                    <Activity className="w-3.5 h-3.5 text-slate-500" />
                     Inteligência Estratégica Avançada
                   </span>
 
                   <Button
-                    variant="secondary"
+                    variant="outline"
                     size="xs"
                     disabled={isAnalyzing}
                     onClick={() => handleRunDeepAnalysis(analysisNewsItem)}
@@ -1321,20 +1321,20 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
 
                 {deepAnalysis && (
                   <div className="space-y-3 pt-2 text-xs font-sans animate-fade-in">
-                    <p className="text-slate-200 leading-relaxed bg-slate-950/60 p-3 rounded-lg border border-white/[0.06]">
+                    <p className="text-slate-700 dark:text-slate-200 leading-relaxed bg-slate-50 dark:bg-slate-800/40 p-3 rounded-lg border border-slate-200 dark:border-white/[0.06]">
                       {deepAnalysis.executiveVerdict || deepAnalysis.summary || JSON.stringify(deepAnalysis)}
                     </p>
 
                     {deepAnalysis.threeWeekRoadmap && (
                       <div className="space-y-1.5 pt-2">
-                        <span className="text-[11px] font-mono uppercase text-slate-400 block font-bold">
+                        <span className="text-2xs uppercase text-slate-500 dark:text-slate-400 block font-semibold">
                           Roadmap de MVP em 3 Semanas:
                         </span>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                           {deepAnalysis.threeWeekRoadmap.map((w: any, idx: number) => (
-                            <div key={idx} className="p-2.5 rounded-lg bg-slate-950/80 border border-white/[0.06] text-2xs">
-                              <span className="text-cyan-400 font-mono font-bold block mb-0.5">{w.week}: {w.focus}</span>
-                              <span className="text-slate-400">{w.details}</span>
+                            <div key={idx} className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-white/[0.06] text-2xs">
+                              <span className="font-semibold text-slate-900 dark:text-white block mb-0.5">{w.week}: {w.focus}</span>
+                              <span className="text-slate-600 dark:text-slate-400">{w.details}</span>
                             </div>
                           ))}
                         </div>
@@ -1346,42 +1346,42 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
 
               {/* Opportunities Hypotheses Detailed */}
               <div className="space-y-3">
-                <h4 className="text-xs font-mono uppercase tracking-wider text-slate-400">
+                <h4 className="text-2xs uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold">
                   Hipóteses de Oportunidades Identificadas:
                 </h4>
 
                 {analysisNewsItem.possibleOpportunities.map((h, i) => (
                   <div
                     key={h.id}
-                    className="p-4 rounded-xl bg-slate-900/80 border border-white/[0.08] space-y-2"
+                    className="p-4 rounded-xl bg-card-bg border border-card-border space-y-2 shadow-sm"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/25">
+                      <span className="text-2xs font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/[0.08]">
                         Hipótese {i + 1}: {h.type}
                       </span>
-                      <span className="text-2xs font-mono text-emerald-400">
+                      <span className="text-2xs font-medium text-slate-600 dark:text-slate-400">
                         Score: {h.confidenceScore}%
                       </span>
                     </div>
 
-                    <h5 className="text-xs font-semibold text-slate-100">
+                    <h5 className="text-xs font-semibold text-slate-900 dark:text-slate-100 font-sans">
                       {h.title}
                     </h5>
-                    <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
                       {h.description}
                     </p>
 
-                    <div className="grid grid-cols-2 gap-2 text-2xs font-mono text-slate-400 pt-2 border-t border-white/[0.04]">
+                    <div className="grid grid-cols-2 gap-2 text-2xs text-slate-500 pt-2 border-t border-card-border">
                       <div>Público: {h.targetAudience}</div>
                       <div>Tempo de MVP: {h.estimatedEffort}</div>
-                      <div className="col-span-2 text-emerald-300">
+                      <div className="col-span-2 text-slate-700 dark:text-slate-300 font-medium">
                         Monetização: {h.monetizationModel}
                       </div>
                     </div>
 
                     <div className="pt-2 flex justify-end">
                       <Button
-                        variant="emerald"
+                        variant="primary"
                         size="xs"
                         iconLeft={<PlusCircle className="w-3 h-3" />}
                         onClick={() => {

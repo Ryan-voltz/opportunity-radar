@@ -25,12 +25,12 @@ export const AiCoachNotificationBanner: React.FC<AiCoachNotificationBannerProps>
         return (
           <div
             key={alert.id}
-            className={`relative rounded-[20px] p-4 sm:p-5 border transition-all duration-300 shadow-card-subtle ${
+            className={`relative rounded-xl p-4 sm:p-5 border transition-all duration-300 shadow-sm ${
               isUrgent
-                ? 'bg-gradient-to-r from-amber-950/70 via-slate-900/90 to-amber-950/40 border-amber-500/40 text-amber-100 shadow-amber-500/10'
+                ? 'bg-amber-500/5 dark:bg-amber-500/10 border-amber-500/30 text-slate-900 dark:text-slate-100'
                 : isLaunch
-                ? 'bg-gradient-to-r from-emerald-950/70 via-slate-900/90 to-cyan-950/40 border-emerald-500/40 text-emerald-100 shadow-emerald-500/10'
-                : 'bg-slate-900/90 border-blue-500/30 text-slate-100'
+                ? 'bg-emerald-500/5 dark:bg-emerald-500/10 border-emerald-500/30 text-slate-900 dark:text-slate-100'
+                : 'bg-card-bg border-card-border text-slate-900 dark:text-slate-100'
             }`}
           >
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -38,10 +38,10 @@ export const AiCoachNotificationBanner: React.FC<AiCoachNotificationBannerProps>
                 <div
                   className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${
                     isUrgent
-                      ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40'
+                      ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
                       : isLaunch
-                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 animate-pulse'
-                      : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                      ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                      : 'bg-slate-100 dark:bg-white/[0.06] text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-white/[0.08]'
                   }`}
                 >
                   {isUrgent ? (
@@ -56,32 +56,32 @@ export const AiCoachNotificationBanner: React.FC<AiCoachNotificationBannerProps>
                 <div className="space-y-1.5 max-w-3xl">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span
-                      className={`text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded font-bold ${
+                      className={`text-2xs uppercase tracking-wider px-2 py-0.5 rounded font-semibold ${
                         isUrgent
-                          ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                          : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                          ? 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20'
+                          : 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20'
                       }`}
                     >
                       AI Execution Coach • Accountability
                     </span>
 
-                    <span className="text-2xs font-mono text-slate-400 flex items-center gap-1">
+                    <span className="text-2xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       Análise de Foco em Tempo Real
                     </span>
                   </div>
 
-                  <h3 className="text-sm sm:text-base font-bold text-white tracking-tight">
+                  <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white tracking-tight">
                     {alert.headline}
                   </h3>
 
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-sans">
                     {alert.message}
                   </p>
 
-                  <div className="pt-1 flex items-center gap-2 text-xs font-mono text-cyan-300">
-                    <span className="font-semibold text-slate-400">Próxima Ação Recomendada:</span>
-                    <span className="underline decoration-cyan-500/50 underline-offset-2 text-cyan-200">
+                  <div className="pt-1 flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300">
+                    <span className="font-semibold text-slate-500 dark:text-slate-400">Próxima Ação:</span>
+                    <span className="font-medium text-slate-900 dark:text-slate-100 underline decoration-slate-400 dark:decoration-slate-500 underline-offset-2">
                       {alert.recommendedAction}
                     </span>
                   </div>
@@ -90,11 +90,11 @@ export const AiCoachNotificationBanner: React.FC<AiCoachNotificationBannerProps>
 
               <div className="flex items-center gap-2 shrink-0 md:self-center">
                 <Button
-                  variant={isUrgent ? 'amber' : 'emerald'}
+                  variant="primary"
                   size="sm"
                   iconRight={<ArrowRight className="w-3.5 h-3.5" />}
                   onClick={() => onOpenProject?.(alert.projectId)}
-                  className="w-full sm:w-auto font-mono text-xs"
+                  className="w-full sm:w-auto font-medium text-xs"
                 >
                   {alert.actionButtonText}
                 </Button>

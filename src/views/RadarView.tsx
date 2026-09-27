@@ -191,21 +191,21 @@ export const RadarView: React.FC<RadarViewProps> = ({
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Terminal Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-gradient-to-r from-blue-50/90 via-indigo-50/40 to-white dark:from-slate-900 dark:via-slate-900/90 dark:to-slate-950 border border-slate-200 dark:border-white/[0.08] shadow-sm dark:shadow-none">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/[0.08] shadow-card-subtle">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-blue-600 dark:bg-cyan-400 animate-pulse" />
-            <span className="text-2xs font-mono uppercase tracking-widest text-blue-700 dark:text-cyan-300 font-bold">
-              TERMINAL MILITAR / FINANCEIRO DE OPORTUNIDADES
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-xs font-sans uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold">
+              Sistema de Inteligência de Mercado
             </span>
           </div>
 
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 font-mono tracking-tight flex items-center gap-2.5">
-            <Terminal className="w-5 h-5 text-blue-600 dark:text-cyan-400" />
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 font-sans tracking-tight flex items-center gap-2.5">
+            <Terminal className="w-5 h-5 text-slate-700 dark:text-slate-300" />
             Global Opportunity Radar
           </h1>
 
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 max-w-2xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 max-w-2xl leading-relaxed font-sans">
             Feed contínuo de inteligência de mercado estruturado no modelo de 6 dimensões (O que foi detectado, Por que é importante, Mercado envolvido, Problema, Oportunidade e Monetização).
           </p>
         </div>
@@ -221,8 +221,8 @@ export const RadarView: React.FC<RadarViewProps> = ({
             Sincronizar Feed
           </Button>
 
-          <div className="px-3 py-1.5 rounded-xl bg-white/[0.03] border border-white/[0.06] text-xs font-mono text-slate-300">
-            Fluxo: <strong className="text-cyan-400">~14 sinais/min</strong>
+          <div className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] text-xs font-sans text-slate-600 dark:text-slate-300">
+            Fluxo: <strong className="text-slate-900 dark:text-white font-semibold">~14 sinais/min</strong>
           </div>
         </div>
       </div>
@@ -234,13 +234,13 @@ export const RadarView: React.FC<RadarViewProps> = ({
       />
 
       {/* Mode Switcher: Intel Dossiers vs Raw Ingestion Stream */}
-      <div className="flex items-center gap-2 border-b border-white/[0.08] pb-1">
+      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-white/[0.08] pb-1">
         <button
           onClick={() => setActiveTab('intel')}
-          className={`px-4 py-2 rounded-lg text-xs font-mono font-medium transition-colors flex items-center gap-2 ${
+          className={`px-4 py-2 rounded-xl text-xs font-sans transition-all flex items-center gap-2 ${
             activeTab === 'intel'
-              ? 'bg-cyan-500/10 text-cyan-300 border border-cyan-500/30'
-              : 'text-slate-400 hover:text-slate-200'
+              ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-semibold shadow-xs'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/[0.04]'
           }`}
         >
           <Layers className="w-3.5 h-3.5" />
@@ -249,13 +249,13 @@ export const RadarView: React.FC<RadarViewProps> = ({
 
         <button
           onClick={() => setActiveTab('raw_stream')}
-          className={`px-4 py-2 rounded-lg text-xs font-mono font-medium transition-colors flex items-center gap-2 ${
+          className={`px-4 py-2 rounded-xl text-xs font-sans transition-all flex items-center gap-2 ${
             activeTab === 'raw_stream'
-              ? 'bg-cyan-500/10 text-cyan-300 border border-cyan-500/30'
-              : 'text-slate-400 hover:text-slate-200'
+              ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-semibold shadow-xs'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/[0.04]'
           }`}
         >
-          <Radio className="w-3.5 h-3.5 text-cyan-400" />
+          <Radio className="w-3.5 h-3.5" />
           <span>Sinais Brutos Ingeridos ({signals.length})</span>
         </button>
       </div>
@@ -312,25 +312,25 @@ export const RadarView: React.FC<RadarViewProps> = ({
       {/* TAB 2: Raw Signals Ingestion Stream */}
       {activeTab === 'raw_stream' && (
         <div className="space-y-3">
-          <div className="p-3.5 rounded-xl bg-slate-900/50 border border-white/[0.06] text-xs font-mono text-slate-400 flex items-center justify-between">
+          <div className="p-3.5 rounded-xl bg-card-bg border border-card-border text-xs text-slate-600 dark:text-slate-400 flex items-center justify-between shadow-sm">
             <span>Discussões brutas monitoradas via WebSockets e APIs de terceiros</span>
-            <span className="text-cyan-400">Varredura contínua ativa</span>
+            <span className="font-medium text-slate-900 dark:text-slate-100">Varredura contínua ativa</span>
           </div>
 
           {signals.map((sig) => (
             <div
               key={sig.id}
-              className="p-5 rounded-xl bg-slate-900/60 border border-white/[0.08] hover:border-cyan-500/30 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 group"
+              className="p-5 rounded-xl bg-card-bg border border-card-border hover:border-slate-300 dark:hover:border-slate-700 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 group shadow-sm"
             >
               <div className="flex-1 space-y-1.5">
                 <div className="flex items-center gap-2 flex-wrap">
                   <Badge variant="slate" size="xs">
                     {sig.source}
                   </Badge>
-                  <span className="text-2xs font-mono text-slate-500">
+                  <span className="text-2xs text-slate-500">
                     {sig.detectedAt}
                   </span>
-                  <span className="text-2xs font-mono text-slate-400">
+                  <span className="text-2xs text-slate-500">
                     Região: {sig.countryFlag || '🌐'} {sig.geoScope}
                   </span>
                   <Badge
@@ -339,7 +339,7 @@ export const RadarView: React.FC<RadarViewProps> = ({
                         ? 'rose'
                         : sig.sentiment === 'Demanda Alta'
                         ? 'emerald'
-                        : 'cyan'
+                        : 'slate'
                     }
                     size="xs"
                   >
@@ -347,21 +347,21 @@ export const RadarView: React.FC<RadarViewProps> = ({
                   </Badge>
                 </div>
 
-                <h3 className="text-sm font-semibold text-slate-100 group-hover:text-cyan-300 transition-colors">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 transition-colors font-sans">
                   {sig.title}
                 </h3>
 
-                <p className="text-xs text-slate-400 font-sans italic bg-white/[0.02] p-2.5 rounded-lg border border-white/[0.04]">
+                <p className="text-xs text-slate-600 dark:text-slate-400 font-sans italic bg-slate-50 dark:bg-slate-800/40 p-2.5 rounded-lg border border-slate-200 dark:border-white/[0.04]">
                   "{sig.excerpt}"
                 </p>
               </div>
 
-              <div className="flex items-center justify-between md:flex-col md:items-end gap-3 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-white/[0.04]">
+              <div className="flex items-center justify-between md:flex-col md:items-end gap-3 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-card-border">
                 <div className="text-right">
-                  <span className="text-[10px] font-mono uppercase text-slate-500 block">
-                    Score Impact
+                  <span className="text-2xs font-medium uppercase tracking-wider text-slate-500 block">
+                    Impacto no Score
                   </span>
-                  <span className="text-base font-mono font-bold text-emerald-400">
+                  <span className="text-sm font-bold text-slate-900 dark:text-slate-100">
                     +{sig.scoreImpact}
                   </span>
                 </div>

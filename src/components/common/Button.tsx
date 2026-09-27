@@ -20,25 +20,25 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    'relative inline-flex items-center justify-center font-medium transition-all duration-150 rounded-lg select-none disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/50';
+    'relative inline-flex items-center justify-center font-sans font-medium transition-all duration-150 rounded-xl select-none disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400';
 
   const variantStyles = {
     primary:
-      'bg-cyan-500 text-slate-950 hover:bg-cyan-400 font-semibold shadow-sm hover:shadow-glow-cyan border border-cyan-400/40',
+      'bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100 font-semibold shadow-sm border border-slate-900 dark:border-white',
     cyan:
-      'bg-cyan-500 text-slate-950 hover:bg-cyan-400 font-semibold shadow-sm hover:shadow-glow-cyan border border-cyan-400/40',
+      'bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100 font-semibold shadow-sm border border-slate-900 dark:border-white',
     emerald:
-      'bg-emerald-500 text-slate-950 hover:bg-emerald-400 font-semibold shadow-sm hover:shadow-glow-emerald border border-emerald-400/40',
+      'bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-emerald-600 dark:hover:bg-emerald-500 font-semibold shadow-sm',
     amber:
-      'bg-amber-500 text-slate-950 hover:bg-amber-400 font-semibold shadow-sm hover:shadow-glow-amber border border-amber-400/40',
+      'bg-amber-600 text-white hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-400 font-semibold shadow-sm',
     secondary:
-      'bg-slate-900/90 text-slate-200 hover:text-white hover:bg-slate-800/90 border border-white/10 hover:border-white/20 shadow-card-subtle',
+      'bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-white/10 shadow-2xs',
     ghost:
-      'bg-transparent text-slate-400 hover:text-slate-100 hover:bg-white/[0.06] border border-transparent',
+      'bg-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-white/[0.06] border border-transparent',
     outline:
-      'bg-transparent text-slate-300 hover:text-white border border-white/15 hover:border-white/30 hover:bg-white/[0.04]',
+      'bg-transparent text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-white/15 hover:bg-slate-100 dark:hover:bg-white/[0.04]',
     danger:
-      'bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 border border-rose-500/30',
+      'bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-950/50 border border-rose-200 dark:border-rose-500/30',
   };
 
   const sizeStyles = {

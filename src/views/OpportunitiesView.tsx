@@ -131,10 +131,10 @@ export const OpportunitiesView: React.FC<OpportunitiesViewProps> = ({
         </div>
       ) : (
         /* Linear Table View */
-        <div className="rounded-xl bg-slate-900/60 border border-white/[0.08] overflow-hidden">
+        <div className="rounded-xl bg-card-bg border border-card-border overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-950/60 border-b border-white/[0.06] text-slate-400 font-mono uppercase text-[10px]">
+              <thead className="bg-slate-50 dark:bg-slate-800/40 border-b border-card-border text-slate-500 uppercase text-2xs font-semibold">
                 <tr>
                   <th className="py-3 px-4">Score</th>
                   <th className="py-3 px-4">Oportunidade</th>
@@ -145,18 +145,18 @@ export const OpportunitiesView: React.FC<OpportunitiesViewProps> = ({
                   <th className="py-3 px-4 text-right">Ação</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/[0.04]">
+              <tbody className="divide-y divide-card-border">
                 {filtered.map((opp) => (
                   <tr
                     key={opp.id}
                     onClick={() => onSelectOpportunity(opp)}
-                    className="hover:bg-slate-800/40 transition-colors cursor-pointer group"
+                    className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors cursor-pointer group"
                   >
                     <td className="py-3.5 px-4 whitespace-nowrap">
                       <RadarScoreBadge score={opp.score} size="sm" />
                     </td>
                     <td className="py-3.5 px-4 min-w-[280px]">
-                      <div className="font-semibold text-slate-200 group-hover:text-cyan-300 transition-colors">
+                      <div className="font-semibold text-slate-900 dark:text-slate-100 group-hover:text-slate-700 dark:group-hover:text-white transition-colors font-sans">
                         {opp.title}
                       </div>
                       <div className="text-2xs text-slate-500 truncate max-w-sm">
@@ -168,14 +168,14 @@ export const OpportunitiesView: React.FC<OpportunitiesViewProps> = ({
                         {opp.category}
                       </Badge>
                     </td>
-                    <td className="py-3.5 px-4 whitespace-nowrap font-mono text-emerald-400 font-medium">
+                    <td className="py-3.5 px-4 whitespace-nowrap text-slate-900 dark:text-slate-100 font-semibold">
                       {opp.potentialMrr}
                     </td>
-                    <td className="py-3.5 px-4 whitespace-nowrap font-mono text-slate-400">
+                    <td className="py-3.5 px-4 whitespace-nowrap text-slate-600 dark:text-slate-400 font-medium">
                       {opp.timeToMvpDays} dias
                     </td>
                     <td className="py-3.5 px-4 whitespace-nowrap">
-                      <span className="text-amber-400 font-mono text-2xs">
+                      <span className="text-slate-700 dark:text-slate-300 text-2xs font-medium">
                         {opp.competitionLevel}
                       </span>
                     </td>

@@ -62,26 +62,26 @@ export const AiAnalystView: React.FC = () => {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-violet-950/40 to-slate-900 border border-violet-500/20">
+      <div className="p-6 rounded-2xl bg-card-bg border border-card-border shadow-xs">
         <div className="flex items-center gap-2 mb-2">
-          <Badge variant="violet" size="sm">
+          <Badge variant="neutral" size="sm">
             Inteligência Sintética Estratégica
           </Badge>
-          <span className="text-2xs font-mono text-slate-400">
+          <span className="text-2xs font-medium text-slate-500">
             Motor com streaming em tempo real e controle de tokens
           </span>
         </div>
-        <h2 className="text-xl sm:text-2xl font-bold text-slate-100">
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">
           AI Analyst Workbench
         </h2>
-        <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl leading-relaxed">
+        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl leading-relaxed">
           Simule desconstruções de concorrência, modelos econômicos unitários (CAC/LTV) e planos de validação sem viés otimista.
         </p>
       </div>
 
       {/* Quick Prompt Presets */}
       <div>
-        <span className="text-xs font-mono uppercase tracking-wider text-slate-400 block mb-3">
+        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 block mb-3">
           Playbooks de Análise Instantânea:
         </span>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -92,15 +92,15 @@ export const AiAnalystView: React.FC = () => {
                 setInputQuery(p.text);
                 handleRunAnalysis(p.text);
               }}
-              className="p-3.5 rounded-xl bg-slate-900/60 border border-white/[0.08] hover:border-violet-500/40 text-left transition-all group flex flex-col justify-between"
+              className="p-3.5 rounded-xl bg-card-bg border border-card-border hover:border-slate-400 dark:hover:border-slate-600 text-left transition-all group flex flex-col justify-between shadow-xs"
             >
               <div className="flex items-center gap-2 mb-2">
-                {p.icon}
-                <span className="text-xs font-semibold text-slate-200 group-hover:text-violet-300">
+                <span className="text-slate-700 dark:text-slate-300">{p.icon}</span>
+                <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 group-hover:text-slate-950 dark:group-hover:text-white transition-colors">
                   {p.title}
                 </span>
               </div>
-              <p className="text-2xs text-slate-400 line-clamp-2 leading-relaxed">
+              <p className="text-2xs text-slate-500 line-clamp-2 leading-relaxed">
                 {p.text}
               </p>
             </button>
@@ -109,13 +109,13 @@ export const AiAnalystView: React.FC = () => {
       </div>
 
       {/* Input Prompt Box */}
-      <div className="p-4 rounded-xl bg-slate-900/80 border border-white/[0.1] space-y-3">
-        <div className="flex items-center justify-between text-2xs font-mono text-slate-500">
+      <div className="p-4 rounded-xl bg-card-bg border border-card-border shadow-xs space-y-3">
+        <div className="flex items-center justify-between text-2xs font-medium text-slate-500">
           <div className="flex items-center gap-1.5">
-            <Bot className="w-3.5 h-3.5 text-violet-400" />
+            <Bot className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400" />
             <span>AI Analyst Model v3.8 • Streaming Server SSE Ativo</span>
           </div>
-          <span className="text-emerald-400">Tokens Cap: 800 max</span>
+          <span className="text-emerald-600 dark:text-emerald-400 font-medium">Tokens Cap: 800 max</span>
         </div>
 
         <div className="relative">
@@ -124,7 +124,7 @@ export const AiAnalystView: React.FC = () => {
             onChange={(e) => setInputQuery(e.target.value)}
             placeholder="Digite a ideia de SaaS, concorrente que deseja desconstruir ou mercado que deseja avaliar..."
             rows={3}
-            className="w-full bg-slate-950/60 border border-white/[0.08] rounded-lg p-3 text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-violet-500/60 resize-none font-sans"
+            className="w-full bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-white/[0.08] rounded-lg p-3 text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500 resize-none font-sans"
           />
         </div>
 
@@ -147,16 +147,16 @@ export const AiAnalystView: React.FC = () => {
 
       {/* Analysis Output Box */}
       {activeAnalysis && (
-        <div className="p-6 rounded-2xl bg-slate-900/90 border border-violet-500/30 space-y-4 animate-fade-in">
-          <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+        <div className="p-6 rounded-2xl bg-card-bg border border-card-border shadow-sm space-y-4 animate-fade-in">
+          <div className="flex items-center justify-between pb-3 border-b border-card-border">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-violet-400" />
-              <span className="text-xs font-mono font-semibold text-slate-200">
+              <Sparkles className="w-4 h-4 text-slate-700 dark:text-slate-300" />
+              <span className="text-xs font-semibold text-slate-900 dark:text-slate-200">
                 Relatório de Análise Estratégica
               </span>
               {isGenerating && (
-                <span className="inline-flex items-center gap-1 text-[10px] font-mono text-cyan-400 animate-pulse">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" /> Transmitindo...
+                <span className="inline-flex items-center gap-1 text-[10px] font-medium text-slate-600 dark:text-slate-400 animate-pulse">
+                  <span className="w-1.5 h-1.5 rounded-full bg-slate-500" /> Transmitindo...
                 </span>
               )}
             </div>
@@ -165,7 +165,7 @@ export const AiAnalystView: React.FC = () => {
               <Button
                 variant="outline"
                 size="xs"
-                iconLeft={copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                iconLeft={copied ? <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 onClick={handleCopy}
               >
                 {copied ? 'Copiado' : 'Copiar'}
@@ -173,7 +173,7 @@ export const AiAnalystView: React.FC = () => {
             </div>
           </div>
 
-          <div className="prose prose-invert max-w-none text-xs leading-relaxed space-y-3 whitespace-pre-line font-sans text-slate-300">
+          <div className="text-xs leading-relaxed space-y-3 whitespace-pre-line font-sans text-slate-800 dark:text-slate-300">
             {activeAnalysis}
           </div>
         </div>

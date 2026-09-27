@@ -83,10 +83,10 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
 
         <div className="flex flex-col min-w-0">
-          <h1 className="text-base sm:text-lg font-bold text-slate-100 tracking-tight truncate flex items-center gap-2">
+          <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100 tracking-tight truncate flex items-center gap-2 font-sans">
             {meta.title}
           </h1>
-          <p className="text-2xs text-slate-400 truncate hidden sm:block">
+          <p className="text-xs text-slate-500 dark:text-slate-400 truncate hidden sm:block font-sans">
             {meta.subtitle}
           </p>
         </div>
@@ -95,20 +95,20 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Right Controls */}
       <div className="flex items-center gap-2.5 shrink-0">
         {/* Live Stream Pulse Badge */}
-        <div className="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-2xs font-mono">
-          <Radio className="w-3 h-3 animate-pulse" />
-          <span>LIVE FEED ATIVO</span>
+        <div className="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] text-slate-700 dark:text-slate-300 text-xs font-sans font-medium">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <span>Feed Ativo</span>
         </div>
 
         {/* Command Palette Button */}
         <button
           onClick={onOpenCommandPalette}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-white/[0.08] hover:border-white/20 text-slate-400 hover:text-slate-200 transition-colors text-xs font-mono"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors text-xs font-sans"
           title="Abrir Command Palette (Ctrl+K)"
         >
-          <Search className="w-3.5 h-3.5 text-cyan-400" />
-          <span className="hidden sm:inline text-slate-300">Buscar...</span>
-          <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] text-slate-400 bg-white/5 px-1 rounded border border-white/10">
+          <Search className="w-3.5 h-3.5 text-slate-400" />
+          <span className="hidden sm:inline text-slate-700 dark:text-slate-300">Buscar...</span>
+          <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] text-slate-500 bg-white dark:bg-white/10 px-1 rounded border border-slate-200 dark:border-white/10">
             <Command className="w-2.5 h-2.5" /> K
           </kbd>
         </button>
@@ -116,26 +116,26 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Theme Toggle Button (Light / Dark) */}
         <button
           onClick={toggleTheme}
-          className="p-2 rounded-xl bg-slate-900 border border-white/[0.08] text-slate-300 hover:text-white hover:border-white/20 transition-all shadow-sm hover:shadow-md flex items-center justify-center"
+          className="p-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/20 transition-all shadow-2xs flex items-center justify-center"
           title={theme === 'dark' ? 'Mudar para Modo Claro' : 'Mudar para Modo Escuro'}
           aria-label="Alternar tema claro/escuro"
         >
           {theme === 'dark' ? (
             <Sun className="w-4 h-4 text-amber-400 hover:rotate-45 transition-transform" />
           ) : (
-            <Moon className="w-4 h-4 text-indigo-400 hover:-rotate-12 transition-transform" />
+            <Moon className="w-4 h-4 text-slate-700 hover:-rotate-12 transition-transform" />
           )}
         </button>
 
         {/* Notifications */}
         <button
           onClick={() => alert('Você possui 3 novos sinais detectados com Radar Score superior a 90 nas últimas 2 horas.')}
-          className="relative p-2 rounded-lg bg-slate-900 border border-white/[0.08] text-slate-400 hover:text-white hover:border-white/20 transition-colors"
+          className="relative p-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/20 transition-colors"
           title="Notificações & Alertas"
         >
           <Bell className="w-4 h-4" />
           {unhandledAlertsCount > 0 && (
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-slate-900 dark:bg-white" />
           )}
         </button>
 

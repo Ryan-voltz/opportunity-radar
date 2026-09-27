@@ -24,19 +24,19 @@ export const SaasRadarView: React.FC<SaasRadarViewProps> = ({
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Intro Header */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-violet-950/40 to-slate-900/80 border border-violet-500/20">
+      <div className="p-6 rounded-2xl bg-card-bg border border-card-border shadow-sm">
         <div className="flex items-center gap-2 mb-2">
-          <Badge variant="violet" size="sm">
+          <Badge variant="neutral" size="sm">
             Especialização de Software
           </Badge>
-          <span className="text-2xs font-mono text-slate-400">
+          <span className="text-2xs font-medium text-slate-500 dark:text-slate-400">
             Foco em MRR previsível e baixo CAC
           </span>
         </div>
-        <h2 className="text-xl sm:text-2xl font-bold text-slate-100">
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">
           SaaS Radar & Estratégias de Micro-SaaS
         </h2>
-        <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl leading-relaxed">
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 max-w-2xl leading-relaxed">
           Monitoramento específico de desagregação (unbundling) de ferramentas monolíticas e oportunidades de plugins para ecossistemas de alta distribuição.
         </p>
       </div>
@@ -45,57 +45,57 @@ export const SaasRadarView: React.FC<SaasRadarViewProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div
           onClick={() => setSubCategory('micro')}
-          className={`p-4 rounded-xl border transition-all cursor-pointer ${
+          className={`p-4 rounded-xl border transition-all cursor-pointer shadow-sm ${
             subCategory === 'micro'
-              ? 'bg-violet-500/10 border-violet-500/40 text-violet-300'
-              : 'bg-slate-900/60 border-white/[0.08] hover:border-white/20'
+              ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 border-slate-900 dark:border-white'
+              : 'bg-card-bg border-card-border text-slate-800 dark:text-slate-200 hover:border-slate-300 dark:hover:border-slate-700'
           }`}
         >
           <div className="flex items-center gap-2 mb-2">
-            <Cpu className="w-4 h-4 text-violet-400" />
-            <span className="text-xs font-semibold font-mono uppercase tracking-wider">
+            <Cpu className="w-4 h-4 opacity-75" />
+            <span className="text-xs font-semibold uppercase tracking-wider">
               Micro-SaaS Solo ($5k - $20k MRR)
             </span>
           </div>
-          <p className="text-xs text-slate-400 leading-relaxed">
+          <p className="text-xs opacity-75 leading-relaxed font-sans">
             Aplicações hiper-focadas com 1 função essencial que resolvem 1 dor específica com alta retenção.
           </p>
         </div>
 
         <div
           onClick={() => setSubCategory('unbundling')}
-          className={`p-4 rounded-xl border transition-all cursor-pointer ${
+          className={`p-4 rounded-xl border transition-all cursor-pointer shadow-sm ${
             subCategory === 'unbundling'
-              ? 'bg-violet-500/10 border-violet-500/40 text-violet-300'
-              : 'bg-slate-900/60 border-white/[0.08] hover:border-white/20'
+              ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 border-slate-900 dark:border-white'
+              : 'bg-card-bg border-card-border text-slate-800 dark:text-slate-200 hover:border-slate-300 dark:hover:border-slate-700'
           }`}
         >
           <div className="flex items-center gap-2 mb-2">
-            <Split className="w-4 h-4 text-cyan-400" />
-            <span className="text-xs font-semibold font-mono uppercase tracking-wider">
+            <Split className="w-4 h-4 opacity-75" />
+            <span className="text-xs font-semibold uppercase tracking-wider">
               Unbundling de Legados
             </span>
           </div>
-          <p className="text-xs text-slate-400 leading-relaxed">
+          <p className="text-xs opacity-75 leading-relaxed font-sans">
             Extração de módulos superdimensionados do Salesforce, HubSpot ou Jira em ferramentas leves para nichos verticais.
           </p>
         </div>
 
         <div
           onClick={() => setSubCategory('plugins')}
-          className={`p-4 rounded-xl border transition-all cursor-pointer ${
+          className={`p-4 rounded-xl border transition-all cursor-pointer shadow-sm ${
             subCategory === 'plugins'
-              ? 'bg-violet-500/10 border-violet-500/40 text-violet-300'
-              : 'bg-slate-900/60 border-white/[0.08] hover:border-white/20'
+              ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 border-slate-900 dark:border-white'
+              : 'bg-card-bg border-card-border text-slate-800 dark:text-slate-200 hover:border-slate-300 dark:hover:border-slate-700'
           }`}
         >
           <div className="flex items-center gap-2 mb-2">
-            <Store className="w-4 h-4 text-emerald-400" />
-            <span className="text-xs font-semibold font-mono uppercase tracking-wider">
+            <Store className="w-4 h-4 opacity-75" />
+            <span className="text-xs font-semibold uppercase tracking-wider">
               Marketplaces de Plataforma
             </span>
           </div>
-          <p className="text-xs text-slate-400 leading-relaxed">
+          <p className="text-xs opacity-75 leading-relaxed font-sans">
             Extensões para Shopify, Notion, Chrome e Stripe aproveitando a distribuição orgânica dos gigantes.
           </p>
         </div>
@@ -104,11 +104,11 @@ export const SaasRadarView: React.FC<SaasRadarViewProps> = ({
       {/* Grid of Targeted Opportunities */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-semibold text-slate-200 font-mono uppercase tracking-wider flex items-center gap-2">
-            <Layers className="w-4 h-4 text-violet-400" />
+          <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2 font-sans">
+            <Layers className="w-4 h-4 text-slate-500" />
             Oportunidades de Software Mapeadas ({saasItems.length})
           </h3>
-          <span className="text-2xs font-mono text-slate-500">
+          <span className="text-2xs text-slate-500 font-medium">
             Tempo Médio para MVP: 18 dias
           </span>
         </div>

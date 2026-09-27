@@ -24,28 +24,28 @@ export const MarketTrendsView: React.FC<MarketTrendsViewProps> = ({ trends }) =>
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-2xl bg-gradient-to-r from-amber-950/30 to-slate-900 border border-amber-500/20">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-2xl bg-card-bg border border-card-border shadow-sm">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <Badge variant="amber" size="sm">
+            <Badge variant="neutral" size="sm">
               Sinais Preditivos
             </Badge>
-            <span className="text-2xs font-mono text-slate-400">
+            <span className="text-2xs font-medium text-slate-500 dark:text-slate-400">
               Dados agregados de Google Trends, GitHub e Discussões
             </span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-slate-100">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">
             Market Trends & Tecnologias Emergentes
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 max-w-2xl">
             Monitore tópicos e APIs que estão sofrendo inflexão exponencial antes de se tornarem saturados no mercado.
           </p>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          <div className="p-3 rounded-xl bg-slate-900/80 border border-white/[0.08] text-center">
-            <span className="text-2xs font-mono text-slate-500 uppercase block">Aceleração Média</span>
-            <span className="text-lg font-bold font-mono text-emerald-400">+243.7%</span>
+          <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-white/[0.08] text-center">
+            <span className="text-2xs font-medium text-slate-500 uppercase block">Aceleração Média</span>
+            <span className="text-lg font-bold text-slate-900 dark:text-white">+243.7%</span>
           </div>
         </div>
       </div>
@@ -55,31 +55,31 @@ export const MarketTrendsView: React.FC<MarketTrendsViewProps> = ({ trends }) =>
         {trends.map((trend) => (
           <div
             key={trend.id}
-            className="p-5 rounded-xl bg-slate-900/60 border border-white/[0.08] hover:border-amber-500/30 transition-all flex flex-col justify-between group"
+            className="p-5 rounded-xl bg-card-bg border border-card-border hover:border-slate-300 dark:hover:border-slate-700 transition-all flex flex-col justify-between group shadow-sm"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-3">
                 <Badge variant={getMaturityBadge(trend.maturity) as any} size="xs">
                   {trend.maturity}
                 </Badge>
-                <div className="flex items-center gap-1 text-emerald-400 font-mono text-xs font-bold">
-                  <ArrowUpRight className="w-4 h-4" />
+                <div className="flex items-center gap-1 text-slate-900 dark:text-slate-100 text-xs font-bold">
+                  <ArrowUpRight className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   <span>+{trend.growthPercentage}% YoY</span>
                 </div>
               </div>
 
-              <h3 className="text-base font-semibold text-slate-100 group-hover:text-amber-300 transition-colors mb-2">
+              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100 transition-colors mb-2 font-sans">
                 {trend.name}
               </h3>
 
-              <p className="text-xs text-slate-400 leading-relaxed mb-4">
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4 font-sans">
                 {trend.description}
               </p>
             </div>
 
-            <div className="pt-4 border-t border-white/[0.04] flex items-center justify-between text-2xs font-mono text-slate-500">
-              <div className="flex items-center gap-1.5 text-slate-400">
-                <Search className="w-3.5 h-3.5 text-slate-500" />
+            <div className="pt-4 border-t border-card-border flex items-center justify-between text-2xs text-slate-500 font-medium">
+              <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400">
+                <Search className="w-3.5 h-3.5 text-slate-400" />
                 <span>Volume: {trend.searchVolume}</span>
               </div>
               <div className="truncate max-w-[180px] text-right">

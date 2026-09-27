@@ -43,20 +43,20 @@ export const AlertsView: React.FC<AlertsViewProps> = ({
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-2xl bg-gradient-to-r from-cyan-950/40 to-slate-900 border border-cyan-500/20">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-2xl bg-card-bg border border-card-border shadow-xs">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <Badge variant="cyan" size="sm">
+            <Badge variant="neutral" size="sm">
               Sentinela de Mercado
             </Badge>
-            <span className="text-2xs font-mono text-slate-400">
+            <span className="text-2xs font-medium text-slate-500">
               Notificações Automáticas em Tempo Real
             </span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-slate-100">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">
             Alertas & Triggers Proativos
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl leading-relaxed">
             Configure gatilhos automatizados para ser avisado no instante em que novos sinais de fricção ou picos de demanda superarem seu limite de score definido.
           </p>
         </div>
@@ -78,43 +78,43 @@ export const AlertsView: React.FC<AlertsViewProps> = ({
             key={alert.id}
             className={`p-5 rounded-xl border transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 ${
               alert.isActive
-                ? 'bg-slate-900/70 border-white/[0.08]'
-                : 'bg-slate-950/40 border-white/[0.04] opacity-60'
+                ? 'bg-card-bg border-card-border shadow-xs'
+                : 'bg-slate-50/50 dark:bg-slate-950/40 border-slate-200 dark:border-white/[0.04] opacity-60'
             }`}
           >
             <div className="space-y-2 flex-1">
               <div className="flex items-center gap-2 flex-wrap">
                 <Badge
-                  variant={alert.isActive ? 'emerald' : 'slate'}
+                  variant={alert.isActive ? 'neutral' : 'slate'}
                   size="xs"
                 >
                   {alert.isActive ? 'Monitoramento Ativo' : 'Pausado'}
                 </Badge>
-                <span className="text-2xs font-mono text-slate-500">
+                <span className="text-2xs font-medium text-slate-500">
                   Freq: {alert.frequency}
                 </span>
-                <span className="text-2xs font-mono text-cyan-400">
+                <span className="text-2xs font-semibold text-slate-700 dark:text-slate-300">
                   Score Mín: ≥ {alert.minScore}
                 </span>
               </div>
 
-              <h3 className="text-sm font-bold text-slate-100">{alert.name}</h3>
+              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">{alert.name}</h3>
 
-              <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
+              <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
                 <span className="text-slate-500">Palavras-chave:</span>
-                <span className="text-slate-300 bg-white/[0.03] px-2 py-0.5 rounded border border-white/[0.05]">
+                <span className="text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-white/[0.04] px-2 py-0.5 rounded border border-slate-200 dark:border-white/[0.06] font-medium">
                   {alert.queryOrKeywords}
                 </span>
               </div>
             </div>
 
             {/* Channels & Toggle */}
-            <div className="flex items-center justify-between md:justify-end gap-4 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-white/[0.04]">
+            <div className="flex items-center justify-between md:justify-end gap-4 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-card-border">
               <div className="text-right">
-                <span className="text-2xs font-mono text-slate-500 block">
+                <span className="text-2xs font-medium text-slate-500 block">
                   Disparos Registrados
                 </span>
-                <span className="text-sm font-mono font-bold text-slate-200">
+                <span className="text-sm font-bold text-slate-800 dark:text-slate-200">
                   {alert.triggersCount} vezes
                 </span>
               </div>
@@ -124,8 +124,8 @@ export const AlertsView: React.FC<AlertsViewProps> = ({
                   onClick={() => onToggleAlert(alert.id)}
                   className={`p-2 rounded-lg border transition-colors ${
                     alert.isActive
-                      ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
-                      : 'bg-white/[0.03] border-white/[0.08] text-slate-500'
+                      ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-950 border-slate-900 dark:border-white shadow-xs'
+                      : 'bg-slate-100 dark:bg-white/[0.03] border-slate-200 dark:border-white/[0.08] text-slate-500'
                   }`}
                   title={alert.isActive ? 'Pausar monitoramento' : 'Ativar monitoramento'}
                 >
@@ -141,21 +141,21 @@ export const AlertsView: React.FC<AlertsViewProps> = ({
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm animate-fade-in"
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs animate-fade-in"
             onClick={() => setIsModalOpen(false)}
           />
 
-          <div className="relative w-full max-w-lg bg-slate-950 border border-white/10 rounded-2xl p-6 shadow-2xl z-10 space-y-4 animate-fade-in">
-            <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+          <div className="relative w-full max-w-lg bg-card-bg border border-card-border rounded-2xl p-6 shadow-2xl z-10 space-y-4 animate-fade-in">
+            <div className="flex items-center justify-between pb-3 border-b border-card-border">
               <div className="flex items-center gap-2">
-                <Bell className="w-4 h-4 text-cyan-400" />
-                <h3 className="text-sm font-bold text-slate-100">
+                <Bell className="w-4 h-4 text-slate-700 dark:text-slate-300" />
+                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
                   Criar Regra de Alerta Proativo
                 </h3>
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="p-1 rounded text-slate-400 hover:text-white"
+                className="p-1 rounded text-slate-400 hover:text-slate-600 dark:hover:text-white"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -163,7 +163,7 @@ export const AlertsView: React.FC<AlertsViewProps> = ({
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="text-xs font-mono text-slate-400 block mb-1.5">
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1.5">
                   Nome do Alerta:
                 </label>
                 <input
@@ -172,12 +172,12 @@ export const AlertsView: React.FC<AlertsViewProps> = ({
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Ex: Picos de reclamação de DocuSign e concorrentes"
-                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-white/[0.1] text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-white/[0.1] text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500 font-sans"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-mono text-slate-400 block mb-1.5">
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1.5">
                   Palavras-chave ou Tópico:
                 </label>
                 <input
@@ -185,13 +185,13 @@ export const AlertsView: React.FC<AlertsViewProps> = ({
                   value={keywords}
                   onChange={(e) => setKeywords(e.target.value)}
                   placeholder="Ex: DocuSign, assinatura eletrônica, renovação anual"
-                  className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-white/[0.1] text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500"
+                  className="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-white/[0.1] text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500 font-sans"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-mono text-slate-400 block mb-1.5">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1.5">
                     Radar Score Mínimo:
                   </label>
                   <input
@@ -200,18 +200,18 @@ export const AlertsView: React.FC<AlertsViewProps> = ({
                     max={100}
                     value={minScore}
                     onChange={(e) => setMinScore(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-white/[0.1] text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                    className="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-white/[0.1] text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500 font-sans"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-mono text-slate-400 block mb-1.5">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1.5">
                     Frequência de Notificação:
                   </label>
                   <select
                     value={frequency}
                     onChange={(e) => setFrequency(e.target.value as any)}
-                    className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-white/[0.1] text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                    className="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-white/[0.1] text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500 font-sans"
                   >
                     <option value="Tempo Real">Tempo Real</option>
                     <option value="Digest Diário">Digest Diário</option>
@@ -220,7 +220,7 @@ export const AlertsView: React.FC<AlertsViewProps> = ({
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-white/[0.08]">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-card-border">
                 <Button
                   type="button"
                   variant="ghost"

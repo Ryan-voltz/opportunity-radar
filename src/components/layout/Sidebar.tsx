@@ -60,26 +60,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {
           section: 'radar',
           label: 'Radar Live',
-          icon: <Radio className="w-4 h-4 text-cyan-400" />,
+          icon: <Radio className="w-4 h-4" />,
           badge: liveSignalCount > 0 ? `${liveSignalCount} novos` : undefined,
-          badgeColor: 'cyan',
         },
         {
           section: 'market-news',
           label: 'News & Discovery',
-          icon: <Compass className="w-4 h-4 text-cyan-400" />,
+          icon: <Compass className="w-4 h-4" />,
           badge: 'Live',
-          badgeColor: 'cyan',
         },
         {
           section: 'opportunities',
           label: 'Oportunidades',
-          icon: <Sparkles className="w-4 h-4 text-emerald-400" />,
+          icon: <Sparkles className="w-4 h-4" />,
         },
         {
           section: 'saas-radar',
           label: 'SaaS Radar',
-          icon: <Layers className="w-4 h-4 text-violet-400" />,
+          icon: <Layers className="w-4 h-4" />,
         },
       ],
     },
@@ -89,12 +87,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {
           section: 'market-trends',
           label: 'Market Trends',
-          icon: <TrendingUp className="w-4 h-4 text-amber-400" />,
+          icon: <TrendingUp className="w-4 h-4" />,
         },
         {
           section: 'global-opportunities',
           label: 'Global & Arbitragem',
-          icon: <Globe className="w-4 h-4 text-cyan-400" />,
+          icon: <Globe className="w-4 h-4" />,
         },
         {
           section: 'remote-work',
@@ -104,7 +102,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {
           section: 'research',
           label: 'Research & Dores',
-          icon: <SearchCode className="w-4 h-4 text-rose-400" />,
+          icon: <SearchCode className="w-4 h-4" />,
         },
       ],
     },
@@ -114,19 +112,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {
           section: 'ai-analyst',
           label: 'AI Analyst',
-          icon: <Bot className="w-4 h-4 text-violet-400" />,
+          icon: <Bot className="w-4 h-4" />,
         },
         {
           section: 'my-lab',
           label: 'Meus Projetos & Lab',
-          icon: <FlaskConical className="w-4 h-4 text-emerald-400" />,
+          icon: <FlaskConical className="w-4 h-4" />,
         },
         {
           section: 'saved',
           label: 'Oportunidades Salvas',
           icon: <Bookmark className="w-4 h-4" />,
           badge: savedCount > 0 ? savedCount : undefined,
-          badgeColor: 'emerald',
         },
         {
           section: 'execution-plans',
@@ -141,9 +138,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {
           section: 'admin',
           label: 'Fontes & Ingestão',
-          icon: <Database className="w-4 h-4 text-cyan-400" />,
+          icon: <Database className="w-4 h-4" />,
           badge: 'Live',
-          badgeColor: 'cyan',
         },
         {
           section: 'alerts',
@@ -169,19 +165,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div>
         <div className="h-16 px-4 border-b border-white/[0.08] flex items-center justify-between">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/20 to-emerald-500/20 border border-cyan-500/30 flex items-center justify-center shrink-0 shadow-[0_0_12px_rgba(6,182,212,0.15)]">
-              <RadarIcon className="w-4 h-4 text-cyan-400 animate-spin-slow" />
+            <div className="w-8 h-8 rounded-lg bg-slate-900 dark:bg-white/10 border border-slate-700 dark:border-white/15 flex items-center justify-center shrink-0">
+              <RadarIcon className="w-4 h-4 text-slate-100" />
             </div>
 
             {!isCollapsed && (
               <div className="flex flex-col min-w-0">
-                <span className="text-sm font-bold tracking-tight text-white flex items-center gap-1.5 truncate">
+                <span className="text-sm font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5 truncate">
                   Opportunity Radar
-                  <span className="text-[10px] font-mono font-medium px-1.5 py-0.2 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                  <span className="text-[10px] font-sans font-semibold px-1.5 py-0.2 rounded bg-slate-200 dark:bg-white/10 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-white/10">
                     PRO
                   </span>
                 </span>
-                <span className="text-[10px] font-mono text-slate-500 truncate">
+                <span className="text-[11px] font-sans text-slate-500 dark:text-slate-400 truncate">
                   Market Intelligence
                 </span>
               </div>
@@ -190,7 +186,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           <button
             onClick={onToggleCollapse}
-            className="hidden md:flex p-1.5 rounded-md text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors"
+            className="hidden md:flex p-1.5 rounded-md text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/[0.06] transition-colors"
             title={isCollapsed ? 'Expandir Menu' : 'Recolher Menu'}
           >
             {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
@@ -202,7 +198,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {navGroups.map((group, groupIdx) => (
             <div key={groupIdx} className="space-y-1">
               {!isCollapsed && (
-                <div className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-slate-400">
+                <div className="px-2.5 py-1 text-[11px] font-sans font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                   {group.label}
                 </div>
               )}
@@ -216,17 +212,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       onClick={() => onNavigate(item.section)}
                       className={`w-full flex items-center ${
                         isCollapsed ? 'justify-center px-0' : 'justify-between px-2.5'
-                      } py-2 rounded-xl text-xs font-medium transition-all group relative ${
+                      } py-2 rounded-xl text-xs font-sans transition-all group relative ${
                         isActive
-                          ? 'bg-blue-600/15 text-blue-300 border border-blue-500/30 shadow-sm font-semibold'
-                          : 'text-slate-400 hover:text-slate-100 hover:bg-white/[0.05] border border-transparent'
+                          ? 'bg-slate-200 dark:bg-white/[0.08] text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 font-semibold shadow-xs'
+                          : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/[0.04] border border-transparent'
                       }`}
                       title={isCollapsed ? item.label : undefined}
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
                         <span
                           className={`shrink-0 transition-colors ${
-                            isActive ? 'text-blue-400' : 'text-slate-400 group-hover:text-slate-200'
+                            isActive ? 'text-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white'
                           }`}
                         >
                           {item.icon}
@@ -235,20 +231,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       </div>
 
                       {!isCollapsed && item.badge && (
-                        <span
-                          className={`text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded-full border ${
-                            item.badgeColor === 'cyan'
-                              ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30'
-                              : 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                          }`}
-                        >
+                        <span className="text-[10px] font-sans font-medium px-2 py-0.5 rounded-full bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-white/10">
                           {item.badge}
                         </span>
                       )}
 
                       {/* Dot for active state when collapsed */}
                       {isCollapsed && isActive && (
-                        <span className="absolute right-1 top-2 w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                        <span className="absolute right-1 top-2 w-1.5 h-1.5 rounded-full bg-slate-900 dark:bg-white" />
                       )}
                     </button>
                   );

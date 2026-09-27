@@ -395,138 +395,72 @@ export const DetailDrawer: React.FC<DetailDrawerProps> = ({
             <RadarScoreBadge score={opportunity.score} size="lg" className="shrink-0" />
           </div>
 
-          {/* 3 HIGHLIGHT METRICS: LUCRO ESTIMADO, VELOCIDADE & INVESTIMENTO */}
+          {/* 3 HIGHLIGHT METRICS: LUCRO ESTIMADO, VELOCIDADE & INVESTIMENTO (Clean Neutral Layout) */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mt-5">
             {/* 1. ESTIMATIVA DE LUCRO */}
-            <div
-              className={`p-4 rounded-[20px] border shadow-sm space-y-1.5 transition-all ${
-                isLight
-                  ? 'bg-gradient-to-br from-emerald-50 via-emerald-50/60 to-green-50/80 border-emerald-200/90 shadow-emerald-500/5'
-                  : 'bg-gradient-to-br from-emerald-950/40 via-[#0e1724] to-[#0a121c] border-emerald-500/30'
-              }`}
-            >
+            <div className="p-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.04] space-y-2 shadow-2xs">
               <div className="flex items-center justify-between">
-                <span
-                  className={`text-[10px] uppercase font-mono tracking-wider font-extrabold flex items-center gap-1.5 ${
-                    isLight ? 'text-emerald-800' : 'text-emerald-400'
-                  }`}
-                >
-                  <DollarSign className="w-3.5 h-3.5" /> Lucro Líquido Real Projetado
+                <span className="text-xs font-sans uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
+                  <DollarSign className="w-3.5 h-3.5 text-slate-400" /> Lucro Líquido Projetado
                 </span>
-                <span
-                  className={`px-1.5 py-0.2 rounded text-[10px] font-mono font-bold ${
-                    isLight ? 'bg-emerald-100 text-emerald-800' : 'bg-emerald-500/20 text-emerald-300'
-                  }`}
-                >
+                <span className="px-2 py-0.5 rounded text-[10px] font-sans font-semibold bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300">
                   Alta Margem
                 </span>
               </div>
-              <div
-                className={`text-base sm:text-lg font-black font-mono tracking-tight ${
-                  isLight ? 'text-emerald-800' : 'text-emerald-300'
-                }`}
-              >
+              <div className="text-xl font-bold font-sans text-slate-900 dark:text-white tracking-tight">
                 {monthlyProfit}
               </div>
-              <div
-                className={`text-[11px] font-mono flex items-center justify-between pt-1 border-t ${
-                  isLight ? 'border-emerald-200/60 text-slate-700' : 'border-white/[0.06] text-slate-400'
-                }`}
-              >
+              <div className="text-xs font-sans flex items-center justify-between pt-1.5 border-t border-slate-200/70 dark:border-white/10 text-slate-600 dark:text-slate-400">
                 <span>
-                  Margem Líquida: <strong className={isLight ? 'text-emerald-700 font-bold' : 'text-emerald-400 font-bold'}>{profitMargin}</strong>
+                  Margem: <strong className="text-slate-900 dark:text-slate-200 font-semibold">{profitMargin}</strong>
                 </span>
                 <span>
-                  Ticket: <strong className={isLight ? 'text-slate-900 font-bold' : 'text-slate-200 font-bold'}>{averageTicket}</strong>
+                  Ticket: <strong className="text-slate-900 dark:text-slate-200 font-semibold">{averageTicket}</strong>
                 </span>
               </div>
             </div>
 
             {/* 2. VELOCIDADE DE EXECUÇÃO */}
-            <div
-              className={`p-4 rounded-[20px] border shadow-sm space-y-1.5 transition-all ${
-                isLight
-                  ? 'bg-gradient-to-br from-blue-50 via-sky-50/60 to-indigo-50/80 border-blue-200/90 shadow-blue-500/5'
-                  : 'bg-gradient-to-br from-blue-950/40 via-[#0e1724] to-[#0a121c] border-blue-500/30'
-              }`}
-            >
+            <div className="p-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.04] space-y-2 shadow-2xs">
               <div className="flex items-center justify-between">
-                <span
-                  className={`text-[10px] uppercase font-mono tracking-wider font-extrabold flex items-center gap-1.5 ${
-                    isLight ? 'text-blue-800' : 'text-blue-400'
-                  }`}
-                >
-                  <Zap className="w-3.5 h-3.5" /> Velocidade / Prazo de MVP
+                <span className="text-xs font-sans uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
+                  <Zap className="w-3.5 h-3.5 text-slate-400" /> Velocidade / Prazo MVP
                 </span>
-                <span
-                  className={`px-1.5 py-0.2 rounded text-[10px] font-mono font-bold ${
-                    isLight ? 'bg-blue-100 text-blue-800' : 'bg-blue-500/20 text-blue-300'
-                  }`}
-                >
+                <span className="px-2 py-0.5 rounded text-[10px] font-sans font-semibold bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300">
                   Ciclo Curto
                 </span>
               </div>
-              <div
-                className={`text-base sm:text-lg font-black font-mono tracking-tight ${
-                  isLight ? 'text-blue-800' : 'text-blue-300'
-                }`}
-              >
-                MVP Funcional em {mvpDays} dias
+              <div className="text-xl font-bold font-sans text-slate-900 dark:text-white tracking-tight">
+                MVP em {mvpDays} dias
               </div>
-              <div
-                className={`text-[11px] font-mono flex items-center justify-between pt-1 border-t ${
-                  isLight ? 'border-blue-200/60 text-slate-700' : 'border-white/[0.06] text-slate-400'
-                }`}
-              >
+              <div className="text-xs font-sans flex items-center justify-between pt-1.5 border-t border-slate-200/70 dark:border-white/10 text-slate-600 dark:text-slate-400">
                 <span>
-                  1ª Venda: <strong className={isLight ? 'text-blue-700 font-bold' : 'text-blue-300 font-bold'}>{firstSaleDays} dias</strong>
+                  1ª Venda: <strong className="text-slate-900 dark:text-slate-200 font-semibold">{firstSaleDays} dias</strong>
                 </span>
                 <span>
-                  Dedicação: <strong className={isLight ? 'text-slate-900 font-bold' : 'text-slate-200 font-bold'}>{weeklyHours}</strong>
+                  Dedicação: <strong className="text-slate-900 dark:text-slate-200 font-semibold">{weeklyHours}</strong>
                 </span>
               </div>
             </div>
 
             {/* 3. INVESTIMENTO NECESSÁRIO */}
-            <div
-              className={`p-4 rounded-[20px] border shadow-sm space-y-1.5 transition-all ${
-                isLight
-                  ? 'bg-gradient-to-br from-purple-50 via-violet-50/60 to-fuchsia-50/80 border-purple-200/90 shadow-purple-500/5'
-                  : 'bg-gradient-to-br from-violet-950/40 via-[#0e1724] to-[#0a121c] border-violet-500/30'
-              }`}
-            >
+            <div className="p-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.04] space-y-2 shadow-2xs">
               <div className="flex items-center justify-between">
-                <span
-                  className={`text-[10px] uppercase font-mono tracking-wider font-extrabold flex items-center gap-1.5 ${
-                    isLight ? 'text-purple-800' : 'text-purple-400'
-                  }`}
-                >
-                  <ShieldCheck className="w-3.5 h-3.5" /> Investimento Mínimo Inicial
+                <span className="text-xs font-sans uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-slate-400" /> Investimento Inicial
                 </span>
-                <span
-                  className={`px-1.5 py-0.2 rounded text-[10px] font-mono font-bold ${
-                    isLight ? 'bg-purple-100 text-purple-800' : 'bg-purple-500/20 text-purple-300'
-                  }`}
-                >
-                  Risco Mínimo
+                <span className="px-2 py-0.5 rounded text-[10px] font-sans font-semibold bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300">
+                  Risco Baixo
                 </span>
               </div>
-              <div
-                className={`text-base sm:text-lg font-black font-mono tracking-tight ${
-                  isLight ? 'text-purple-800' : 'text-purple-300'
-                }`}
-              >
+              <div className="text-xl font-bold font-sans text-slate-900 dark:text-white tracking-tight">
                 {capitalEstimated}
               </div>
-              <div
-                className={`text-[11px] font-mono flex items-center justify-between pt-1 border-t ${
-                  isLight ? 'border-purple-200/60 text-slate-700' : 'border-white/[0.06] text-slate-400'
-                }`}
-              >
+              <div className="text-xs font-sans flex items-center justify-between pt-1.5 border-t border-slate-200/70 dark:border-white/10 text-slate-600 dark:text-slate-400">
                 <span>
-                  Modelo: <strong className={isLight ? 'text-purple-700 font-bold' : 'text-purple-300 font-bold'}>{capitalTier}</strong>
+                  Modelo: <strong className="text-slate-900 dark:text-slate-200 font-semibold">{capitalTier}</strong>
                 </span>
-                <span className={isLight ? 'text-emerald-700 font-bold' : 'text-emerald-400 font-bold'}>
+                <span className="font-semibold text-slate-800 dark:text-slate-200">
                   100% Bootstrap
                 </span>
               </div>
@@ -534,38 +468,28 @@ export const DetailDrawer: React.FC<DetailDrawerProps> = ({
           </div>
 
           {/* ACTION CTA BANNER: SALVAR NO WORKSPACE PESSOAL */}
-          <div
-            className={`mt-4 p-4 rounded-[20px] border flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 ${
-              isLight
-                ? 'bg-gradient-to-r from-blue-50/90 via-indigo-50/80 to-emerald-50/90 border-blue-200 shadow-sm'
-                : 'bg-gradient-to-r from-cyan-950/40 via-[#101728] to-emerald-950/40 border-cyan-500/30'
-            }`}
-          >
+          <div className="mt-4 p-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.04] flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 shadow-2xs">
             <div className="space-y-1">
-              <h4
-                className={`text-xs sm:text-sm font-extrabold flex items-center gap-2 ${
-                  isLight ? 'text-slate-900' : 'text-white'
-                }`}
-              >
-                <Rocket className={`w-4 h-4 ${isLight ? 'text-blue-600' : 'text-cyan-400'}`} />
+              <h4 className="text-sm font-bold flex items-center gap-2 text-slate-900 dark:text-white font-sans">
+                <Rocket className="w-4 h-4 text-slate-600 dark:text-slate-300" />
                 <span>
                   {personalProject
                     ? 'Projeto Ativo no seu Workspace Pessoal'
                     : 'Salvar Projeto e Desbloquear Checklist com AI Coach'}
                 </span>
               </h4>
-              <p className={`text-xs leading-relaxed ${isLight ? 'text-slate-600' : 'text-slate-300'}`}>
+              <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400 font-sans">
                 {personalProject
                   ? `Você já concluiu ${personalProject.progressPercent}% das etapas. O AI Coach monitora seus prazos e cobra sua execução diária.`
                   : 'Ao salvar, este projeto entra na sua esteira diária com checklist passo a passo e alertas proativos da IA para você não travar.'}
               </p>
             </div>
             <Button
-              variant={personalProject ? 'emerald' : 'primary'}
+              variant={personalProject ? 'secondary' : 'primary'}
               size="sm"
               onClick={handleSaveAsPersonalProject}
               iconLeft={personalProject ? <CheckCircle2 className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-              className="shrink-0 font-mono text-xs font-bold"
+              className="shrink-0 text-xs font-semibold"
             >
               {personalProject ? 'Checklist Ativo' : 'Iniciar Como Meu Projeto'}
             </Button>
