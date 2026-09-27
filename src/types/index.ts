@@ -127,6 +127,99 @@ export interface Opportunity {
     description: string;
     estimatedHours: number;
   }[];
+
+  // Detailed Financials, Speed & Investment Specs
+  financials?: {
+    estimatedMonthlyProfit: string; // Ex: "R$ 15.000 - R$ 38.000/mês" ($3,000 - $7,500/mo)
+    profitMargin: string;           // Ex: "82% - 88%"
+    averageTicket: string;          // Ex: "R$ 149/mês" ($29/mo)
+    annualProjection: string;       // Ex: "R$ 180.000 - R$ 450.000 ARR"
+    paybackDays: number;            // Ex: 14 a 30 dias
+  };
+  executionSpeed?: {
+    mvpDays: number;                // Ex: 7 dias
+    firstSaleDays: number;          // Ex: 14 dias
+    weeklyDedicationHours: string;  // Ex: "10-15h / semana"
+    speedRating: 'Ultra Rápido (1 sem)' | 'Rápido (2 sem)' | 'Moderado (3-4 sem)';
+  };
+  investment?: {
+    initialCapitalEstimated: string; // Ex: "R$ 200 - R$ 450" ($40 - $90 USD)
+    capitalBreakdown: { item: string; cost: string }[];
+    budgetTier: 'Bootstrap ($0 a $100)' | 'Baixo ($100 a $500)' | 'Médio';
+  };
+  executionPlaybook?: {
+    phase: number;
+    name: string;
+    timeEstimate: string;
+    description: string;
+    actionItems: {
+      id: string;
+      title: string;
+      howToExecute: string;
+      deliverable: string;
+      recommendedDay?: string;
+      isDailyRoutine?: boolean;
+    }[];
+  }[];
+}
+
+export interface ProjectTaskItem {
+  id: string;
+  phaseId: number;
+  phaseName: string;
+  title: string;
+  howToExecute: string;
+  deliverable: string;
+  recommendedDay?: string;
+  completed: boolean;
+  completedAt?: string;
+}
+
+export interface PersonalProject {
+  id: string;
+  opportunityId: string;
+  title: string;
+  tagline: string;
+  category: OpportunityCategory;
+  score: number;
+  financialMetrics: {
+    estimatedMonthlyProfit: string;
+    profitMargin: string;
+    averageTicket: string;
+    annualProjection: string;
+  };
+  speedMetrics: {
+    mvpDays: number;
+    firstSaleDays: number;
+    weeklyDedicationHours: string;
+    speedRating: string;
+  };
+  investmentMetrics: {
+    initialCapitalEstimated: string;
+    capitalBreakdown: { item: string; cost: string }[];
+  };
+  tasks: ProjectTaskItem[];
+  progressPercent: number;
+  startedAt: string;
+  targetCompletionDate: string;
+  lastCheckinAt: string;
+  dailyStreak: number;
+  checkedInToday: boolean;
+  status: 'em_andamento' | 'quase_pronto' | 'estagnado' | 'lancado';
+  userNotes?: string;
+}
+
+export interface AiCoachAlert {
+  id: string;
+  projectId: string;
+  projectTitle: string;
+  type: 'stagnation_warning' | 'focus_conflict' | 'streak_encouragement' | 'launch_ready';
+  severity: 'urgent' | 'warning' | 'info' | 'kudos';
+  headline: string;
+  message: string;
+  recommendedAction: string;
+  actionButtonText: string;
+  progressPercent: number;
 }
 
 export interface LiveSignal {

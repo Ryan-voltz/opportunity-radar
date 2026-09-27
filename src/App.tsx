@@ -405,6 +405,9 @@ export function App() {
               <MyLabView
                 hypotheses={hypotheses}
                 onAddHypothesis={handleAddHypothesis}
+                opportunities={opportunities}
+                onSelectOpportunity={handleSelectOpportunity}
+                onNavigate={handleNavigate}
               />
             )}
 

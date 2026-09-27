@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { Opportunity, LiveSignal } from '../types';
+import React, { useState, useEffect } from 'react';
+import { Opportunity, LiveSignal, AiCoachAlert } from '../types';
 import { RadarFilterConsole, RadarFilterState } from '../components/radar/RadarFilterConsole';
 import { IntelDiscoveryCard } from '../components/radar/IntelDiscoveryCard';
 import { Badge } from '../components/common/Badge';
 import { Button } from '../components/common/Button';
+import { AiCoachNotificationBanner } from '../components/common/AiCoachNotificationBanner';
+import { PersonalProjectService } from '../services/personalProjectService';
 import {
   Radio,
   RefreshCw,
@@ -36,6 +38,30 @@ export const RadarView: React.FC<RadarViewProps> = ({
   const [activeTab, setActiveTab] = useState<'intel' | 'raw_stream'>('intel');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [coachAlerts, setCoachAlerts] = useState<AiCoachAlert[]>([]);
+
+  useEffect(() => {
+    const refreshAlerts = () => {
+      const projects = PersonalProjectService.getProjects();
+      const alerts = PersonalProjectService.generateAiCoachAlerts(projects);
+      setCoachAlerts(alerts);
+    };
+
+    refreshAlerts();
+    window.addEventListener('personal_projects_updated', refreshAlerts);
+    return () => window.removeEventListener('personal_projects_updated', refreshAlerts);
+  }, []);
+
+  const handleOpenProjectFromCoach = (projectId: string) => {
+    const projects = PersonalProjectService.getProjects();
+    const proj = projects.find((p) => p.id === projectId);
+    if (proj) {
+      const opp = opportunities.find((o) => o.id === proj.opportunityId);
+      if (opp) {
+        onSelectOpportunity(opp);
+      }
+    }
+  };
 
   // Multi-parametric Filter State
   const initialFilters: RadarFilterState = {
@@ -200,6 +226,12 @@ export const RadarView: React.FC<RadarViewProps> = ({
           </div>
         </div>
       </div>
+
+      {/* AI Accountability Coach Alerts (Proactive Notification) */}
+      <AiCoachNotificationBanner
+        alerts={coachAlerts}
+        onOpenProject={handleOpenProjectFromCoach}
+      />
 
       {/* Mode Switcher: Intel Dossiers vs Raw Ingestion Stream */}
       <div className="flex items-center gap-2 border-b border-white/[0.08] pb-1">

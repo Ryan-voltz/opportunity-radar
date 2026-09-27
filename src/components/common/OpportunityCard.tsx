@@ -131,32 +131,32 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
           {opportunity.tagline}
         </p>
 
-        {/* Structured Spec Badges: Business Model, Difficulty, Competition */}
+        {/* 3 Core Highlighted Metrics: Lucro, Velocidade, Investimento */}
         <div className="grid grid-cols-3 gap-2 mb-3.5">
-          <div className="p-2 rounded-lg bg-white/[0.02] border border-white/[0.04]">
-            <span className="text-[9px] font-mono uppercase text-slate-500 block">
-              Modelo
+          <div className="p-2 rounded-lg bg-emerald-950/20 border border-emerald-500/20">
+            <span className="text-[9px] font-mono uppercase text-emerald-400 font-bold block truncate">
+              Lucro Estimado
             </span>
-            <span className="text-xs font-semibold text-slate-200 truncate block">
-              {opportunity.businessModel || 'SaaS'}
-            </span>
-          </div>
-
-          <div className="p-2 rounded-lg bg-white/[0.02] border border-white/[0.04]">
-            <span className="text-[9px] font-mono uppercase text-slate-500 block">
-              Dificuldade
-            </span>
-            <span className={`text-xs font-semibold font-mono ${getDifficultyColor(opportunity.difficulty || 'Média').split(' ')[0]}`}>
-              {opportunity.difficulty || 'Média'}
+            <span className="text-xs font-bold font-mono text-emerald-300 truncate block">
+              {opportunity.financials?.estimatedMonthlyProfit.split(' ')[0] || opportunity.potentialMrr.split(' ')[0]} {opportunity.financials?.estimatedMonthlyProfit.split(' ')[1] || 'MRR'}
             </span>
           </div>
 
-          <div className="p-2 rounded-lg bg-white/[0.02] border border-white/[0.04]">
-            <span className="text-[9px] font-mono uppercase text-slate-500 block">
-              Concorrência
+          <div className="p-2 rounded-lg bg-cyan-950/20 border border-cyan-500/20">
+            <span className="text-[9px] font-mono uppercase text-cyan-400 font-bold block truncate">
+              Velocidade
             </span>
-            <span className={`text-xs font-semibold font-mono ${getCompetitionColor(opportunity.competitionLevel)}`}>
-              {opportunity.competitionLevel}
+            <span className="text-xs font-bold font-mono text-cyan-200 truncate block">
+              MVP {opportunity.executionSpeed?.mvpDays || opportunity.timeToMvpDays} dias
+            </span>
+          </div>
+
+          <div className="p-2 rounded-lg bg-violet-950/20 border border-violet-500/20">
+            <span className="text-[9px] font-mono uppercase text-violet-400 font-bold block truncate">
+              Investimento
+            </span>
+            <span className="text-xs font-bold font-mono text-violet-200 truncate block">
+              {opportunity.investment?.initialCapitalEstimated.split(' ')[0] || 'R$ 180'}
             </span>
           </div>
         </div>

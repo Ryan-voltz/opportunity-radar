@@ -214,6 +214,134 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
       { step: 2, title: 'Concierge MVP', description: 'Emissão manual assistida para os primeiros 5 clientes pagantes.', estimatedHours: 14 },
       { step: 3, title: 'SDK em Node e Python', description: 'Disponibilizar biblioteca de código aberto com documentação amigável.', estimatedHours: 20 },
     ],
+
+    financials: {
+      estimatedMonthlyProfit: 'R$ 22.000 - R$ 54.000 / mês ($4,200 - $10,500/mo)',
+      profitMargin: '86%',
+      averageTicket: 'R$ 199 / mês',
+      annualProjection: 'R$ 264.000 - R$ 648.000 ARR',
+      paybackDays: 16,
+    },
+    executionSpeed: {
+      mvpDays: 10,
+      firstSaleDays: 16,
+      weeklyDedicationHours: '12h / semana',
+      speedRating: 'Rápido (2 sem)',
+    },
+    investment: {
+      initialCapitalEstimated: 'R$ 180 ($35 USD)',
+      capitalBreakdown: [
+        { item: 'Domínio personalizado .com.br', cost: 'R$ 40 / ano' },
+        { item: 'Hospedagem & Banco (Vercel + Supabase)', cost: 'R$ 0 (Free Tier)' },
+        { item: 'Conta de testes prefeitura / Focus NFe', cost: 'R$ 50' },
+        { item: 'Resend (Emails transacionais)', cost: 'R$ 0 (Até 3.000/mês grátis)' },
+      ],
+      budgetTier: 'Bootstrap ($0 a $100)',
+    },
+    executionPlaybook: [
+      {
+        phase: 1,
+        name: 'Fase 1: Validação & Pré-Venda Sem Código',
+        timeEstimate: 'Dias 1 a 3',
+        description: 'Validar a dor crítica de fundadores que sofrem com emissão manual de NF-e no Stripe.',
+        actionItems: [
+          {
+            id: 'nfe-act-1',
+            title: 'Mapear 30 fundadores de SaaS que reclamaram de emissão de NF-e',
+            howToExecute: 'Pesquisar posts no X/LinkedIn e grupos de fundadores procurando termos como "Stripe nota fiscal" e "eNotas caro".',
+            deliverable: 'Planilha com 30 contatos quentes e 8 respostas positivas confirmando dor.',
+            recommendedDay: 'Dia 1',
+          },
+          {
+            id: 'nfe-act-2',
+            title: 'Publicar Landing Page de Pré-Venda com oferta Early Adopter (R$ 99/mês vitalício)',
+            howToExecute: 'Montar página no Framer demonstrando o fluxo em 3 passos: Conectar Stripe -> Cadastrar Certificado -> NF-e emitida.',
+            deliverable: 'URL ativa coletando pré-vendas com cartão de crédito via Stripe.',
+            recommendedDay: 'Dia 2',
+          },
+          {
+            id: 'nfe-act-3',
+            title: 'Realizar 5 entrevistas rápidas de 15 minutos com compradores',
+            howToExecute: 'Entender quais prefeituras específicas e impostos municipais eles necessitam primeiro.',
+            deliverable: 'Escopo fechado de MVP atendendo 90% dos casos de uso.',
+            recommendedDay: 'Dia 3',
+          },
+        ],
+      },
+      {
+        phase: 2,
+        name: 'Fase 2: Construção do MVP Enxuto',
+        timeEstimate: 'Dias 4 a 8',
+        description: 'Desenvolver apenas o conector de webhook e a emissão automática sem firulas.',
+        actionItems: [
+          {
+            id: 'nfe-act-4',
+            title: 'Configurar Webhook seguro escutando charge.succeeded do Stripe',
+            howToExecute: 'Criar endpoint em Node.js com verificação de assinatura criptográfica oficial do Stripe.',
+            deliverable: 'Webhook testado com payload simulado no Stripe CLI.',
+            recommendedDay: 'Dias 4 e 5',
+          },
+          {
+            id: 'nfe-act-5',
+            title: 'Integrar API de mensageria fiscal municipal (Focus NFe ou PlugNotas)',
+            howToExecute: 'Conectar certificado A1 de teste e emitir nota em ambiente de homologação.',
+            deliverable: 'XML e PDF gerados com sucesso e salvos no storage do Supabase.',
+            recommendedDay: 'Dias 6 e 7',
+          },
+          {
+            id: 'nfe-act-6',
+            title: 'Disparo automático de PDF da nota fiscal para o e-mail do comprador final',
+            howToExecute: 'Configurar template transacional limpo via Resend com anexo do PDF.',
+            deliverable: 'Email de confirmação caindo na caixa de entrada em menos de 10 segundos.',
+            recommendedDay: 'Dia 8',
+          },
+        ],
+      },
+      {
+        phase: 3,
+        name: 'Fase 3: Aquisição dos Primeiros 10 Clientes',
+        timeEstimate: 'Dias 9 a 14',
+        description: 'Colocar os primeiros clientes reais para rodar e colher depoimentos autênticos.',
+        actionItems: [
+          {
+            id: 'nfe-act-7',
+            title: 'Onboarding concierge com os primeiros 6 compradores da pré-venda',
+            howToExecute: 'Acompanhar a emissão das primeiras notas ao vivo pelo Google Meet.',
+            deliverable: '6 empresas faturando no Stripe com notas emitidas 100% no automático.',
+            recommendedDay: 'Dias 9 a 11',
+          },
+          {
+            id: 'nfe-act-8',
+            title: 'Publicar estudo de caso aberto no X/LinkedIn e comunidades indie',
+            howToExecute: 'Compartilhar: "Como economizei 14 horas/mês automatizando NF-e do Stripe por R$ 199".',
+            deliverable: 'Mais 10 a 15 clientes cadastrados organicamente sem custo de anúncios.',
+            recommendedDay: 'Dias 12 a 14',
+          },
+        ],
+      },
+      {
+        phase: 4,
+        name: 'Fase 4: Monetização Recorrente & Escala',
+        timeEstimate: 'Dias 15 a 22',
+        description: 'Consolidar faturamento recorrente previsível e expandir canais de indicação.',
+        actionItems: [
+          {
+            id: 'nfe-act-9',
+            title: 'Ativar planos oficiais: Starter (R$ 199/mês) e Scale (R$ 399/mês)',
+            howToExecute: 'Implementar Stripe Customer Portal para gerenciamento self-service de assinaturas.',
+            deliverable: 'R$ 3.500+ de MRR inicial atingidos com churn zero.',
+            recommendedDay: 'Dias 15 a 18',
+          },
+          {
+            id: 'nfe-act-10',
+            title: 'Criar programa de parceria com escritórios de contabilidade tech',
+            howToExecute: 'Oferecer aos contadores painel multi-empresa gratuito para baixar todos os XMLs do mês.',
+            deliverable: 'Contadores recomendando seu software para todos os seus clientes digitais.',
+            recommendedDay: 'Dias 19 a 22',
+          },
+        ],
+      },
+    ],
   },
   {
     id: 'opp-02',
@@ -272,6 +400,98 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
         snippet: 'Buscas por "Wärmepumpen Handwerker Software" dispararam 280% no Google Alemanha.',
         timestamp: 'Há 8h',
         volumeOrScore: 'Índice 94 de interesse',
+      },
+    ],
+
+    financials: {
+      estimatedMonthlyProfit: '€8.500 - €22.000 / mês ($9,200 - $24,000/mo)',
+      profitMargin: '82%',
+      averageTicket: '€240 / mês por empresa',
+      annualProjection: '€102.000 - €264.000 ARR',
+      paybackDays: 28,
+    },
+    executionSpeed: {
+      mvpDays: 18,
+      firstSaleDays: 28,
+      weeklyDedicationHours: '15h / semana',
+      speedRating: 'Moderado (3-4 sem)',
+    },
+    investment: {
+      initialCapitalEstimated: '€120 ($130 USD)',
+      capitalBreakdown: [
+        { item: 'Domínio .de / .eu', cost: '€20 / ano' },
+        { item: 'Hospedagem Vercel & Supabase', cost: '€0 (Free)' },
+        { item: 'Exportador DATEV XML / validação DIN', cost: '€50' },
+        { item: 'Marketing direcionado no LinkedIn DACH', cost: '€50' },
+      ],
+      budgetTier: 'Baixo ($100 a $500)',
+    },
+    executionPlaybook: [
+      {
+        phase: 1,
+        name: 'Fase 1: Mapeamento de 20 Instaladores na Alemanha/Áustria',
+        timeEstimate: 'Dias 1 a 5',
+        description: 'Mapear pequenos negócios de instalação térmica no Google Maps alemão (Munique, Frankfurt).',
+        actionItems: [
+          {
+            id: 'hvac-1',
+            title: 'Entrevistar 8 mestres de obras (Handwerksmeister) por telefone/e-mail',
+            howToExecute: 'Perguntar quanto tempo gastam por semana preenchendo laudos DATEV em papel.',
+            deliverable: 'Confirmação de que perdem 8 a 15h semanais com burocracia.',
+            recommendedDay: 'Dias 1 a 3',
+          },
+          {
+            id: 'hvac-2',
+            title: 'Apresentar protótipo em Figma em alemão com formulário de inspeção DIN',
+            howToExecute: 'Mostrar como o técnico preenche no celular em 2 minutos e gera o PDF assinado pelo cliente.',
+            deliverable: '3 cartas de intenção para testar o software na obra.',
+            recommendedDay: 'Dias 4 e 5',
+          },
+        ],
+      },
+      {
+        phase: 2,
+        name: 'Fase 2: MVP PWA Offline-First para Campo',
+        timeEstimate: 'Dias 6 a 16',
+        description: 'Construir aplicativo que funciona mesmo em porões sem sinal 4G/5G.',
+        actionItems: [
+          {
+            id: 'hvac-3',
+            title: 'Criar PWA com sincronização IndexedDB e assinatura digital touch',
+            howToExecute: 'Interface de botões grandes para técnico usar de luvas na obra.',
+            deliverable: 'PWA instalável no celular gerando laudo técnico com foto do equipamento.',
+            recommendedDay: 'Dias 6 a 11',
+          },
+          {
+            id: 'hvac-4',
+            title: 'Módulo de exportação fiscal compatível com contabilidade DATEV',
+            howToExecute: 'Geração de arquivo padrão CSV/XML aceito por contadores alemães.',
+            deliverable: 'Arquivo validado com sucesso por um contador parceiro na Alemanha.',
+            recommendedDay: 'Dias 12 a 16',
+          },
+        ],
+      },
+      {
+        phase: 3,
+        name: 'Fase 3: Piloto Gratuito & Conversão',
+        timeEstimate: 'Dias 17 a 25',
+        description: 'Colocar 3 empresas usando diariamente e converter em contrato anual.',
+        actionItems: [
+          {
+            id: 'hvac-5',
+            title: 'Acompanhar 1 dia de trabalho de campo via WhatsApp com o técnico',
+            howToExecute: 'Resolver dúvidas em tempo real para garantir que nenhum laudo trave.',
+            deliverable: 'Técnicos emitindo 100% dos laudos pelo aplicativo.',
+            recommendedDay: 'Dias 17 a 20',
+          },
+          {
+            id: 'hvac-6',
+            title: 'Converter os pilotos em assinaturas de €149/mês base + €39/técnico',
+            howToExecute: 'Demonstrar a economia de €1.200/mês em horas de escritório.',
+            deliverable: 'Primeiros €800 de MRR em euros.',
+            recommendedDay: 'Dias 21 a 25',
+          },
+        ],
       },
     ],
   },
@@ -334,6 +554,98 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
         volumeOrScore: 'Avaliação 3.0',
       },
     ],
+
+    financials: {
+      estimatedMonthlyProfit: 'R$ 32.000 - R$ 78.000 / mês ($6,500 - $15,000/mo)',
+      profitMargin: '88%',
+      averageTicket: 'R$ 380 / mês ($79/mo)',
+      annualProjection: 'R$ 384.000 - R$ 936.000 ARR',
+      paybackDays: 14,
+    },
+    executionSpeed: {
+      mvpDays: 12,
+      firstSaleDays: 18,
+      weeklyDedicationHours: '14h / semana',
+      speedRating: 'Rápido (2 sem)',
+    },
+    investment: {
+      initialCapitalEstimated: 'R$ 290 ($60 USD)',
+      capitalBreakdown: [
+        { item: 'Domínio .com oficial', cost: 'R$ 65 / ano' },
+        { item: 'Hospedagem Vercel & Supabase', cost: 'R$ 0 (Free)' },
+        { item: 'Créditos Deepgram/Whisper e LLM', cost: 'R$ 150 (uso sob demanda)' },
+        { item: 'Resend / Slack Webhooks', cost: 'R$ 0 (Gratuito)' },
+      ],
+      budgetTier: 'Bootstrap ($0 a $100)',
+    },
+    executionPlaybook: [
+      {
+        phase: 1,
+        name: 'Fase 1: Validação & Conexão com Líderes Comerciais',
+        timeEstimate: 'Dias 1 a 4',
+        description: 'Validar a indignação com os contratos predatórios do Gong e Chorus.',
+        actionItems: [
+          {
+            id: 'gong-act-1',
+            title: 'Entrevistar 10 gerentes de Inside Sales no LinkedIn',
+            howToExecute: 'Abordar com pergunta direta: "Quanto tempo você perde ouvindo gravações para dar feedback aos vendedores?"',
+            deliverable: '10 entrevistas mapeando as 5 perguntas que todo gestor quer saber.',
+            recommendedDay: 'Dias 1 e 2',
+          },
+          {
+            id: 'gong-act-2',
+            title: 'Criar Landing Page com calculadora "Gong vs Alternativa Self-Service"',
+            howToExecute: 'Mostrar que um time de 6 vendedores economiza US$ 10.000 por ano.',
+            deliverable: '35 cadastros qualificados na lista de espera.',
+            recommendedDay: 'Dias 3 e 4',
+          },
+        ],
+      },
+      {
+        phase: 2,
+        name: 'Fase 2: MVP Bot de Reunião & Scorecard de IA',
+        timeEstimate: 'Dias 5 a 12',
+        description: 'Construir pipeline que entra no Google Meet, grava, transcreve e pontua.',
+        actionItems: [
+          {
+            id: 'gong-act-3',
+            title: 'Integrar bot de gravação via Recall.ai ou upload direto de áudio',
+            howToExecute: 'Conectar webhook que recebe arquivo MP3 ao final da chamada.',
+            deliverable: 'Gravação salva com segurança no bucket S3/Supabase.',
+            recommendedDay: 'Dias 5 a 8',
+          },
+          {
+            id: 'gong-act-4',
+            title: 'Criar prompt de auditoria que gera scorecard de vendas de 0 a 100',
+            howToExecute: 'Avaliar: Pergunta de dor feita? Preço justificado? Próximo passo agendado?',
+            deliverable: 'Resumo com insights enviado direto no canal do Slack em 2 minutos.',
+            recommendedDay: 'Dias 9 a 12',
+          },
+        ],
+      },
+      {
+        phase: 3,
+        name: 'Fase 3: Lançamento & Primeiros Contratos',
+        timeEstimate: 'Dias 13 a 18',
+        description: 'Ativar 5 equipes e validar retenção semanal.',
+        actionItems: [
+          {
+            id: 'gong-act-5',
+            title: 'Ativação com 5 equipes da lista de espera com trial de 7 dias',
+            howToExecute: 'Configurar a integração com o calendário do Google em 3 minutos.',
+            deliverable: '5 equipes monitorando mais de 50 chamadas na primeira semana.',
+            recommendedDay: 'Dias 13 a 15',
+          },
+          {
+            id: 'gong-act-6',
+            title: 'Cobrança no cartão de crédito de $49/vendedor/mês',
+            howToExecute: 'Checkout Stripe self-service sem necessidade de reunião de vendas.',
+            deliverable: 'Primeiros $1.500 MRR em dólar.',
+            recommendedDay: 'Dias 16 a 18',
+          },
+        ],
+      },
+    ],
   },
   {
     id: 'opp-04',
@@ -392,6 +704,77 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
         snippet: 'Minha clínica de estética perde R$ 6.000 todo mês porque o paciente esquece na sexta-feira. SMS não adianta nada.',
         timestamp: 'Há 1d',
         volumeOrScore: '189 upvotes',
+      },
+    ],
+
+    financials: {
+      estimatedMonthlyProfit: 'R$ 18.000 - R$ 48.000 / mês',
+      profitMargin: '91%',
+      averageTicket: 'R$ 390 / mês por clínica',
+      annualProjection: 'R$ 216.000 - R$ 576.000 ARR',
+      paybackDays: 10,
+    },
+    executionSpeed: {
+      mvpDays: 8,
+      firstSaleDays: 14,
+      weeklyDedicationHours: '10h / semana',
+      speedRating: 'Ultra Rápido (1 sem)',
+    },
+    investment: {
+      initialCapitalEstimated: 'R$ 150 ($30 USD)',
+      capitalBreakdown: [
+        { item: 'WhatsApp Cloud API Meta', cost: 'R$ 0 (1.000 conversas grátis/mês)' },
+        { item: 'Domínio .com.br', cost: 'R$ 40 / ano' },
+        { item: 'Hospedagem & Banco Supabase', cost: 'R$ 0 (Free)' },
+        { item: 'Créditos Groq / OpenAI Whisper', cost: 'R$ 60' },
+      ],
+      budgetTier: 'Bootstrap ($0 a $100)',
+    },
+    executionPlaybook: [
+      {
+        phase: 1,
+        name: 'Fase 1: Mapeamento de Clínicas Locais & Proposta Irrecusável',
+        timeEstimate: 'Dias 1 a 3',
+        description: 'Proposta de risco zero: "Só pague se recuperarmos pelo menos 3 consultas no mês".',
+        actionItems: [
+          {
+            id: 'clinic-1',
+            title: 'Visitar ou ligar para 15 secretárias de consultórios odontológicos e dermatológicos',
+            howToExecute: 'Perguntar quantos pacientes faltam por semana sem avisar.',
+            deliverable: 'Mapeamento de 5 clínicas interessadas em testar gratuitamente por 7 dias.',
+            recommendedDay: 'Dias 1 e 2',
+          },
+        ],
+      },
+      {
+        phase: 2,
+        name: 'Fase 2: Configuração do Bot WhatsApp com IA de Áudio',
+        timeEstimate: 'Dias 4 a 7',
+        description: 'Bot que entende mensagens de voz do paciente ("Vou atrasar 15 min, dá pra remarcar?").',
+        actionItems: [
+          {
+            id: 'clinic-2',
+            title: 'Conectar número na Cloud API oficial da Meta via Z-API ou Evolution API',
+            howToExecute: 'Configurar webhook para transcrição de áudio via Whisper e classificação de intenção.',
+            deliverable: 'Bot respondendo confirmações e remanejando horários na agenda do Google.',
+            recommendedDay: 'Dias 4 a 6',
+          },
+        ],
+      },
+      {
+        phase: 3,
+        name: 'Fase 3: Conversão em Assinatura de R$ 390/mês',
+        timeEstimate: 'Dias 8 a 14',
+        description: 'Apresentar relatório de consultas recuperadas e fechar contrato anual.',
+        actionItems: [
+          {
+            id: 'clinic-3',
+            title: 'Apresentar cálculo de ROI: R$ 2.400 salvos em faltas versus R$ 390 de mensalidade',
+            howToExecute: 'Relatório impresso ou PDF mostrando pacientes que confirmaram e compareceram.',
+            deliverable: '3 contratos fechados no primeiro mês (R$ 1.170 MRR).',
+            recommendedDay: 'Dias 8 a 12',
+          },
+        ],
       },
     ],
   },
@@ -454,6 +837,61 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
         volumeOrScore: '95 reposts',
       },
     ],
+
+    financials: {
+      estimatedMonthlyProfit: '£3.200 - £9.500 / mês ($4,000 - $12,000/mo)',
+      profitMargin: '93%',
+      averageTicket: '£29 / mês ($38/mo)',
+      annualProjection: '£38.400 - £114.000 ARR',
+      paybackDays: 7,
+    },
+    executionSpeed: {
+      mvpDays: 7,
+      firstSaleDays: 12,
+      weeklyDedicationHours: '8-10h / semana',
+      speedRating: 'Ultra Rápido (1 sem)',
+    },
+    investment: {
+      initialCapitalEstimated: '$45 USD (R$ 230)',
+      capitalBreakdown: [
+        { item: 'Taxa única Google Chrome Web Store', cost: '$5 USD' },
+        { item: 'Domínio .co / .io', cost: '$15 USD' },
+        { item: 'Créditos Claude 3.5 Sonnet API', cost: '$25 USD' },
+      ],
+      budgetTier: 'Bootstrap ($0 a $100)',
+    },
+    executionPlaybook: [
+      {
+        phase: 1,
+        name: 'Fase 1: Construção da Extensão Chrome com Plasmo',
+        timeEstimate: 'Dias 1 a 4',
+        description: 'Injetar botão na biblioteca pública de anúncios do TikTok para extrair script e hook.',
+        actionItems: [
+          {
+            id: 'tok-1',
+            title: 'Criar content script que lê o elemento de vídeo e transcreve primeiros 3 segundos',
+            howToExecute: 'Usar Plasmo framework com React e Tailwind.',
+            deliverable: 'Extensão instalada em modo desenvolvedor funcionando no Chrome.',
+            recommendedDay: 'Dias 1 a 3',
+          },
+        ],
+      },
+      {
+        phase: 2,
+        name: 'Fase 2: Lançamento em Comunidades de Dropshipping & E-commerce',
+        timeEstimate: 'Dias 5 a 10',
+        description: 'Postar demonstrações em vídeo mostrando como roubar eticamente os hooks mais virais.',
+        actionItems: [
+          {
+            id: 'tok-2',
+            title: 'Gravar vídeo de 60 segundos demonstrando a análise de um anúncio milionário',
+            howToExecute: 'Postar no Twitter/X, TikTok e Reddit r/dropship e r/ecommerce.',
+            deliverable: '100 downloads e primeiros 15 assinantes pagantes de £29/mês.',
+            recommendedDay: 'Dias 5 a 8',
+          },
+        ],
+      },
+    ],
   },
   {
     id: 'opp-06',
@@ -512,6 +950,61 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
         snippet: 'Discussão no HackerNews sobre lock de tabela em adição de coluna NOT NULL sem default no Postgres 14.',
         timestamp: 'Há 4d',
         volumeOrScore: '412 stars',
+      },
+    ],
+
+    financials: {
+      estimatedMonthlyProfit: '$4,500 - $14,000 / mês',
+      profitMargin: '94%',
+      averageTicket: '$49 a $199 / mês',
+      annualProjection: '$54,000 - $168,000 ARR',
+      paybackDays: 14,
+    },
+    executionSpeed: {
+      mvpDays: 10,
+      firstSaleDays: 16,
+      weeklyDedicationHours: '10h / semana',
+      speedRating: 'Rápido (2 sem)',
+    },
+    investment: {
+      initialCapitalEstimated: '$35 USD (R$ 180)',
+      capitalBreakdown: [
+        { item: 'Domínio .dev', cost: '$14 / ano' },
+        { item: 'GitHub Marketplace Publisher', cost: '$0' },
+        { item: 'GitHub Actions Runners free tier', cost: '$0' },
+      ],
+      budgetTier: 'Bootstrap ($0 a $100)',
+    },
+    executionPlaybook: [
+      {
+        phase: 1,
+        name: 'Fase 1: CLI de Validação de Migrações em Go/TypeScript',
+        timeEstimate: 'Dias 1 a 5',
+        description: 'Regras estáticas detectando: add column sem default, create index sem concurrently.',
+        actionItems: [
+          {
+            id: 'pg-1',
+            title: 'Escrever parser de SQL com 10 regras de segurança de lock do Postgres',
+            howToExecute: 'Usar pg-query-parser ou parser de AST SQL em Go.',
+            deliverable: 'CLI testada retornando exit code 1 se houver comando perigoso.',
+            recommendedDay: 'Dias 1 a 3',
+          },
+        ],
+      },
+      {
+        phase: 2,
+        name: 'Fase 2: Publicar GitHub Action no Marketplace Oficial',
+        timeEstimate: 'Dias 6 a 12',
+        description: 'Facilitar a instalação em 1 linha de YAML no repositório.',
+        actionItems: [
+          {
+            id: 'pg-2',
+            title: 'Submeter action no GitHub Marketplace com README detalhado e badges',
+            howToExecute: 'Oferecer plano grátis para open-source e $49/mês para repositórios privados.',
+            deliverable: 'GitHub Action listada publicamente recebendo instalações orgânicas.',
+            recommendedDay: 'Dias 6 a 9',
+          },
+        ],
       },
     ],
   },

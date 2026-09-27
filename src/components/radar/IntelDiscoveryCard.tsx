@@ -118,59 +118,59 @@ export const IntelDiscoveryCard: React.FC<IntelDiscoveryCardProps> = ({
           </div>
         </div>
 
-        {/* Title & Tagline */}
-        <div>
-          <h3 className="text-lg font-bold text-slate-100 hover:text-cyan-300 transition-colors leading-snug">
-            {opportunity.title}
+        {/* Title & Tagline (Clickable to open detailed step-by-step drawer) */}
+        <div
+          onClick={() => onOpenDrawer(opportunity)}
+          className="cursor-pointer group/title"
+          title="Clique para abrir detalhes completos, checklist passo a passo e estimativas"
+        >
+          <h3 className="text-lg font-bold text-slate-100 group-hover/title:text-cyan-300 transition-colors leading-snug flex items-center justify-between">
+            <span>{opportunity.title}</span>
+            <span className="text-xs font-mono text-cyan-400 font-normal opacity-0 group-hover/title:opacity-100 transition-opacity shrink-0 ml-2">
+              Ver Passo a Passo →
+            </span>
           </h3>
           <p className="text-xs sm:text-sm text-slate-400 mt-1 leading-relaxed">
             {opportunity.tagline}
           </p>
         </div>
 
-        {/* Momentum & High-Level Metrics Strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
-          <div>
-            <span className="text-[10px] font-mono uppercase text-slate-500 block">
-              Potencial de Receita
+        {/* 3 User-Requested Highlighted Metrics: Lucro, Velocidade, Investimento */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 p-3 rounded-xl bg-gradient-to-r from-white/[0.03] to-white/[0.01] border border-white/[0.06]">
+          <div className="p-2 rounded-lg bg-emerald-950/20 border border-emerald-500/20">
+            <span className="text-[10px] font-mono uppercase text-emerald-400 font-bold flex items-center gap-1">
+              <DollarSign className="w-3 h-3" /> Lucro Estimado
             </span>
-            <span className="text-xs font-bold font-mono text-emerald-400">
-              {opportunity.potentialMrr}
+            <span className="text-xs font-bold font-mono text-emerald-300 block truncate mt-0.5" title={opportunity.financials?.estimatedMonthlyProfit || opportunity.potentialMrr}>
+              {opportunity.financials?.estimatedMonthlyProfit || opportunity.potentialMrr}
             </span>
-          </div>
-
-          <div>
-            <span className="text-[10px] font-mono uppercase text-slate-500 block">
-              Dificuldade de MVP
-            </span>
-            <span
-              className={`text-xs font-bold font-mono px-1.5 py-0.2 rounded border ${getDifficultyColor(
-                opportunity.difficulty || 'Média'
-              )}`}
-            >
-              {opportunity.difficulty || 'Média'} ({opportunity.timeToMvpDays}d)
+            <span className="text-[10px] font-mono text-slate-400">
+              Margem: {opportunity.financials?.profitMargin || '85%'}
             </span>
           </div>
 
-          <div>
-            <span className="text-[10px] font-mono uppercase text-slate-500 block">
-              Concorrência
+          <div className="p-2 rounded-lg bg-cyan-950/20 border border-cyan-500/20">
+            <span className="text-[10px] font-mono uppercase text-cyan-400 font-bold flex items-center gap-1">
+              <Clock className="w-3 h-3" /> Velocidade / Prazo
             </span>
-            <span className="text-xs font-bold font-mono text-slate-200">
-              {opportunity.competitionLevel}
+            <span className="text-xs font-bold font-mono text-cyan-200 block truncate mt-0.5">
+              MVP em {opportunity.executionSpeed?.mvpDays || opportunity.timeToMvpDays} dias
+            </span>
+            <span className="text-[10px] font-mono text-slate-400">
+              1ª Venda: {opportunity.executionSpeed?.firstSaleDays || 18}d
             </span>
           </div>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <span className="text-[10px] font-mono uppercase text-slate-500 block">
-                Crescimento (30d)
-              </span>
-              <span className="text-xs font-bold font-mono text-cyan-400">
-                {opportunity.trendingGrowth.split(' ')[0]}
-              </span>
-            </div>
-            <Sparkline data={opportunity.sparkline || [10, 20, 35, 55, 75, 95]} color="cyan" width={60} height={18} />
+          <div className="p-2 rounded-lg bg-violet-950/20 border border-violet-500/20">
+            <span className="text-[10px] font-mono uppercase text-violet-400 font-bold flex items-center gap-1">
+              <ShieldCheck className="w-3 h-3" /> Investimento
+            </span>
+            <span className="text-xs font-bold font-mono text-violet-200 block truncate mt-0.5" title={opportunity.investment?.initialCapitalEstimated || 'R$ 180'}>
+              {opportunity.investment?.initialCapitalEstimated || 'R$ 180 ($35 USD)'}
+            </span>
+            <span className="text-[10px] font-mono text-slate-400 truncate block">
+              {opportunity.investment?.budgetTier || 'Bootstrap'}
+            </span>
           </div>
         </div>
 
