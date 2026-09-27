@@ -118,7 +118,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         },
         {
           section: 'my-lab',
-          label: 'My Lab',
+          label: 'Meus Projetos & Lab',
           icon: <FlaskConical className="w-4 h-4 text-emerald-400" />,
         },
         {
@@ -216,17 +216,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       onClick={() => onNavigate(item.section)}
                       className={`w-full flex items-center ${
                         isCollapsed ? 'justify-center px-0' : 'justify-between px-2.5'
-                      } py-2 rounded-lg text-xs font-medium transition-all group relative ${
+                      } py-2 rounded-xl text-xs font-medium transition-all group relative ${
                         isActive
-                          ? 'bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 shadow-sm'
-                          : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.05] border border-transparent'
+                          ? 'bg-blue-600/15 text-blue-300 border border-blue-500/30 shadow-sm font-semibold'
+                          : 'text-slate-400 hover:text-slate-100 hover:bg-white/[0.05] border border-transparent'
                       }`}
                       title={isCollapsed ? item.label : undefined}
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
                         <span
                           className={`shrink-0 transition-colors ${
-                            isActive ? 'text-cyan-400' : 'text-slate-400 group-hover:text-slate-200'
+                            isActive ? 'text-blue-400' : 'text-slate-400 group-hover:text-slate-200'
                           }`}
                         >
                           {item.icon}

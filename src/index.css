@@ -1,21 +1,95 @@
 @import "tailwindcss";
 @config "../tailwind.config.js";
 
-@layer base {
-  :root {
-    color-scheme: dark;
-  }
+:root {
+  color-scheme: dark;
+  --bg-canvas: #090d16;
+  --bg-surface: #101623;
+  --bg-surface-elevated: #151d2e;
+  --bg-surface-hover: #1a2438;
+  --bg-header: rgba(9, 13, 22, 0.85);
+  --bg-sidebar: #0c111c;
   
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.14);
+  --border-hover: rgba(255, 255, 255, 0.24);
+
+  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.35);
+  --shadow-hover: 0 14px 34px -4px rgba(0, 0, 0, 0.65), 0 0 15px -3px rgba(56, 189, 248, 0.12);
+  --shadow-drawer: -10px 0 35px -5px rgba(0, 0, 0, 0.7);
+  --radius-card: 20px;
+}
+
+html.light, [data-theme="light"] {
+  color-scheme: light;
+  --bg-canvas: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #f1f5f9;
+  --bg-surface-hover: #e2e8f0;
+  --bg-header: rgba(255, 255, 255, 0.88);
+  --bg-sidebar: #ffffff;
+  
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  
+  --border-subtle: #e2e8f0;
+  --border-medium: #cbd5e1;
+  --border-hover: #94a3b8;
+
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.05), 0 10px 25px -5px rgba(15, 23, 42, 0.04);
+  --shadow-hover: 0 16px 32px -8px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
+  --shadow-drawer: -10px 0 35px -5px rgba(15, 23, 42, 0.15);
+  --radius-card: 20px;
+}
+
+@layer base {
   * {
-    border-color: rgba(255, 255, 255, 0.08);
+    border-color: var(--border-subtle);
+    transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #090D16;
-    color: #F8FAFC;
+    background-color: var(--bg-canvas);
+    color: var(--text-primary);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    min-height: 100vh;
   }
+}
+
+/* Subtle modern background texture */
+html.dark body {
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(30, 41, 59, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(15, 23, 42, 0.3) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+html.light body {
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(226, 232, 240, 0.5) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(241, 245, 249, 0.5) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+/* 20px Border Radius & Tactile Shadows */
+.rounded-20 {
+  border-radius: 20px !important;
+}
+
+.shadow-card-subtle {
+  box-shadow: var(--shadow-card) !important;
+}
+
+.shadow-card-subtle:hover {
+  box-shadow: var(--shadow-hover) !important;
 }
 
 /* Custom discreet scrollbars */
@@ -24,47 +98,205 @@
   height: 6px;
 }
 
-::-webkit-scrollbar-track {
+html.dark ::-webkit-scrollbar-track {
   background: #090D16;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+html.light ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+}
+
+html.light ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(148, 163, 184, 0.4);
 }
 
-/* Glass & glowing utility classes */
-.glass-panel {
-  background: rgba(17, 24, 39, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* ====================================================================
+   LIGHT MODE ADAPTATION & HIGH-CONTRAST PALETTE OVERRIDES
+   ==================================================================== */
+html.light .bg-slate-950 {
+  background-color: #ffffff !important;
 }
 
-.glass-dropdown {
-  background: rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+html.light .bg-slate-950\/80,
+html.light .bg-slate-950\/60,
+html.light .bg-slate-950\/40 {
+  background-color: #f8fafc !important;
 }
 
-.radar-gradient-border {
-  position: relative;
+html.light .bg-slate-900 {
+  background-color: #ffffff !important;
 }
 
-.radar-gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(to bottom right, rgba(6, 182, 212, 0.3), rgba(255, 255, 255, 0.05), rgba(16, 185, 129, 0.2));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+html.light .bg-slate-900\/90,
+html.light .bg-slate-900\/80,
+html.light .bg-slate-900\/70,
+html.light .bg-slate-900\/60,
+html.light .bg-slate-900\/40 {
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05), 0 8px 20px -4px rgba(15, 23, 42, 0.03) !important;
+}
+
+html.light .bg-slate-800,
+html.light .bg-slate-800\/40,
+html.light .bg-slate-800\/60 {
+  background-color: #f1f5f9 !important;
+}
+
+html.light .bg-white\/\[0\.02\],
+html.light .bg-white\/\[0\.03\],
+html.light .bg-white\/\[0\.04\],
+html.light .bg-white\/\[0\.05\],
+html.light .bg-white\/5 {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Light Mode Typography Contrast */
+html.light .text-white,
+html.light .text-slate-100 {
+  color: #0f172a !important;
+}
+
+html.light .text-slate-200 {
+  color: #1e293b !important;
+}
+
+html.light .text-slate-300 {
+  color: #334155 !important;
+}
+
+html.light .text-slate-400 {
+  color: #475569 !important;
+}
+
+html.light .text-slate-500 {
+  color: #64748b !important;
+}
+
+/* Light Mode Borders */
+html.light .border-white\/\[0\.08\],
+html.light .border-white\/\[0\.06\],
+html.light .border-white\/\[0\.07\],
+html.light .border-white\/\[0\.05\],
+html.light .border-white\/\[0\.04\],
+html.light .border-white\/10 {
+  border-color: #e2e8f0 !important;
+}
+
+html.light .border-white\/20,
+html.light .border-white\/15 {
+  border-color: #cbd5e1 !important;
+}
+
+/* Accent Color Variations for Light Mode (eliminating neon cyan wash) */
+html.light .text-cyan-400,
+html.light .text-cyan-300 {
+  color: #2563eb !important; /* Professional Royal Sapphire */
+}
+
+html.light .bg-cyan-500\/10 {
+  background-color: #eff6ff !important;
+}
+
+html.light .border-cyan-500\/20,
+html.light .border-cyan-500\/30,
+html.light .border-cyan-500\/40 {
+  border-color: #bfdbfe !important;
+}
+
+html.light .text-emerald-400,
+html.light .text-emerald-300 {
+  color: #059669 !important; /* Deep Emerald */
+}
+
+html.light .bg-emerald-500\/10,
+html.light .bg-emerald-950\/20,
+html.light .bg-emerald-950\/30 {
+  background-color: #ecfdf5 !important;
+}
+
+html.light .border-emerald-500\/20,
+html.light .border-emerald-500\/30,
+html.light .border-emerald-500\/40 {
+  border-color: #a7f3d0 !important;
+}
+
+html.light .text-amber-400,
+html.light .text-amber-300 {
+  color: #d97706 !important; /* Warm Amber */
+}
+
+html.light .bg-amber-500\/10,
+html.light .bg-amber-500\/20,
+html.light .bg-amber-950\/40,
+html.light .bg-amber-950\/70 {
+  background-color: #fffbeb !important;
+}
+
+html.light .border-amber-500\/20,
+html.light .border-amber-500\/30,
+html.light .border-amber-500\/40 {
+  border-color: #fde68a !important;
+}
+
+html.light .text-violet-400,
+html.light .text-violet-300 {
+  color: #7c3aed !important; /* Royal Violet */
+}
+
+html.light .bg-violet-500\/10,
+html.light .bg-violet-950\/20,
+html.light .bg-violet-950\/30 {
+  background-color: #f5f3ff !important;
+}
+
+html.light .border-violet-500\/20,
+html.light .border-violet-500\/30,
+html.light .border-violet-500\/40 {
+  border-color: #ddd6fe !important;
+}
+
+html.light .text-rose-400,
+html.light .text-rose-300 {
+  color: #e11d48 !important; /* Clean Crimson */
+}
+
+html.light .bg-rose-500\/10,
+html.light .bg-rose-950\/20 {
+  background-color: #fff1f2 !important;
+}
+
+html.light .border-rose-500\/20,
+html.light .border-rose-500\/30 {
+  border-color: #fecdd3 !important;
+}
+
+/* Light mode Header and Sidebar */
+html.light header {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+html.light aside {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 1px 0 4px rgba(15, 23, 42, 0.02);
+}
+
+/* Light mode drawer and modals */
+html.light .bg-slate-950.border-l {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: var(--shadow-drawer) !important;
 }

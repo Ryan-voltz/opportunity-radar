@@ -70,7 +70,7 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
   return (
     <div
       onClick={() => onSelect(opportunity)}
-      className="group relative rounded-xl bg-slate-900/60 border border-white/[0.08] hover:border-cyan-500/40 hover:bg-slate-900/90 transition-all duration-200 p-5 cursor-pointer flex flex-col justify-between hover:shadow-card-subtle"
+      className="group relative rounded-[20px] bg-slate-900/90 border border-white/[0.08] hover:border-blue-500/40 hover:bg-slate-900 transition-all duration-200 p-5 cursor-pointer flex flex-col justify-between shadow-card-subtle hover:-translate-y-1 hover:shadow-xl"
     >
       <div>
         {/* Top Meta Header: Freshness, Category, Country & Score */}

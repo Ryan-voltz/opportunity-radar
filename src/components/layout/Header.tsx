@@ -7,8 +7,11 @@ import {
   Sparkles,
   Command,
   Radio,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { Button } from '../common/Button';
+import { useTheme } from '../../context/ThemeContext';
 
 interface HeaderProps {
   currentSection: NavSection;
@@ -25,6 +28,7 @@ export const Header: React.FC<HeaderProps> = ({
   onQuickAction,
   unhandledAlertsCount,
 }) => {
+  const { theme, toggleTheme } = useTheme();
   const getSectionTitle = (section: NavSection) => {
     switch (section) {
       case 'dashboard':
@@ -107,6 +111,20 @@ export const Header: React.FC<HeaderProps> = ({
           <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] text-slate-400 bg-white/5 px-1 rounded border border-white/10">
             <Command className="w-2.5 h-2.5" /> K
           </kbd>
+        </button>
+
+        {/* Theme Toggle Button (Light / Dark) */}
+        <button
+          onClick={toggleTheme}
+          className="p-2 rounded-xl bg-slate-900 border border-white/[0.08] text-slate-300 hover:text-white hover:border-white/20 transition-all shadow-sm hover:shadow-md flex items-center justify-center"
+          title={theme === 'dark' ? 'Mudar para Modo Claro' : 'Mudar para Modo Escuro'}
+          aria-label="Alternar tema claro/escuro"
+        >
+          {theme === 'dark' ? (
+            <Sun className="w-4 h-4 text-amber-400 hover:rotate-45 transition-transform" />
+          ) : (
+            <Moon className="w-4 h-4 text-indigo-400 hover:-rotate-12 transition-transform" />
+          )}
         </button>
 
         {/* Notifications */}

@@ -189,7 +189,7 @@ export const DetailDrawer: React.FC<DetailDrawerProps> = ({
           {/* 3 HIGHLIGHT METRICS REQUESTED BY USER: LUCRO, VELOCIDADE, INVESTIMENTO */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
             {/* 1. ESTIMATIVA DE LUCRO */}
-            <div className="p-3.5 rounded-xl bg-gradient-to-br from-emerald-950/30 to-slate-900/90 border border-emerald-500/30 space-y-1">
+            <div className="p-3.5 rounded-[20px] bg-gradient-to-br from-emerald-950/30 to-slate-900/90 border border-emerald-500/30 space-y-1 shadow-sm">
               <span className="text-[10px] uppercase font-mono tracking-wider text-emerald-400 flex items-center gap-1 font-bold">
                 <DollarSign className="w-3.5 h-3.5" /> Lucro Estimado
               </span>
@@ -203,7 +203,7 @@ export const DetailDrawer: React.FC<DetailDrawerProps> = ({
             </div>
 
             {/* 2. VELOCIDADE DE EXECUÇÃO */}
-            <div className="p-3.5 rounded-xl bg-gradient-to-br from-cyan-950/30 to-slate-900/90 border border-cyan-500/30 space-y-1">
+            <div className="p-3.5 rounded-[20px] bg-gradient-to-br from-cyan-950/30 to-slate-900/90 border border-cyan-500/30 space-y-1 shadow-sm">
               <span className="text-[10px] uppercase font-mono tracking-wider text-cyan-400 flex items-center gap-1 font-bold">
                 <Zap className="w-3.5 h-3.5" /> Velocidade / Prazo
               </span>
@@ -217,7 +217,7 @@ export const DetailDrawer: React.FC<DetailDrawerProps> = ({
             </div>
 
             {/* 3. INVESTIMENTO NECESSÁRIO */}
-            <div className="p-3.5 rounded-xl bg-gradient-to-br from-violet-950/30 to-slate-900/90 border border-violet-500/30 space-y-1">
+            <div className="p-3.5 rounded-[20px] bg-gradient-to-br from-violet-950/30 to-slate-900/90 border border-violet-500/30 space-y-1 shadow-sm">
               <span className="text-[10px] uppercase font-mono tracking-wider text-violet-400 flex items-center gap-1 font-bold">
                 <ShieldCheck className="w-3.5 h-3.5" /> Investimento
               </span>

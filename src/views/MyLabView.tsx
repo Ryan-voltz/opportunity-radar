@@ -305,7 +305,7 @@ export const MyLabView: React.FC<MyLabViewProps> = ({
               return (
                 <div
                   key={proj.id}
-                  className="rounded-2xl border border-white/[0.08] bg-slate-900/70 overflow-hidden shadow-lg transition-all"
+                  className="rounded-[20px] border border-white/[0.08] bg-slate-900/90 overflow-hidden shadow-card-subtle hover:border-blue-500/30 transition-all"
                 >
                   {/* Project Main Card Header */}
                   <div className="p-5 sm:p-6 space-y-4">

@@ -25,12 +25,12 @@ export const AiCoachNotificationBanner: React.FC<AiCoachNotificationBannerProps>
         return (
           <div
             key={alert.id}
-            className={`relative rounded-2xl p-4 sm:p-5 border transition-all duration-300 shadow-lg ${
+            className={`relative rounded-[20px] p-4 sm:p-5 border transition-all duration-300 shadow-card-subtle ${
               isUrgent
-                ? 'bg-gradient-to-r from-amber-950/70 via-slate-900/90 to-amber-950/40 border-amber-500/40 text-amber-100 shadow-amber-500/5'
+                ? 'bg-gradient-to-r from-amber-950/70 via-slate-900/90 to-amber-950/40 border-amber-500/40 text-amber-100 shadow-amber-500/10'
                 : isLaunch
-                ? 'bg-gradient-to-r from-emerald-950/70 via-slate-900/90 to-cyan-950/40 border-emerald-500/40 text-emerald-100 shadow-emerald-500/5'
-                : 'bg-slate-900/80 border-cyan-500/30 text-slate-100'
+                ? 'bg-gradient-to-r from-emerald-950/70 via-slate-900/90 to-cyan-950/40 border-emerald-500/40 text-emerald-100 shadow-emerald-500/10'
+                : 'bg-slate-900/90 border-blue-500/30 text-slate-100'
             }`}
           >
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

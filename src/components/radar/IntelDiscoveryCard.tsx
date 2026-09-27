@@ -56,10 +56,10 @@ export const IntelDiscoveryCard: React.FC<IntelDiscoveryCardProps> = ({
 
   return (
     <div
-      className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
+      className={`rounded-[20px] border transition-all duration-200 overflow-hidden shadow-card-subtle ${
         isExpanded
-          ? 'bg-slate-900/90 border-cyan-500/40 shadow-panel'
-          : 'bg-slate-900/60 border-white/[0.08] hover:border-white/20 hover:bg-slate-900/80'
+          ? 'bg-slate-900 border-blue-500/50 shadow-xl'
+          : 'bg-slate-900/90 border-white/[0.08] hover:border-blue-500/40 hover:-translate-y-0.5'
       }`}
     >
       {/* Card Primary Header */}
