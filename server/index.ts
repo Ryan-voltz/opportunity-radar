@@ -47,7 +47,20 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json({ limit: '100kb' })); // Mitigate body flood attacks
+
+// 1.1 Safe JSON body parser (supports pre-parsed Vercel serverless bodies)
+app.use((req: Request, res: Response, next: NextFunction) => {
+  if (req.body && typeof req.body === 'object') {
+    return next();
+  }
+  express.json({ limit: '100kb' })(req, res, (err) => {
+    if (err) {
+      if (req.body) return next();
+      return res.status(400).json({ error: 'Payload JSON inválido.' });
+    }
+    next();
+  });
+});
 
 // 2. Global Rate Limiter: 200 requests per 15 min
 const globalLimiter = createRateLimiter({
@@ -362,34 +375,42 @@ app.get('/api/hypotheses', async (req: Request, res: Response) => {
 
 // Hypotheses Creation
 app.post('/api/hypotheses', async (req: Request, res: Response) => {
-  const { title, hypothesisText, successMetric } = req.body;
-  if (!title) {
-    return res.status(400).json({ error: 'Título da hipótese é obrigatório.' });
+  try {
+    const { title, hypothesisText, successMetric } = req.body || {};
+    if (!title) {
+      return res.status(400).json({ error: 'Título da hipótese é obrigatório.' });
+    }
+
+    const newHyp = {
+      id: `hyp-${Date.now().toString().slice(-4)}`,
+      title: sanitizeString(title),
+      opportunityRefId: 'custom',
+      status: 'Backlog' as const,
+      hypothesisText: sanitizeString(hypothesisText || ''),
+      successMetric: sanitizeString(successMetric || ''),
+      confidenceScore: 80,
+      notes: 'Criada via API segura.',
+      createdAt: new Date().toISOString().split('T')[0],
+    };
+
+    const saved = await dbClient.createHypothesis(newHyp);
+    res.status(201).json(saved);
+  } catch (err) {
+    res.status(500).json({ error: (err as Error).message });
   }
-
-  const newHyp = {
-    id: `hyp-${Date.now().toString().slice(-4)}`,
-    title: sanitizeString(title),
-    opportunityRefId: 'custom',
-    status: 'Backlog' as const,
-    hypothesisText: sanitizeString(hypothesisText || ''),
-    successMetric: sanitizeString(successMetric || ''),
-    confidenceScore: 80,
-    notes: 'Criada via API segura.',
-    createdAt: new Date().toISOString().split('T')[0],
-  };
-
-  const saved = await dbClient.createHypothesis(newHyp);
-  res.status(201).json(saved);
 });
 
 // Hypotheses Deletion
 app.delete('/api/hypotheses/:id', async (req: Request, res: Response) => {
-  const deleted = await dbClient.deleteHypothesis(req.params.id);
-  if (!deleted) {
-    return res.status(404).json({ error: 'Hipótese não encontrada.' });
+  try {
+    const deleted = await dbClient.deleteHypothesis(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ error: 'Hipótese não encontrada.' });
+    }
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: (err as Error).message });
   }
-  res.json({ success: true });
 });
 
 // ====================================================================
@@ -404,25 +425,29 @@ app.get('/api/alerts', async (req: Request, res: Response) => {
 
 // Alerts Creation
 app.post('/api/alerts', async (req: Request, res: Response) => {
-  const { name, queryOrKeywords, minScore, frequency } = req.body;
-  if (!name) {
-    return res.status(400).json({ error: 'Nome do alerta é obrigatório.' });
+  try {
+    const { name, queryOrKeywords, minScore, frequency } = req.body || {};
+    if (!name) {
+      return res.status(400).json({ error: 'Nome do alerta é obrigatório.' });
+    }
+
+    const newAlert = {
+      id: `alt-${Date.now().toString().slice(-4)}`,
+      name: sanitizeString(name),
+      queryOrKeywords: sanitizeString(queryOrKeywords || 'SaaS'),
+      minScore: Number(minScore) || 85,
+      channels: ['In-App' as const, 'Email' as const],
+      frequency: frequency || 'Tempo Real',
+      isActive: true,
+      triggersCount: 0,
+      lastTriggered: 'Recém criado',
+    };
+
+    const saved = await dbClient.createAlert(newAlert);
+    res.status(201).json(saved);
+  } catch (err) {
+    res.status(500).json({ error: (err as Error).message });
   }
-
-  const newAlert = {
-    id: `alt-${Date.now().toString().slice(-4)}`,
-    name: sanitizeString(name),
-    queryOrKeywords: sanitizeString(queryOrKeywords || 'SaaS'),
-    minScore: Number(minScore) || 85,
-    channels: ['In-App' as const, 'Email' as const],
-    frequency: frequency || 'Tempo Real',
-    isActive: true,
-    triggersCount: 0,
-    lastTriggered: 'Recém criado',
-  };
-
-  const saved = await dbClient.createAlert(newAlert);
-  res.status(201).json(saved);
 });
 
 // Toggle Alert Active

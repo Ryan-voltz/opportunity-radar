@@ -3566,7 +3566,18 @@ app.use(
     credentials: true
   })
 );
-app.use(express.json({ limit: "100kb" }));
+app.use((req, res, next) => {
+  if (req.body && typeof req.body === "object") {
+    return next();
+  }
+  express.json({ limit: "100kb" })(req, res, (err) => {
+    if (err) {
+      if (req.body) return next();
+      return res.status(400).json({ error: "Payload JSON inv\xE1lido." });
+    }
+    next();
+  });
+});
 var globalLimiter = createRateLimiter({
   windowMs: 15 * 60 * 1e3,
   maxRequests: 200,
@@ -3812,53 +3823,65 @@ app.get("/api/hypotheses", async (req, res) => {
   res.json(list);
 });
 app.post("/api/hypotheses", async (req, res) => {
-  const { title, hypothesisText, successMetric } = req.body;
-  if (!title) {
-    return res.status(400).json({ error: "T\xEDtulo da hip\xF3tese \xE9 obrigat\xF3rio." });
+  try {
+    const { title, hypothesisText, successMetric } = req.body || {};
+    if (!title) {
+      return res.status(400).json({ error: "T\xEDtulo da hip\xF3tese \xE9 obrigat\xF3rio." });
+    }
+    const newHyp = {
+      id: `hyp-${Date.now().toString().slice(-4)}`,
+      title: sanitizeString(title),
+      opportunityRefId: "custom",
+      status: "Backlog",
+      hypothesisText: sanitizeString(hypothesisText || ""),
+      successMetric: sanitizeString(successMetric || ""),
+      confidenceScore: 80,
+      notes: "Criada via API segura.",
+      createdAt: (/* @__PURE__ */ new Date()).toISOString().split("T")[0]
+    };
+    const saved = await dbClient.createHypothesis(newHyp);
+    res.status(201).json(saved);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-  const newHyp = {
-    id: `hyp-${Date.now().toString().slice(-4)}`,
-    title: sanitizeString(title),
-    opportunityRefId: "custom",
-    status: "Backlog",
-    hypothesisText: sanitizeString(hypothesisText || ""),
-    successMetric: sanitizeString(successMetric || ""),
-    confidenceScore: 80,
-    notes: "Criada via API segura.",
-    createdAt: (/* @__PURE__ */ new Date()).toISOString().split("T")[0]
-  };
-  const saved = await dbClient.createHypothesis(newHyp);
-  res.status(201).json(saved);
 });
 app.delete("/api/hypotheses/:id", async (req, res) => {
-  const deleted = await dbClient.deleteHypothesis(req.params.id);
-  if (!deleted) {
-    return res.status(404).json({ error: "Hip\xF3tese n\xE3o encontrada." });
+  try {
+    const deleted = await dbClient.deleteHypothesis(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ error: "Hip\xF3tese n\xE3o encontrada." });
+    }
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-  res.json({ success: true });
 });
 app.get("/api/alerts", async (req, res) => {
   const list = await dbClient.getAlerts();
   res.json(list);
 });
 app.post("/api/alerts", async (req, res) => {
-  const { name, queryOrKeywords, minScore, frequency } = req.body;
-  if (!name) {
-    return res.status(400).json({ error: "Nome do alerta \xE9 obrigat\xF3rio." });
+  try {
+    const { name, queryOrKeywords, minScore, frequency } = req.body || {};
+    if (!name) {
+      return res.status(400).json({ error: "Nome do alerta \xE9 obrigat\xF3rio." });
+    }
+    const newAlert = {
+      id: `alt-${Date.now().toString().slice(-4)}`,
+      name: sanitizeString(name),
+      queryOrKeywords: sanitizeString(queryOrKeywords || "SaaS"),
+      minScore: Number(minScore) || 85,
+      channels: ["In-App", "Email"],
+      frequency: frequency || "Tempo Real",
+      isActive: true,
+      triggersCount: 0,
+      lastTriggered: "Rec\xE9m criado"
+    };
+    const saved = await dbClient.createAlert(newAlert);
+    res.status(201).json(saved);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-  const newAlert = {
-    id: `alt-${Date.now().toString().slice(-4)}`,
-    name: sanitizeString(name),
-    queryOrKeywords: sanitizeString(queryOrKeywords || "SaaS"),
-    minScore: Number(minScore) || 85,
-    channels: ["In-App", "Email"],
-    frequency: frequency || "Tempo Real",
-    isActive: true,
-    triggersCount: 0,
-    lastTriggered: "Rec\xE9m criado"
-  };
-  const saved = await dbClient.createAlert(newAlert);
-  res.status(201).json(saved);
 });
 app.patch("/api/alerts/:id/toggle", async (req, res) => {
   const updated = await dbClient.toggleAlert(req.params.id);
