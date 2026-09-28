@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Badge } from '../components/common/Badge';
 import { Button } from '../components/common/Button';
+import { useCurrency, CurrencyMode } from '../context/CurrencyContext';
 import {
   Settings,
   Key,
@@ -18,7 +19,7 @@ export const SettingsView: React.FC = () => {
 
   // Form states
   const [workspaceName, setWorkspaceName] = useState('Ryan Solo SaaS Lab');
-  const [currency, setCurrency] = useState('BRL / USD');
+  const { currency, setCurrency } = useCurrency();
   const [apiKeyGemini, setApiKeyGemini] = useState('sk-live-••••••••••••••••••••38f9');
   const [webhookUrl, setWebhookUrl] = useState('https://discord.com/api/webhooks/12345/abcde');
 
@@ -139,12 +140,12 @@ export const SettingsView: React.FC = () => {
                 </label>
                 <select
                   value={currency}
-                  onChange={(e) => setCurrency(e.target.value)}
+                  onChange={(e) => setCurrency(e.target.value as CurrencyMode)}
                   className="w-full px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-white/[0.1] text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500 font-sans"
                 >
-                  <option value="BRL / USD">BRL (R$) e USD ($)</option>
-                  <option value="USD">Apenas USD ($)</option>
-                  <option value="EUR">Apenas EUR (€)</option>
+                  <option value="BRL">🇧🇷 Real Brasileiro (R$) - Convertido em Real</option>
+                  <option value="USD">🇺🇸 Dólar Americano ($ USD)</option>
+                  <option value="EUR">🇪🇺 Euro (€ EUR)</option>
                 </select>
               </div>
             </div>

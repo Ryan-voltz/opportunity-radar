@@ -12,6 +12,7 @@ import {
   Shield,
   Layers,
 } from 'lucide-react';
+import { CurrencyValue } from './CurrencyValue';
 
 interface OpportunityCardProps {
   opportunity: Opportunity;
@@ -133,31 +134,36 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
 
         {/* 3 Core Highlighted Metrics: Lucro, Velocidade, Investimento (Clean Neutral Grid) */}
         <div className="grid grid-cols-3 gap-2 mb-3.5 p-2.5 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/[0.06]">
-          <div className="p-1.5 rounded-lg bg-white dark:bg-white/[0.04] border border-slate-200/60 dark:border-white/[0.06]">
+          <div className="p-1.5 rounded-lg bg-white dark:bg-white/[0.04] border border-slate-200/60 dark:border-white/[0.06] flex flex-col justify-between">
             <span className="text-[10px] font-sans uppercase text-slate-500 dark:text-slate-400 font-semibold block truncate">
               Lucro Est.
             </span>
-            <span className="text-xs font-bold font-sans text-slate-900 dark:text-slate-100 truncate block mt-0.5">
-              {opportunity.financials?.estimatedMonthlyProfit.split(' ')[0] || opportunity.potentialMrr.split(' ')[0]} {opportunity.financials?.estimatedMonthlyProfit.split(' ')[1] || 'MRR'}
-            </span>
+            <CurrencyValue
+              value={opportunity.financials?.estimatedMonthlyProfit || opportunity.potentialMrr}
+              className="text-xs font-bold font-sans text-slate-900 dark:text-slate-100 truncate block mt-0.5"
+            />
           </div>
 
-          <div className="p-1.5 rounded-lg bg-white dark:bg-white/[0.04] border border-slate-200/60 dark:border-white/[0.06]">
+          <div className="p-1.5 rounded-lg bg-white dark:bg-white/[0.04] border border-slate-200/60 dark:border-white/[0.06] flex flex-col justify-between">
             <span className="text-[10px] font-sans uppercase text-slate-500 dark:text-slate-400 font-semibold block truncate">
               Velocidade
             </span>
             <span className="text-xs font-bold font-sans text-slate-900 dark:text-slate-100 truncate block mt-0.5">
-              MVP {opportunity.executionSpeed?.mvpDays || opportunity.timeToMvpDays} dias
+              MVP {opportunity.executionSpeed?.mvpDays || opportunity.timeToMvpDays}d
+            </span>
+            <span className="text-[9px] font-sans text-slate-400 font-medium block mt-0.5 truncate">
+              1ª venda {opportunity.executionSpeed?.firstSaleDays || 18}d
             </span>
           </div>
 
-          <div className="p-1.5 rounded-lg bg-white dark:bg-white/[0.04] border border-slate-200/60 dark:border-white/[0.06]">
+          <div className="p-1.5 rounded-lg bg-white dark:bg-white/[0.04] border border-slate-200/60 dark:border-white/[0.06] flex flex-col justify-between">
             <span className="text-[10px] font-sans uppercase text-slate-500 dark:text-slate-400 font-semibold block truncate">
               Investimento
             </span>
-            <span className="text-xs font-bold font-sans text-slate-900 dark:text-slate-100 truncate block mt-0.5">
-              {opportunity.investment?.initialCapitalEstimated.split(' ')[0] || 'R$ 180'}
-            </span>
+            <CurrencyValue
+              value={opportunity.investment?.initialCapitalEstimated || 'R$ 180'}
+              className="text-xs font-bold font-sans text-slate-900 dark:text-slate-100 truncate block mt-0.5"
+            />
           </div>
         </div>
 

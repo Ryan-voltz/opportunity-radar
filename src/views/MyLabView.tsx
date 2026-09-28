@@ -4,6 +4,7 @@ import { Badge } from '../components/common/Badge';
 import { Button } from '../components/common/Button';
 import { AiCoachNotificationBanner } from '../components/common/AiCoachNotificationBanner';
 import { PersonalProjectService } from '../services/personalProjectService';
+import { CurrencyValue } from '../components/common/CurrencyValue';
 import {
   FlaskConical,
   Plus,
@@ -235,9 +236,10 @@ export const MyLabView: React.FC<MyLabViewProps> = ({
             <span className="text-2xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
               Meta de Faturamento
             </span>
-            <span className="text-lg font-bold text-slate-900 dark:text-white">
-              R$ 54k+/mês
-            </span>
+            <CurrencyValue
+              value="R$ 54k+/mês"
+              className="text-lg font-bold text-slate-900 dark:text-white"
+            />
           </div>
         </div>
       </div>
@@ -364,10 +366,12 @@ export const MyLabView: React.FC<MyLabViewProps> = ({
                           <DollarSign className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> Lucro Estimado
                         </span>
                         <div className="text-sm font-bold text-slate-900 dark:text-slate-100">
-                          {proj.financialMetrics.estimatedMonthlyProfit}
+                          <CurrencyValue value={proj.financialMetrics.estimatedMonthlyProfit} />
                         </div>
-                        <div className="text-2xs text-slate-500 dark:text-slate-400">
-                          Margem: {proj.financialMetrics.profitMargin} • Ticket: {proj.financialMetrics.averageTicket}
+                        <div className="text-2xs text-slate-500 dark:text-slate-400 flex items-center gap-1 flex-wrap">
+                          <span>Margem: {proj.financialMetrics.profitMargin}</span>
+                          <span>• Ticket:</span>
+                          <CurrencyValue value={proj.financialMetrics.averageTicket} inline />
                         </div>
                       </div>
 
@@ -388,7 +392,7 @@ export const MyLabView: React.FC<MyLabViewProps> = ({
                           <ShieldCheck className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400" /> Investimento
                         </span>
                         <div className="text-sm font-bold text-slate-900 dark:text-slate-100">
-                          {proj.investmentMetrics.initialCapitalEstimated}
+                          <CurrencyValue value={proj.investmentMetrics.initialCapitalEstimated} />
                         </div>
                         <div className="text-2xs text-slate-500 dark:text-slate-400">
                           Bootstrap • Baixo Risco

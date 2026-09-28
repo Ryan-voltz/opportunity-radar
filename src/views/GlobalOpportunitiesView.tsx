@@ -1,6 +1,7 @@
 import React from 'react';
 import { GeoArbitrageOpportunity } from '../types';
 import { Badge } from '../components/common/Badge';
+import { CurrencyValue } from '../components/common/CurrencyValue';
 import { Globe, ArrowRight, ShieldCheck } from 'lucide-react';
 
 interface GlobalOpportunitiesViewProps {
@@ -46,8 +47,10 @@ export const GlobalOpportunitiesView: React.FC<GlobalOpportunitiesViewProps> = (
                 <div>
                   <div className="text-2xs text-slate-500 font-medium">Modelo Original Comprovado</div>
                   <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">{geo.originalModel}</h3>
-                  <div className="text-2xs text-slate-500">
-                    Origem: {geo.originalMarket} • Faturamento: {geo.originalAnnualRevenue}
+                  <div className="text-2xs text-slate-500 flex items-center gap-1.5 flex-wrap">
+                    <span>Origem: {geo.originalMarket}</span>
+                    <span>• Faturamento:</span>
+                    <CurrencyValue value={geo.originalAnnualRevenue} inline />
                   </div>
                 </div>
               </div>
@@ -59,8 +62,9 @@ export const GlobalOpportunitiesView: React.FC<GlobalOpportunitiesViewProps> = (
               <div className="text-left sm:text-right">
                 <div className="text-2xs text-slate-500 font-medium">Mercado Alvo Desatendido</div>
                 <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-200">{geo.targetMarket}</h4>
-                <div className="text-2xs text-slate-600 dark:text-slate-400 font-medium">
-                  TAM Estimado: {geo.estimatedTAMInTarget}
+                <div className="text-2xs text-slate-600 dark:text-slate-400 font-medium flex items-center justify-start sm:justify-end gap-1.5 flex-wrap">
+                  <span>TAM Estimado:</span>
+                  <CurrencyValue value={geo.estimatedTAMInTarget} inline />
                 </div>
               </div>
             </div>

@@ -5,6 +5,8 @@ import { Badge } from './Badge';
 import { Button } from './Button';
 import { PersonalProjectService } from '../../services/personalProjectService';
 import { useTheme } from '../../context/ThemeContext';
+import { CurrencyValue } from './CurrencyValue';
+import { CurrencySwitcher } from './CurrencySwitcher';
 import {
   X,
   Bookmark,
@@ -339,6 +341,9 @@ export const DetailDrawer: React.FC<DetailDrawerProps> = ({
               {isSaved || opportunity.isSaved ? 'Salvo' : 'Salvar'}
             </Button>
 
+            {/* Currency Switcher */}
+            <CurrencySwitcher compact />
+
             {/* Fullscreen Toggle Button */}
             <button
               onClick={() => setIsFullscreen(!isFullscreen)}
@@ -408,14 +413,14 @@ export const DetailDrawer: React.FC<DetailDrawerProps> = ({
                 </span>
               </div>
               <div className="text-xl font-bold font-sans text-slate-900 dark:text-white tracking-tight">
-                {monthlyProfit}
+                <CurrencyValue value={monthlyProfit} />
               </div>
               <div className="text-xs font-sans flex items-center justify-between pt-1.5 border-t border-slate-200/70 dark:border-white/10 text-slate-600 dark:text-slate-400">
                 <span>
                   Margem: <strong className="text-slate-900 dark:text-slate-200 font-semibold">{profitMargin}</strong>
                 </span>
                 <span>
-                  Ticket: <strong className="text-slate-900 dark:text-slate-200 font-semibold">{averageTicket}</strong>
+                  Ticket: <CurrencyValue value={averageTicket} inline className="font-semibold text-slate-900 dark:text-slate-200" />
                 </span>
               </div>
             </div>
@@ -454,7 +459,7 @@ export const DetailDrawer: React.FC<DetailDrawerProps> = ({
                 </span>
               </div>
               <div className="text-xl font-bold font-sans text-slate-900 dark:text-white tracking-tight">
-                {capitalEstimated}
+                <CurrencyValue value={capitalEstimated} />
               </div>
               <div className="text-xs font-sans flex items-center justify-between pt-1.5 border-t border-slate-200/70 dark:border-white/10 text-slate-600 dark:text-slate-400">
                 <span>
@@ -652,17 +657,18 @@ export const DetailDrawer: React.FC<DetailDrawerProps> = ({
               >
                 <div className="flex items-center justify-between">
                   <span
-                    className={`text-[11px] font-mono uppercase font-extrabold tracking-wider ${
+                    className={`text-[11px] font-sans uppercase font-bold tracking-wider ${
                       isLight ? 'text-slate-700' : 'text-slate-300'
                     }`}
                   >
                     Detalhamento do Investimento Inicial (Risco Mínimo de Capital):
                   </span>
-                  <span className={`text-[11px] font-mono font-bold ${isLight ? 'text-emerald-700' : 'text-emerald-400'}`}>
-                    Total: {capitalEstimated}
-                  </span>
+                  <div className={`text-[11px] font-sans font-bold flex items-center gap-1.5 ${isLight ? 'text-emerald-700' : 'text-emerald-400'}`}>
+                    <span>Total:</span>
+                    <CurrencyValue value={capitalEstimated} inline />
+                  </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-sans">
                   {capitalBreakdown.map((item, idx) => (
                     <div
                       key={idx}
@@ -673,9 +679,11 @@ export const DetailDrawer: React.FC<DetailDrawerProps> = ({
                       }`}
                     >
                       <span className="font-medium">{item.item}</span>
-                      <strong className={isLight ? 'text-emerald-700 font-extrabold' : 'text-emerald-400 font-extrabold'}>
-                        {item.cost}
-                      </strong>
+                      <CurrencyValue
+                        value={item.cost}
+                        inline
+                        className={isLight ? 'text-emerald-700 font-bold' : 'text-emerald-400 font-bold'}
+                      />
                     </div>
                   ))}
                 </div>
@@ -698,13 +706,14 @@ export const DetailDrawer: React.FC<DetailDrawerProps> = ({
                     <TrendingUp className="w-4 h-4 text-emerald-500" />
                     Projeção em 3 Cenários Reais (Lucro Líquido no Bolso)
                   </h5>
-                  <span className={`text-[11px] font-mono ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-                    Ticket Médio: <strong>{averageTicket}</strong>
-                  </span>
+                  <div className={`text-[11px] font-sans flex items-center gap-1.5 ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
+                    <span>Ticket Médio:</span>
+                    <CurrencyValue value={averageTicket} inline className="font-bold text-slate-900 dark:text-white" />
+                  </div>
                 </div>
 
                 <div className="overflow-x-auto no-scrollbar">
-                  <table className="w-full text-left text-xs font-mono">
+                  <table className="w-full text-left text-xs font-sans">
                     <thead>
                       <tr className={`border-b ${isLight ? 'border-slate-200 text-slate-500' : 'border-white/10 text-slate-400'}`}>
                         <th className="pb-2 font-semibold">Cenário</th>
@@ -724,13 +733,13 @@ export const DetailDrawer: React.FC<DetailDrawerProps> = ({
                             {sc.customers} clientes
                           </td>
                           <td className={`py-2.5 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
-                            {sc.gross}
+                            <CurrencyValue value={sc.gross} inline />
                           </td>
                           <td className={`py-2.5 ${isLight ? 'text-rose-700' : 'text-rose-400'}`}>
-                            {sc.costs}
+                            <CurrencyValue value={sc.costs} inline />
                           </td>
-                          <td className={`py-2.5 font-black text-right ${isLight ? 'text-emerald-700' : 'text-emerald-400'}`}>
-                            {sc.net}
+                          <td className={`py-2.5 font-bold text-right ${isLight ? 'text-emerald-700' : 'text-emerald-400'}`}>
+                            <CurrencyValue value={sc.net} inline />
                           </td>
                         </tr>
                       ))}

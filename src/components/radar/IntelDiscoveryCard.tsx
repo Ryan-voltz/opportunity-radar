@@ -19,6 +19,7 @@ import {
   Code2,
   ShieldCheck,
 } from 'lucide-react';
+import { CurrencyValue } from '../common/CurrencyValue';
 
 interface IntelDiscoveryCardProps {
   opportunity: Opportunity;
@@ -137,38 +138,40 @@ export const IntelDiscoveryCard: React.FC<IntelDiscoveryCardProps> = ({
 
         {/* 3 User-Requested Highlighted Metrics: Lucro, Velocidade, Investimento (Neutral Executive Layout) */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200/80 dark:border-white/[0.06]">
-          <div className="p-2.5 rounded-lg bg-white dark:bg-white/[0.04] border border-slate-200/70 dark:border-white/[0.06]">
+          <div className="p-2.5 rounded-lg bg-white dark:bg-white/[0.04] border border-slate-200/70 dark:border-white/[0.06] flex flex-col justify-between">
             <span className="text-[11px] font-sans uppercase text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5">
               <DollarSign className="w-3.5 h-3.5 text-slate-400" /> Lucro Estimado
             </span>
-            <span className="text-sm font-bold font-sans text-slate-900 dark:text-slate-100 block truncate mt-1" title={opportunity.financials?.estimatedMonthlyProfit || opportunity.potentialMrr}>
-              {opportunity.financials?.estimatedMonthlyProfit || opportunity.potentialMrr}
-            </span>
-            <span className="text-[11px] font-sans text-slate-500 dark:text-slate-400 mt-0.5 block">
+            <CurrencyValue
+              value={opportunity.financials?.estimatedMonthlyProfit || opportunity.potentialMrr}
+              className="text-sm font-bold font-sans text-slate-900 dark:text-slate-100 block truncate mt-1"
+            />
+            <span className="text-[11px] font-sans text-slate-500 dark:text-slate-400 mt-1 block">
               Margem: <strong className="text-slate-800 dark:text-slate-200 font-semibold">{opportunity.financials?.profitMargin || '85%'}</strong>
             </span>
           </div>
 
-          <div className="p-2.5 rounded-lg bg-white dark:bg-white/[0.04] border border-slate-200/70 dark:border-white/[0.06]">
+          <div className="p-2.5 rounded-lg bg-white dark:bg-white/[0.04] border border-slate-200/70 dark:border-white/[0.06] flex flex-col justify-between">
             <span className="text-[11px] font-sans uppercase text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5 text-slate-400" /> Velocidade / Prazo
             </span>
             <span className="text-sm font-bold font-sans text-slate-900 dark:text-slate-100 block truncate mt-1">
               MVP em {opportunity.executionSpeed?.mvpDays || opportunity.timeToMvpDays} dias
             </span>
-            <span className="text-[11px] font-sans text-slate-500 dark:text-slate-400 mt-0.5 block">
+            <span className="text-[11px] font-sans text-slate-500 dark:text-slate-400 mt-1 block">
               1ª Venda: <strong className="text-slate-800 dark:text-slate-200 font-semibold">{opportunity.executionSpeed?.firstSaleDays || 18}d</strong>
             </span>
           </div>
 
-          <div className="p-2.5 rounded-lg bg-white dark:bg-white/[0.04] border border-slate-200/70 dark:border-white/[0.06]">
+          <div className="p-2.5 rounded-lg bg-white dark:bg-white/[0.04] border border-slate-200/70 dark:border-white/[0.06] flex flex-col justify-between">
             <span className="text-[11px] font-sans uppercase text-slate-500 dark:text-slate-400 font-semibold flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-slate-400" /> Investimento
             </span>
-            <span className="text-sm font-bold font-sans text-slate-900 dark:text-slate-100 block truncate mt-1" title={opportunity.investment?.initialCapitalEstimated || 'R$ 180'}>
-              {opportunity.investment?.initialCapitalEstimated || 'R$ 180 ($35 USD)'}
-            </span>
-            <span className="text-[11px] font-sans text-slate-500 dark:text-slate-400 mt-0.5 block truncate">
+            <CurrencyValue
+              value={opportunity.investment?.initialCapitalEstimated || 'R$ 180 ($35 USD)'}
+              className="text-sm font-bold font-sans text-slate-900 dark:text-slate-100 block truncate mt-1"
+            />
+            <span className="text-[11px] font-sans text-slate-500 dark:text-slate-400 mt-1 block truncate">
               {opportunity.investment?.budgetTier || 'Bootstrap'}
             </span>
           </div>

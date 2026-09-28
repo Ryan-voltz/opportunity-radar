@@ -4,6 +4,7 @@ import { OpportunityCard } from '../components/common/OpportunityCard';
 import { FilterBar } from '../components/common/FilterBar';
 import { RadarScoreBadge } from '../components/common/RadarScoreBadge';
 import { Badge } from '../components/common/Badge';
+import { CurrencyValue } from '../components/common/CurrencyValue';
 import { LayoutGrid, List, Bookmark, ChevronRight } from 'lucide-react';
 
 interface OpportunitiesViewProps {
@@ -169,7 +170,7 @@ export const OpportunitiesView: React.FC<OpportunitiesViewProps> = ({
                       </Badge>
                     </td>
                     <td className="py-3.5 px-4 whitespace-nowrap text-slate-900 dark:text-slate-100 font-semibold">
-                      {opp.potentialMrr}
+                      <CurrencyValue value={opp.potentialMrr} inline />
                     </td>
                     <td className="py-3.5 px-4 whitespace-nowrap text-slate-600 dark:text-slate-400 font-medium">
                       {opp.timeToMvpDays} dias

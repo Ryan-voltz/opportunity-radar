@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Opportunity } from '../types';
 import { OpportunityCard } from '../components/common/OpportunityCard';
 import { Badge } from '../components/common/Badge';
+import { CurrencyValue } from '../components/common/CurrencyValue';
 import { Layers, Split, Store, Cpu, CheckCircle } from 'lucide-react';
 
 interface SaasRadarViewProps {
@@ -53,8 +54,10 @@ export const SaasRadarView: React.FC<SaasRadarViewProps> = ({
         >
           <div className="flex items-center gap-2 mb-2">
             <Cpu className="w-4 h-4 opacity-75" />
-            <span className="text-xs font-semibold uppercase tracking-wider">
-              Micro-SaaS Solo ($5k - $20k MRR)
+            <span className="text-xs font-semibold uppercase tracking-wider flex items-center gap-1">
+              <span>Micro-SaaS Solo (</span>
+              <CurrencyValue value="$5k - $20k MRR" inline />
+              <span>)</span>
             </span>
           </div>
           <p className="text-xs opacity-75 leading-relaxed font-sans">

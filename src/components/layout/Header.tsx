@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../common/Button';
 import { useTheme } from '../../context/ThemeContext';
+import { CurrencySwitcher } from '../common/CurrencySwitcher';
 
 interface HeaderProps {
   currentSection: NavSection;
@@ -112,6 +113,9 @@ export const Header: React.FC<HeaderProps> = ({
             <Command className="w-2.5 h-2.5" /> K
           </kbd>
         </button>
+
+        {/* Currency Switcher (Real-time Real / Dollar converter) */}
+        <CurrencySwitcher />
 
         {/* Theme Toggle Button (Light / Dark) */}
         <button

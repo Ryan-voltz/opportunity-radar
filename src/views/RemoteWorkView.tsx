@@ -1,6 +1,7 @@
 import React from 'react';
 import { RemoteWorkInsight } from '../types';
 import { Badge } from '../components/common/Badge';
+import { CurrencyValue } from '../components/common/CurrencyValue';
 import { Briefcase, DollarSign, TrendingUp, Globe, Code, ArrowUpRight } from 'lucide-react';
 
 interface RemoteWorkViewProps {
@@ -52,9 +53,11 @@ export const RemoteWorkView: React.FC<RemoteWorkViewProps> = ({ insights }) => {
               <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-white/[0.06] space-y-1.5 mb-4">
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-slate-500">Taxa Horária:</span>
-                  <span className="font-bold text-slate-900 dark:text-slate-100">
-                    {item.averageRateHourUsd}
-                  </span>
+                  <CurrencyValue
+                    value={item.averageRateHourUsd}
+                    inline
+                    className="font-bold text-slate-900 dark:text-slate-100"
+                  />
                 </div>
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-slate-500">Arbitragem Salarial:</span>
