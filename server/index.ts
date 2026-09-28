@@ -5,18 +5,15 @@ import { securityHeaders, createRateLimiter, sanitizeString } from './middleware
 import { aiAnalystService } from './services/aiAnalystService';
 import { globalCache } from './services/cacheService';
 import { pipelineManager } from './ingestion/pipelineManager';
+import { dbClient } from './db/dbClient';
 
-// Import domain mock data for seed
+// Import domain seed data for pulse and geography
 import {
-  MOCK_OPPORTUNITIES,
   MOCK_PULSE_DATA,
   MOCK_COUNTRY_SIGNALS,
   MOCK_LIVE_SIGNALS,
-  MOCK_ALERTS,
-  MOCK_HYPOTHESES,
 } from '../src/data/mockData';
 import {
-  MOCK_MARKET_NEWS,
   MOCK_EMERGING_TRENDS,
   MOCK_DAILY_BRIEF,
 } from '../src/data/newsData';
@@ -67,12 +64,6 @@ const aiLimiter = createRateLimiter({
   message: 'Limite de análises de IA por minuto atingido. Aguarde 60 segundos.',
 });
 
-// In-Memory Data Store (ready for PostgreSQL swap)
-let opportunitiesDb = [...MOCK_OPPORTUNITIES];
-let alertsDb = [...MOCK_ALERTS];
-let hypothesesDb = [...MOCK_HYPOTHESES];
-let newsDb = [...MOCK_MARKET_NEWS];
-
 // ====================================================================
 // API ROUTES
 // ====================================================================
@@ -81,34 +72,52 @@ let newsDb = [...MOCK_MARKET_NEWS];
 app.get('/api', (req: Request, res: Response) => {
   res.json({
     status: 'ok',
-    service: 'Opportunity Radar Intelligence API',
-    version: '1.0.0',
+    service: 'Opportunity Radar Intelligence API (Persistent Backend)',
+    version: '1.1.0',
     endpoints: [
       '/api/health',
+      '/api/db-status',
       '/api/pulse',
       '/api/countries',
       '/api/opportunities',
-      '/api/market-news',
-      '/api/trends',
-      '/api/brief',
+      '/api/personal-projects',
+      '/api/news',
+      '/api/news/trends',
+      '/api/news/daily-brief',
       '/api/alerts',
-      '/api/signals/live',
+      '/api/signals',
       '/api/hypotheses',
-      '/api/sources',
-      '/api/ai/analyze-project',
-      '/api/ai/detect-opportunities'
+      '/api/admin/sources',
+      '/api/ai/analyze',
+      '/api/ai/stream'
     ],
     timestamp: new Date().toISOString()
   });
 });
 
+// Database Telemetry & Cloud Connection Status
+app.get('/api/db-status', async (req: Request, res: Response) => {
+  try {
+    const status = await dbClient.getDbStatus();
+    res.json(status);
+  } catch (err) {
+    res.status(500).json({ error: (err as Error).message });
+  }
+});
+
 // Health Check & Telemetry
-app.get('/api/health', (req: Request, res: Response) => {
+app.get('/api/health', async (req: Request, res: Response) => {
+  const dbStatus = await dbClient.getDbStatus();
   res.json({
     status: 'ok',
     environment: process.env.NODE_ENV || 'production',
     uptimeSeconds: Math.floor(process.uptime()),
     timestamp: new Date().toISOString(),
+    database: {
+      engine: dbStatus.engine,
+      provider: dbStatus.provider,
+      connected: dbStatus.connected,
+    },
     memory: process.memoryUsage(),
   });
 });
@@ -125,6 +134,10 @@ app.get('/api/countries', (req: Request, res: Response) => {
   res.json(MOCK_COUNTRY_SIGNALS);
 });
 
+// ====================================================================
+// OPPORTUNITIES ENDPOINTS (Persistent Database + Ingestion Pipeline)
+// ====================================================================
+
 // Opportunities (with search, country filter, pagination & deduplication)
 app.get('/api/opportunities', async (req: Request, res: Response) => {
   const { search, country, category, limit = '50', offset = '0' } = req.query;
@@ -134,42 +147,28 @@ app.get('/api/opportunities', async (req: Request, res: Response) => {
     cacheKey,
     async () => {
       const realOpps = pipelineManager.getQualifiedOpportunities();
+      const dbResult = await dbClient.getOpportunities({
+        search: typeof search === 'string' ? search : undefined,
+        country: typeof country === 'string' ? country : undefined,
+        category: typeof category === 'string' ? category : undefined,
+        limit: parseInt(limit as string, 10) || 50,
+        offset: parseInt(offset as string, 10) || 0,
+      });
+
       // Real ingested opportunities take priority and appear first
       let combined = [
         ...realOpps,
-        ...opportunitiesDb.filter((o) => !realOpps.some((ro) => ro.id === o.id)),
+        ...dbResult.data.filter((o) => !realOpps.some((ro) => ro.id === o.id)),
       ];
-      let filtered = [...combined];
-
-      if (typeof search === 'string' && search.trim()) {
-        const q = search.toLowerCase();
-        filtered = filtered.filter(
-          (o) =>
-            o.title.toLowerCase().includes(q) ||
-            o.whatDetected.toLowerCase().includes(q) ||
-            o.problemExists.toLowerCase().includes(q)
-        );
-      }
-
-      if (typeof country === 'string' && country !== 'all') {
-        filtered = filtered.filter((o) => o.market?.originCode === country);
-      }
-
-      if (typeof category === 'string' && category !== 'all') {
-        filtered = filtered.filter((o) => o.category === category);
-      }
-
-      const numLimit = Math.min(100, Math.max(1, parseInt(limit as string, 10) || 50));
-      const numOffset = Math.max(0, parseInt(offset as string, 10) || 0);
 
       return {
-        data: filtered.slice(numOffset, numOffset + numLimit),
-        total: filtered.length,
-        limit: numLimit,
-        offset: numOffset,
+        data: combined,
+        total: dbResult.total + realOpps.length,
+        limit: dbResult.limit,
+        offset: dbResult.offset,
       };
     },
-    30000 // 30s cache
+    15000 // 15s cache
   );
 
   res.setHeader('Cache-Control', 'public, max-age=15');
@@ -177,14 +176,130 @@ app.get('/api/opportunities', async (req: Request, res: Response) => {
 });
 
 // Single Opportunity
-app.get('/api/opportunities/:id', (req: Request, res: Response) => {
-  const allOpps = [...pipelineManager.getQualifiedOpportunities(), ...opportunitiesDb];
-  const opp = allOpps.find((o) => o.id === req.params.id);
+app.get('/api/opportunities/:id', async (req: Request, res: Response) => {
+  const realOpps = pipelineManager.getQualifiedOpportunities();
+  const fromPipeline = realOpps.find((o) => o.id === req.params.id);
+  if (fromPipeline) {
+    return res.json(fromPipeline);
+  }
+
+  const opp = await dbClient.getOpportunityById(req.params.id);
   if (!opp) {
     return res.status(404).json({ error: 'Oportunidade não encontrada' });
   }
   res.json(opp);
 });
+
+// Create Custom Opportunity
+app.post('/api/opportunities', async (req: Request, res: Response) => {
+  try {
+    const opp = req.body;
+    if (!opp.title || !opp.category) {
+      return res.status(400).json({ error: 'Título e categoria são obrigatórios.' });
+    }
+    if (!opp.id) {
+      opp.id = `opp-custom-${Date.now().toString().slice(-6)}`;
+    }
+    const saved = await dbClient.createOpportunity(opp);
+    globalCache.clear();
+    res.status(201).json(saved);
+  } catch (err) {
+    res.status(500).json({ error: (err as Error).message });
+  }
+});
+
+// Update Opportunity Status or Bookmark
+app.patch('/api/opportunities/:id/status', async (req: Request, res: Response) => {
+  try {
+    const { isSaved, status } = req.body;
+    const updated = await dbClient.updateOpportunity(req.params.id, {
+      ...(isSaved !== undefined ? { isSaved: Boolean(isSaved) } : {}),
+      ...(status ? { status } : {}),
+    });
+    if (!updated) {
+      return res.status(404).json({ error: 'Oportunidade não encontrada' });
+    }
+    globalCache.clear();
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: (err as Error).message });
+  }
+});
+
+// ====================================================================
+// PERSONAL TRACKED PROJECTS (My Lab & AI Daily Coach)
+// ====================================================================
+
+// List all personal tracked projects
+app.get('/api/personal-projects', async (req: Request, res: Response) => {
+  try {
+    const projects = await dbClient.getPersonalProjects();
+    res.json(projects);
+  } catch (err) {
+    res.status(500).json({ error: (err as Error).message });
+  }
+});
+
+// Save or Upsert Personal Project
+app.post('/api/personal-projects', async (req: Request, res: Response) => {
+  try {
+    const project = req.body;
+    if (!project.title || !project.opportunityId) {
+      return res.status(400).json({ error: 'Título e ID de oportunidade são obrigatórios.' });
+    }
+    if (!project.id) {
+      project.id = `proj-personal-${Date.now().toString().slice(-6)}`;
+    }
+    const saved = await dbClient.savePersonalProject(project);
+    res.status(201).json(saved);
+  } catch (err) {
+    res.status(500).json({ error: (err as Error).message });
+  }
+});
+
+// Update Personal Project Metadata / Notes
+app.patch('/api/personal-projects/:id', async (req: Request, res: Response) => {
+  try {
+    const updated = await dbClient.updatePersonalProject(req.params.id, req.body);
+    if (!updated) {
+      return res.status(404).json({ error: 'Projeto pessoal não encontrado.' });
+    }
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: (err as Error).message });
+  }
+});
+
+// Toggle / Complete Task in Personal Project
+app.patch('/api/personal-projects/:id/tasks/:taskId', async (req: Request, res: Response) => {
+  try {
+    const { completed } = req.body;
+    const updated = await dbClient.updateProjectTask(req.params.id, req.params.taskId, Boolean(completed));
+    if (!updated) {
+      return res.status(404).json({ error: 'Projeto ou tarefa não encontrada.' });
+    }
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: (err as Error).message });
+  }
+});
+
+// Delete Personal Project
+app.delete('/api/personal-projects/:id', async (req: Request, res: Response) => {
+  try {
+    const deleted = await dbClient.deletePersonalProject(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ error: 'Projeto pessoal não encontrado.' });
+    }
+    res.json({ success: true, message: 'Projeto pessoal excluído com sucesso.' });
+  } catch (err) {
+    res.status(500).json({ error: (err as Error).message });
+  }
+});
+
+// ====================================================================
+// LIVE SIGNALS & AI ANALYST
+// ====================================================================
 
 // Live Signals Stream
 app.get('/api/signals', (req: Request, res: Response) => {
@@ -218,12 +333,12 @@ app.get('/api/ai/stream', aiLimiter, async (req: Request, res: Response) => {
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');
 
-  const context = oppId ? opportunitiesDb.find((o) => o.id === oppId) : undefined;
+  const context = oppId ? await dbClient.getOpportunityById(oppId) : undefined;
 
   await aiAnalystService.streamAnalysis(
     {
       query: sanitizeString(query),
-      opportunityContext: context,
+      opportunityContext: context || undefined,
     },
     (chunk) => {
       res.write(`data: ${JSON.stringify({ chunk, done: false })}\n\n`);
@@ -235,8 +350,18 @@ app.get('/api/ai/stream', aiLimiter, async (req: Request, res: Response) => {
   );
 });
 
-// Hypotheses Creation (My Lab)
-app.post('/api/hypotheses', (req: Request, res: Response) => {
+// ====================================================================
+// HYPOTHESES (MY LAB)
+// ====================================================================
+
+// List Hypotheses
+app.get('/api/hypotheses', async (req: Request, res: Response) => {
+  const list = await dbClient.getHypotheses();
+  res.json(list);
+});
+
+// Hypotheses Creation
+app.post('/api/hypotheses', async (req: Request, res: Response) => {
   const { title, hypothesisText, successMetric } = req.body;
   if (!title) {
     return res.status(400).json({ error: 'Título da hipótese é obrigatório.' });
@@ -254,12 +379,31 @@ app.post('/api/hypotheses', (req: Request, res: Response) => {
     createdAt: new Date().toISOString().split('T')[0],
   };
 
-  hypothesesDb.unshift(newHyp);
-  res.status(201).json(newHyp);
+  const saved = await dbClient.createHypothesis(newHyp);
+  res.status(201).json(saved);
+});
+
+// Hypotheses Deletion
+app.delete('/api/hypotheses/:id', async (req: Request, res: Response) => {
+  const deleted = await dbClient.deleteHypothesis(req.params.id);
+  if (!deleted) {
+    return res.status(404).json({ error: 'Hipótese não encontrada.' });
+  }
+  res.json({ success: true });
+});
+
+// ====================================================================
+// ALERTS ENGINE
+// ====================================================================
+
+// List Alerts
+app.get('/api/alerts', async (req: Request, res: Response) => {
+  const list = await dbClient.getAlerts();
+  res.json(list);
 });
 
 // Alerts Creation
-app.post('/api/alerts', (req: Request, res: Response) => {
+app.post('/api/alerts', async (req: Request, res: Response) => {
   const { name, queryOrKeywords, minScore, frequency } = req.body;
   if (!name) {
     return res.status(400).json({ error: 'Nome do alerta é obrigatório.' });
@@ -277,8 +421,26 @@ app.post('/api/alerts', (req: Request, res: Response) => {
     lastTriggered: 'Recém criado',
   };
 
-  alertsDb.unshift(newAlert);
-  res.status(201).json(newAlert);
+  const saved = await dbClient.createAlert(newAlert);
+  res.status(201).json(saved);
+});
+
+// Toggle Alert Active
+app.patch('/api/alerts/:id/toggle', async (req: Request, res: Response) => {
+  const updated = await dbClient.toggleAlert(req.params.id);
+  if (!updated) {
+    return res.status(404).json({ error: 'Alerta não encontrado.' });
+  }
+  res.json(updated);
+});
+
+// Delete Alert
+app.delete('/api/alerts/:id', async (req: Request, res: Response) => {
+  const deleted = await dbClient.deleteAlert(req.params.id);
+  if (!deleted) {
+    return res.status(404).json({ error: 'Alerta não encontrado.' });
+  }
+  res.json({ success: true });
 });
 
 // ====================================================================
@@ -286,49 +448,19 @@ app.post('/api/alerts', (req: Request, res: Response) => {
 // ====================================================================
 
 // Get Market News Feed (with search, category, interest, and country filters)
-app.get('/api/news', (req: Request, res: Response) => {
+app.get('/api/news', async (req: Request, res: Response) => {
   const { search, category, country, interest, onlyWithHypotheses } = req.query;
 
-  let filtered = [...newsDb];
-
-  if (typeof search === 'string' && search.trim()) {
-    const q = search.toLowerCase();
-    filtered = filtered.filter(
-      (n) =>
-        n.title.toLowerCase().includes(q) ||
-        n.summary.toLowerCase().includes(q) ||
-        n.source.toLowerCase().includes(q) ||
-        n.tags.some((t) => t.toLowerCase().includes(q))
-    );
-  }
-
-  if (typeof category === 'string' && category !== 'all') {
-    filtered = filtered.filter((n) => n.category.toLowerCase() === category.toLowerCase());
-  }
-
-  if (typeof country === 'string' && country !== 'all') {
-    filtered = filtered.filter((n) => n.countryCode.toLowerCase() === country.toLowerCase());
-  }
-
-  if (typeof interest === 'string' && interest.trim()) {
-    const interests = interest.toLowerCase().split(',');
-    filtered = filtered.filter(
-      (n) =>
-        interests.includes(n.category.toLowerCase()) ||
-        n.tags.some((t) => interests.includes(t.toLowerCase()))
-    );
-  }
-
-  if (onlyWithHypotheses === 'true') {
-    filtered = filtered.filter((n) => n.possibleOpportunities && n.possibleOpportunities.length > 0);
-  }
+  const result = await dbClient.getNews({
+    search: typeof search === 'string' ? search : undefined,
+    category: typeof category === 'string' ? category : undefined,
+    country: typeof country === 'string' ? country : undefined,
+    interest: typeof interest === 'string' ? interest : undefined,
+    onlyWithHypotheses: onlyWithHypotheses === 'true',
+  });
 
   res.setHeader('Cache-Control', 'public, max-age=30');
-  res.json({
-    data: filtered,
-    total: filtered.length,
-    trendingCount: filtered.filter((n) => n.isTrending).length,
-  });
+  res.json(result);
 });
 
 // Get Daily Market Brief
@@ -350,8 +482,8 @@ app.get('/api/news/trends', (req: Request, res: Response) => {
 });
 
 // Single News Item
-app.get('/api/news/:id', (req: Request, res: Response) => {
-  const item = newsDb.find((n) => n.id === req.params.id);
+app.get('/api/news/:id', async (req: Request, res: Response) => {
+  const item = await dbClient.getNewsById(req.params.id);
   if (!item) {
     return res.status(404).json({ error: 'Notícia não encontrada.' });
   }
@@ -359,50 +491,29 @@ app.get('/api/news/:id', (req: Request, res: Response) => {
 });
 
 // Toggle Save on News Item
-app.post('/api/news/:id/save', (req: Request, res: Response) => {
-  const item = newsDb.find((n) => n.id === req.params.id);
-  if (!item) {
+app.post('/api/news/:id/save', async (req: Request, res: Response) => {
+  const isSaved = await dbClient.toggleNewsSaved(req.params.id);
+  if (isSaved === null) {
     return res.status(404).json({ error: 'Notícia não encontrada.' });
   }
-  item.isSaved = !item.isSaved;
-  res.json({ success: true, isSaved: item.isSaved });
+  res.json({ success: true, isSaved });
 });
 
 // Create Project in My Lab from News Hypothesis
-app.post('/api/news/:id/create-project', (req: Request, res: Response) => {
+app.post('/api/news/:id/create-project', async (req: Request, res: Response) => {
   const { hypothesisId } = req.body;
-  const newsItem = newsDb.find((n) => n.id === req.params.id);
+  const result = await dbClient.createProjectFromNewsHypothesis(req.params.id, hypothesisId);
 
-  if (!newsItem) {
-    return res.status(404).json({ error: 'Notícia não encontrada.' });
+  if (!result) {
+    return res.status(404).json({ error: 'Notícia ou hipótese de oportunidade não encontrada.' });
   }
 
-  const hypothesis = newsItem.possibleOpportunities.find((h) => h.id === hypothesisId);
-  if (!hypothesis) {
-    return res.status(404).json({ error: 'Hipótese de oportunidade não encontrada.' });
-  }
-
-  hypothesis.status = 'Promovido a Projeto';
-
-  const newProject = {
-    id: `proj-hyp-${Date.now().toString().slice(-4)}`,
-    title: hypothesis.title.replace(/^Hipótese:\s*/i, ''),
-    opportunityRefId: newsItem.id,
-    status: 'Pesquisando' as const,
-    hypothesisText: `${hypothesis.description} (Inspirado em: "${newsItem.title}")`,
-    successMetric: `Validar MVP com 20 clientes do público: ${hypothesis.targetAudience}`,
-    confidenceScore: hypothesis.confidenceScore,
-    notes: `Monetização esperada: ${hypothesis.monetizationModel}. Esforço estimado: ${hypothesis.estimatedEffort}. Fonte original: ${newsItem.source}.`,
-    createdAt: new Date().toISOString().split('T')[0],
-  };
-
-  hypothesesDb.unshift(newProject);
-  res.status(201).json({ success: true, project: newProject, hypothesis });
+  res.status(201).json({ success: true, ...result });
 });
 
 // Deep AI Analysis of a News Item
 app.post('/api/news/:id/analyze', aiLimiter, async (req: Request, res: Response) => {
-  const newsItem = newsDb.find((n) => n.id === req.params.id);
+  const newsItem = await dbClient.getNewsById(req.params.id);
   if (!newsItem) {
     return res.status(404).json({ error: 'Notícia não encontrada.' });
   }

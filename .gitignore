@@ -16,6 +16,7 @@ dist-ssr/
 build artifacts/
 *.tsbuildinfo
 .tmp/
+server/data/
 coverage/
 
 # Vercel Deployment & Local Cache

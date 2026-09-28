@@ -140,6 +140,51 @@ CREATE TABLE IF NOT EXISTS user_alerts (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- 8. PERSONAL TRACKED PROJECTS (My Lab & AI Coach)
+CREATE TABLE IF NOT EXISTS personal_projects (
+    id VARCHAR(64) PRIMARY KEY,
+    opportunity_id VARCHAR(64) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    tagline TEXT NOT NULL,
+    category VARCHAR(64) NOT NULL,
+    score INTEGER NOT NULL,
+    financial_metrics JSONB NOT NULL DEFAULT '{}',
+    speed_metrics JSONB NOT NULL DEFAULT '{}',
+    investment_metrics JSONB NOT NULL DEFAULT '{}',
+    tasks JSONB NOT NULL DEFAULT '[]',
+    progress_percent INTEGER NOT NULL DEFAULT 0,
+    started_at VARCHAR(64) NOT NULL,
+    target_completion_date VARCHAR(64) NOT NULL,
+    last_checkin_at VARCHAR(64) NOT NULL,
+    daily_streak INTEGER NOT NULL DEFAULT 0,
+    checked_in_today BOOLEAN NOT NULL DEFAULT false,
+    status VARCHAR(32) NOT NULL DEFAULT 'em_andamento',
+    user_notes TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 9. MARKET NEWS & INTELLIGENCE
+CREATE TABLE IF NOT EXISTS market_news (
+    id VARCHAR(64) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    summary TEXT NOT NULL,
+    source VARCHAR(64) NOT NULL,
+    url TEXT NOT NULL,
+    published_at VARCHAR(64) NOT NULL,
+    category VARCHAR(64) NOT NULL,
+    country_code VARCHAR(8) NOT NULL,
+    country_flag VARCHAR(16) NOT NULL,
+    impact_score INTEGER NOT NULL,
+    is_trending BOOLEAN NOT NULL DEFAULT false,
+    tags TEXT[] NOT NULL DEFAULT '{}',
+    ai_analysis_summary TEXT NOT NULL,
+    ai_question TEXT NOT NULL,
+    is_saved BOOLEAN NOT NULL DEFAULT false,
+    possible_opportunities JSONB NOT NULL DEFAULT '[]',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 -- ====================================================================
 -- STRATEGIC INDEXES (Zero redundant overhead, targeted to common query patterns)
 -- ====================================================================

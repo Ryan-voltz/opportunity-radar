@@ -100,6 +100,52 @@ export class ApiClient {
     return this.request<LiveSignal[]>('/signals', undefined, 30000, MOCK_LIVE_SIGNALS);
   }
 
+  // Database Status Telemetry
+  static async getDbStatus(): Promise<any> {
+    return this.request<any>('/db-status', undefined, 10000, {
+      connected: true,
+      engine: 'local_persistent',
+      provider: 'Local Storage Engine (Client-side fallback)',
+    });
+  }
+
+  // Personal Projects Backend Synchronization
+  static async getPersonalProjects(): Promise<any[]> {
+    return this.request<any[]>('/personal-projects', undefined, 5000, []);
+  }
+
+  static async savePersonalProject(project: any): Promise<any> {
+    return this.request<any>(
+      '/personal-projects',
+      {
+        method: 'POST',
+        body: JSON.stringify(project),
+      },
+      0
+    );
+  }
+
+  static async updateProjectTask(projectId: string, taskId: string, completed: boolean): Promise<any> {
+    return this.request<any>(
+      `/personal-projects/${projectId}/tasks/${taskId}`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({ completed }),
+      },
+      0
+    );
+  }
+
+  static async deletePersonalProject(projectId: string): Promise<any> {
+    return this.request<any>(
+      `/personal-projects/${projectId}`,
+      {
+        method: 'DELETE',
+      },
+      0
+    );
+  }
+
   // AI Stream Helper
   static streamAiAnalysis(
     query: string,
@@ -140,3 +186,4 @@ export class ApiClient {
     }
   }
 }
+

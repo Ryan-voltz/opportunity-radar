@@ -1,9 +1,25 @@
 import { Opportunity, PersonalProject, ProjectTaskItem, AiCoachAlert } from '../types';
+import { ApiClient } from './apiClient';
 
 const STORAGE_KEY = 'opportunity_radar_personal_projects';
 const STREAK_KEY = 'opportunity_radar_daily_streak';
 
 export class PersonalProjectService {
+  /**
+   * Sync personal projects from cloud backend into localStorage
+   */
+  static async syncWithBackend(): Promise<void> {
+    try {
+      const remote = await ApiClient.getPersonalProjects();
+      if (remote && Array.isArray(remote) && remote.length > 0) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(remote));
+        window.dispatchEvent(new CustomEvent('personal_projects_updated', { detail: remote }));
+      }
+    } catch {
+      // Graceful offline fallback
+    }
+  }
+
   /**
    * Get all user-tracked personal projects
    */
@@ -157,6 +173,8 @@ export class PersonalProjectService {
 
     const updated = [newProject, ...existing];
     this.saveProjects(updated);
+    // Background sync with persistent database
+    ApiClient.savePersonalProject(newProject).catch(() => {});
     return newProject;
   }
 
@@ -191,6 +209,8 @@ export class PersonalProjectService {
     project.checkedInToday = true;
 
     this.saveProjects(projects);
+    // Background sync task update with persistent database
+    ApiClient.updateProjectTask(projectId, taskId, task.completed).catch(() => {});
     return project;
   }
 
@@ -207,6 +227,7 @@ export class PersonalProjectService {
     project.lastCheckinAt = new Date().toISOString();
 
     this.saveProjects(projects);
+    ApiClient.savePersonalProject(project).catch(() => {});
     return project;
   }
 
@@ -216,6 +237,8 @@ export class PersonalProjectService {
   static deleteProject(projectId: string): void {
     const projects = this.getProjects().filter((p) => p.id !== projectId);
     this.saveProjects(projects);
+    // Background sync deletion with persistent database
+    ApiClient.deletePersonalProject(projectId).catch(() => {});
   }
 
   /**

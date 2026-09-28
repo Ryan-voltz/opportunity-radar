@@ -1089,6 +1089,11 @@ var PipelineManager = class {
 };
 var pipelineManager = new PipelineManager();
 
+// server/db/dbClient.ts
+import fs from "fs";
+import path from "path";
+import pg from "pg";
+
 // src/data/mockData.ts
 var MOCK_PULSE_DATA = {
   newOpportunitiesDetected: 38,
@@ -2771,6 +2776,776 @@ var MOCK_DAILY_BRIEF = {
   spotlightTrendId: "trend-voice-agents"
 };
 
+// server/db/dbClient.ts
+var { Pool } = pg;
+var DEFAULT_PERSONAL_PROJECTS = [
+  {
+    id: "proj-personal-gong-alt",
+    opportunityId: "opp-002",
+    title: "Gong / Chorus Light para SMBs Globais",
+    tagline: "Intelig\xEAncia de conversa\xE7\xE3o em vendas e transcri\xE7\xE3o com IA sem contratos abusivos de US$ 10k/ano.",
+    category: "SalesTech & RevOps",
+    score: 95,
+    financialMetrics: {
+      estimatedMonthlyProfit: "R$ 32.000 - R$ 78.000 / m\xEAs ($6,500 - $15,000)",
+      profitMargin: "88%",
+      averageTicket: "R$ 380 / m\xEAs ($79/mo)",
+      annualProjection: "R$ 480.000+ ARR"
+    },
+    speedMetrics: {
+      mvpDays: 14,
+      firstSaleDays: 20,
+      weeklyDedicationHours: "14h / semana",
+      speedRating: "R\xE1pido (2 sem)"
+    },
+    investmentMetrics: {
+      initialCapitalEstimated: "R$ 290 ($60 USD)",
+      capitalBreakdown: [
+        { item: "Dom\xEDnio .com oficial", cost: "R$ 65 / ano" },
+        { item: "Hospedagem Vercel & Supabase", cost: "R$ 0 (Free)" },
+        { item: "Cr\xE9ditos OpenAI Whisper / Claude API", cost: "R$ 150 (uso real)" },
+        { item: "Resend (E-mails transacionais)", cost: "R$ 0 (Gratuito)" }
+      ]
+    },
+    tasks: [
+      {
+        id: "t-gong-1",
+        phaseId: 1,
+        phaseName: "Fase 1: Valida\xE7\xE3o & Pr\xE9-Venda",
+        title: "Entrevistar 10 l\xEDderes de Inside Sales sobre o custo exorbitante do Gong",
+        howToExecute: "Abordar Head de Vendas no LinkedIn perguntando quanto gastam com grava\xE7\xE3o de reuni\xF5es.",
+        deliverable: "10 entrevistas conclu\xEDdas e 4 cartas de inten\xE7\xE3o de compra assinadas.",
+        recommendedDay: "Dia 1",
+        completed: true,
+        completedAt: "2026-09-25T14:30:00Z"
+      },
+      {
+        id: "t-gong-2",
+        phaseId: 1,
+        phaseName: "Fase 1: Valida\xE7\xE3o & Pr\xE9-Venda",
+        title: "Publicar Landing Page com calculadora de economia versus Gong/Chorus",
+        howToExecute: "Mostrar que um time de 5 vendedores economiza US$ 12.000/ano.",
+        deliverable: "Landing page no ar com 48 inscritos na lista de espera.",
+        recommendedDay: "Dia 3",
+        completed: true,
+        completedAt: "2026-09-26T10:00:00Z"
+      },
+      {
+        id: "t-gong-3",
+        phaseId: 2,
+        phaseName: "Fase 2: Constru\xE7\xE3o do MVP Enxuto",
+        title: "Integrar bot de reuni\xE3o via Recall.ai ou grava\xE7\xE3o de \xE1udio do Zoom",
+        howToExecute: "Conectar webhook que recebe grava\xE7\xE3o de \xE1udio em formato MP3.",
+        deliverable: "\xC1udio gravado e armazenado com seguran\xE7a no bucket S3/Supabase.",
+        recommendedDay: "Dias 5 a 8",
+        completed: true,
+        completedAt: "2026-09-27T08:15:00Z"
+      },
+      {
+        id: "t-gong-4",
+        phaseId: 2,
+        phaseName: "Fase 2: Constru\xE7\xE3o do MVP Enxuto",
+        title: "Pipeline de transcri\xE7\xE3o com Whisper e extra\xE7\xE3o de obje\xE7\xF5es com LLM",
+        howToExecute: "Enviar \xE1udio para transcri\xE7\xE3o e rodar prompt de detec\xE7\xE3o de obje\xE7\xF5es de pre\xE7o e concorr\xEAncia.",
+        deliverable: "JSON com resumo da call, pontos de a\xE7\xE3o e sentimento do prospect.",
+        recommendedDay: "Dias 9 a 11",
+        completed: true,
+        completedAt: "2026-09-27T18:00:00Z"
+      },
+      {
+        id: "t-gong-5",
+        phaseId: 2,
+        phaseName: "Fase 2: Constru\xE7\xE3o do MVP Enxuto",
+        title: "Dashboard de visualiza\xE7\xE3o das calls gravadas com player sincronizado",
+        howToExecute: "Interface web com busca por termos falados na call e resumo executivo.",
+        deliverable: "Dashboard responsivo testado em 5 calls reais.",
+        recommendedDay: "Dias 12 a 14",
+        completed: false
+      },
+      {
+        id: "t-gong-6",
+        phaseId: 3,
+        phaseName: "Fase 3: Lan\xE7amento & Primeiros Pagantes",
+        title: "Ativar os 4 clientes da carta de inten\xE7\xE3o no plano Beta com 50% de desconto vital\xEDcio",
+        howToExecute: "Onboarding 1 a 1 via Google Meet instalando nas contas Zoom/Meet deles.",
+        deliverable: "Primeiros R$ 1.520 em MRR faturados via Stripe/Asaas.",
+        recommendedDay: "Dias 15 a 18",
+        completed: false
+      }
+    ],
+    progressPercent: 67,
+    startedAt: "2026-09-24T00:00:00Z",
+    targetCompletionDate: "2026-10-08T00:00:00Z",
+    lastCheckinAt: "2026-09-27T18:00:00Z",
+    dailyStreak: 3,
+    checkedInToday: true,
+    status: "quase_pronto",
+    userNotes: "Feedback inicial dos 4 clientes da lista de espera foi excelente. Est\xE3o dispostos a pagar R$ 380/m\xEAs."
+  },
+  {
+    id: "proj-personal-eu-compliance",
+    opportunityId: "opp-001",
+    title: "AuditFlow AI \u2014 EU AI Act Compliance Engine",
+    tagline: "Auditoria cont\xEDnua de conformidade com a regulamenta\xE7\xE3o europeia de IA para scale-ups de tecnologia.",
+    category: "RegTech & Compliance",
+    score: 98,
+    financialMetrics: {
+      estimatedMonthlyProfit: "R$ 45.000 - R$ 110.000 / m\xEAs ($9,000 - $22,000)",
+      profitMargin: "85%",
+      averageTicket: "R$ 1.450 / m\xEAs ($290/mo)",
+      annualProjection: "R$ 800.000+ ARR"
+    },
+    speedMetrics: {
+      mvpDays: 21,
+      firstSaleDays: 30,
+      weeklyDedicationHours: "16h / semana",
+      speedRating: "Moderado (3-4 sem)"
+    },
+    investmentMetrics: {
+      initialCapitalEstimated: "R$ 450 ($90 USD)",
+      capitalBreakdown: [
+        { item: "Dom\xEDnio .eu e .com", cost: "R$ 120 / ano" },
+        { item: "Supabase Database Pro Tier (Free no in\xEDcio)", cost: "R$ 0" },
+        { item: "Consultoria de valida\xE7\xE3o com especialista de dados EU", cost: "R$ 330" }
+      ]
+    },
+    tasks: [
+      {
+        id: "t-eu-1",
+        phaseId: 1,
+        phaseName: "Fase 1: Mapeamento de Requisitos EU AI Act",
+        title: "Compilar checklist de 42 artigos de alto risco da diretiva europeia",
+        howToExecute: "Baixar texto oficial consolidado do parlamento europeu e estruturar JSON de regras.",
+        deliverable: "Tabela de conformidade com 42 checagens autom\xE1ticas e manuais.",
+        recommendedDay: "Dias 1 a 4",
+        completed: true,
+        completedAt: "2026-09-25T11:00:00Z"
+      },
+      {
+        id: "t-eu-2",
+        phaseId: 1,
+        phaseName: "Fase 1: Mapeamento de Requisitos EU AI Act",
+        title: "Criar Landing Page direcionada a CTOs de empresas SaaS da Alemanha e Fran\xE7a",
+        howToExecute: "Campanha de Cold Outreach e an\xFAncios focados na data limite de conformidade de 2026.",
+        deliverable: "18 reuni\xF5es agendadas com lideran\xE7as t\xE9cnicas de tech companies europeias.",
+        recommendedDay: "Dias 5 a 8",
+        completed: true,
+        completedAt: "2026-09-26T16:00:00Z"
+      },
+      {
+        id: "t-eu-3",
+        phaseId: 2,
+        phaseName: "Fase 2: Motor de Varredura de Reposit\xF3rios & LLMs",
+        title: "Criar CLI/GitHub Action que escaneia prompts e modelos em busca de dados sens\xEDveis",
+        howToExecute: "Parser AST em TypeScript que detecta chamadas a OpenAI/Anthropic e verifica logs de consentimento.",
+        deliverable: "Script testado no reposit\xF3rio de teste acusando viola\xE7\xF5es comuns.",
+        recommendedDay: "Dias 9 a 14",
+        completed: false
+      },
+      {
+        id: "t-eu-4",
+        phaseId: 2,
+        phaseName: "Fase 2: Motor de Varredura de Reposit\xF3rios & LLMs",
+        title: "Gerador autom\xE1tico de Relat\xF3rio de Risco em PDF para envio aos reguladores",
+        howToExecute: "Template PDF via React-PDF com carimbo de integridade SHA-256.",
+        deliverable: "PDF gerado pronto para submiss\xE3o \xE0 autoridade nacional de prote\xE7\xE3o de dados.",
+        recommendedDay: "Dias 15 a 17",
+        completed: false
+      },
+      {
+        id: "t-eu-5",
+        phaseId: 3,
+        phaseName: "Fase 3: Contrata\xE7\xE3o Piloto",
+        title: "Fechar 3 contratos piloto anuais de \u20AC 3.500 cada",
+        howToExecute: "Apresentar relat\xF3rio da auditoria gratuita da base de c\xF3digo deles com plano de corre\xE7\xE3o.",
+        deliverable: "Primeiros \u20AC 10.500 em contratos anuais assinados.",
+        recommendedDay: "Dias 18 a 21",
+        completed: false
+      }
+    ],
+    progressPercent: 40,
+    startedAt: "2026-09-22T00:00:00Z",
+    targetCompletionDate: "2026-10-15T00:00:00Z",
+    lastCheckinAt: "2026-09-26T16:00:00Z",
+    dailyStreak: 0,
+    checkedInToday: false,
+    status: "em_andamento",
+    userNotes: "Voc\xEA definiu que ia terminar o escaneador essa semana! N\xE3o deixe o projeto estagnar."
+  }
+];
+var DatabaseManager = class {
+  pool = null;
+  engine = "local_persistent";
+  providerName = "Local Persistent Engine (Zero-Cost)";
+  persistentStorePath;
+  inMemoryCache;
+  isInitialized = false;
+  constructor() {
+    const isVercel = Boolean(process.env.VERCEL);
+    const storeDir = isVercel ? "/tmp" : path.join(process.cwd(), "server", "data");
+    try {
+      if (!fs.existsSync(storeDir)) {
+        fs.mkdirSync(storeDir, { recursive: true });
+      }
+    } catch (e) {
+    }
+    this.persistentStorePath = path.join(storeDir, "radar_data_store.json");
+    this.inMemoryCache = {
+      opportunities: [...MOCK_OPPORTUNITIES],
+      personalProjects: [...DEFAULT_PERSONAL_PROJECTS],
+      hypotheses: [...MOCK_HYPOTHESES],
+      alerts: [...MOCK_ALERTS],
+      news: [...MOCK_MARKET_NEWS]
+    };
+    this.loadFromDisk();
+    this.setupDatabaseEngine();
+  }
+  loadFromDisk() {
+    try {
+      if (fs.existsSync(this.persistentStorePath)) {
+        const raw = fs.readFileSync(this.persistentStorePath, "utf8");
+        const parsed = JSON.parse(raw);
+        if (parsed) {
+          if (Array.isArray(parsed.opportunities) && parsed.opportunities.length > 0) {
+            this.inMemoryCache.opportunities = parsed.opportunities;
+          }
+          if (Array.isArray(parsed.personalProjects) && parsed.personalProjects.length > 0) {
+            this.inMemoryCache.personalProjects = parsed.personalProjects;
+          }
+          if (Array.isArray(parsed.hypotheses) && parsed.hypotheses.length > 0) {
+            this.inMemoryCache.hypotheses = parsed.hypotheses;
+          }
+          if (Array.isArray(parsed.alerts) && parsed.alerts.length > 0) {
+            this.inMemoryCache.alerts = parsed.alerts;
+          }
+          if (Array.isArray(parsed.news) && parsed.news.length > 0) {
+            this.inMemoryCache.news = parsed.news;
+          }
+        }
+      } else {
+        this.saveToDisk();
+      }
+    } catch (err) {
+      console.warn("[DbManager] Falha ao ler cache do disco, usando estado padr\xE3o:", err.message);
+    }
+  }
+  saveToDisk() {
+    try {
+      fs.writeFileSync(this.persistentStorePath, JSON.stringify(this.inMemoryCache, null, 2), "utf8");
+    } catch (err) {
+      console.warn("[DbManager] Falha ao gravar cache no disco:", err.message);
+    }
+  }
+  async setupDatabaseEngine() {
+    const dbUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+    if (dbUrl) {
+      try {
+        const isSupabase = dbUrl.includes("supabase.co");
+        const isNeon = dbUrl.includes("neon.tech");
+        this.pool = new Pool({
+          connectionString: dbUrl,
+          ssl: { rejectUnauthorized: false },
+          max: 6,
+          // Serverless polite pool size
+          connectionTimeoutMillis: 5e3,
+          idleTimeoutMillis: 1e4
+        });
+        const client = await this.pool.connect();
+        try {
+          await client.query("SELECT 1");
+          this.engine = isSupabase ? "supabase" : isNeon ? "postgres" : "postgres";
+          this.providerName = isSupabase ? "Supabase PostgreSQL (Cloud Free Tier)" : isNeon ? "Neon Serverless PostgreSQL (Cloud Free Tier)" : "PostgreSQL Database";
+          console.log(`[DbManager] Conectado com sucesso ao backend: ${this.providerName}`);
+          await this.initPostgresTables(client);
+        } finally {
+          client.release();
+        }
+      } catch (err) {
+        console.warn(`[DbManager] Falha ao conectar ao PostgreSQL (${err.message}). Ativando Engine de Persist\xEAncia Local Segura.`);
+        this.pool = null;
+        this.engine = "local_persistent";
+        this.providerName = "Local Persistent Engine (Zero-Cost Storage)";
+      }
+    } else {
+      this.engine = "local_persistent";
+      this.providerName = "Local Persistent Engine (Zero-Cost Storage)";
+    }
+    this.isInitialized = true;
+  }
+  async initPostgresTables(client) {
+    try {
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS personal_projects (
+          id VARCHAR(64) PRIMARY KEY,
+          opportunity_id VARCHAR(64) NOT NULL,
+          title VARCHAR(255) NOT NULL,
+          tagline TEXT NOT NULL,
+          category VARCHAR(64) NOT NULL,
+          score INTEGER NOT NULL,
+          financial_metrics JSONB NOT NULL DEFAULT '{}',
+          speed_metrics JSONB NOT NULL DEFAULT '{}',
+          investment_metrics JSONB NOT NULL DEFAULT '{}',
+          tasks JSONB NOT NULL DEFAULT '[]',
+          progress_percent INTEGER NOT NULL DEFAULT 0,
+          started_at VARCHAR(64) NOT NULL,
+          target_completion_date VARCHAR(64) NOT NULL,
+          last_checkin_at VARCHAR(64) NOT NULL,
+          daily_streak INTEGER NOT NULL DEFAULT 0,
+          checked_in_today BOOLEAN NOT NULL DEFAULT false,
+          status VARCHAR(32) NOT NULL DEFAULT 'em_andamento',
+          user_notes TEXT,
+          created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+        );
+      `);
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS hypotheses (
+          id VARCHAR(64) PRIMARY KEY,
+          title VARCHAR(255) NOT NULL,
+          opportunity_ref_id VARCHAR(64),
+          status VARCHAR(32) NOT NULL DEFAULT 'Backlog',
+          hypothesis_text TEXT NOT NULL,
+          success_metric TEXT NOT NULL,
+          confidence_score INTEGER NOT NULL DEFAULT 80,
+          notes TEXT,
+          created_at DATE NOT NULL DEFAULT CURRENT_DATE
+        );
+      `);
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS user_alerts (
+          id VARCHAR(64) PRIMARY KEY,
+          name VARCHAR(255) NOT NULL,
+          query_keywords TEXT NOT NULL,
+          min_score INTEGER NOT NULL DEFAULT 80,
+          channels TEXT[] NOT NULL DEFAULT '{"In-App"}',
+          frequency VARCHAR(32) NOT NULL DEFAULT 'Tempo Real',
+          is_active BOOLEAN NOT NULL DEFAULT true,
+          triggers_count INTEGER NOT NULL DEFAULT 0,
+          last_triggered VARCHAR(64),
+          created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+        );
+      `);
+      const checkProjects = await client.query("SELECT COUNT(*) FROM personal_projects");
+      if (parseInt(checkProjects.rows[0].count, 10) === 0) {
+        for (const proj of this.inMemoryCache.personalProjects) {
+          await client.query(
+            `INSERT INTO personal_projects (
+              id, opportunity_id, title, tagline, category, score,
+              financial_metrics, speed_metrics, investment_metrics,
+              tasks, progress_percent, started_at, target_completion_date,
+              last_checkin_at, daily_streak, checked_in_today, status, user_notes
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
+            ON CONFLICT (id) DO NOTHING`,
+            [
+              proj.id,
+              proj.opportunityId,
+              proj.title,
+              proj.tagline,
+              proj.category,
+              proj.score,
+              JSON.stringify(proj.financialMetrics),
+              JSON.stringify(proj.speedMetrics),
+              JSON.stringify(proj.investmentMetrics),
+              JSON.stringify(proj.tasks),
+              proj.progressPercent,
+              proj.startedAt,
+              proj.targetCompletionDate,
+              proj.lastCheckinAt,
+              proj.dailyStreak,
+              proj.checkedInToday,
+              proj.status,
+              proj.userNotes || ""
+            ]
+          );
+        }
+      }
+    } catch (e) {
+      console.warn("[DbManager] Erro ao sincronizar tabelas no PostgreSQL:", e.message);
+    }
+  }
+  // ====================================================================
+  // TELEMETRY & STATUS
+  // ====================================================================
+  async getDbStatus() {
+    return {
+      connected: true,
+      engine: this.engine,
+      provider: this.providerName,
+      isProduction: process.env.NODE_ENV === "production",
+      counts: {
+        opportunities: this.inMemoryCache.opportunities.length,
+        personalProjects: this.inMemoryCache.personalProjects.length,
+        hypotheses: this.inMemoryCache.hypotheses.length,
+        alerts: this.inMemoryCache.alerts.length,
+        news: this.inMemoryCache.news.length
+      },
+      details: {
+        persistenceLocation: this.pool ? "PostgreSQL Cloud Database" : this.persistentStorePath,
+        connectionType: this.pool ? "PostgreSQL Connection Pool (SSL Enabled)" : "Atomic JSON Persistence Engine",
+        isFreeTierReady: true
+      },
+      setupGuide: {
+        supabaseInstructions: "1. Crie uma conta gratuita em supabase.com\n2. Crie um projeto\n3. Copie a Connection String (URI)\n4. Adicione na Vercel como DATABASE_URL",
+        neonInstructions: "1. Crie uma conta gratuita em neon.tech\n2. Crie um banco PostgreSQL serverless\n3. Adicione a Connection String na Vercel como DATABASE_URL",
+        docUrl: "https://github.com/Ryan-voltz/opportunity-radar#configura\xE7\xE3o-do-backend-gratuito"
+      }
+    };
+  }
+  // ====================================================================
+  // OPPORTUNITIES REPOSITORY
+  // ====================================================================
+  async getOpportunities(filters) {
+    let result = [...this.inMemoryCache.opportunities];
+    if (filters?.search && filters.search.trim()) {
+      const q = filters.search.toLowerCase();
+      result = result.filter(
+        (o) => o.title.toLowerCase().includes(q) || o.whatDetected.toLowerCase().includes(q) || o.problemExists.toLowerCase().includes(q) || o.tagline.toLowerCase().includes(q)
+      );
+    }
+    if (filters?.country && filters.country !== "all") {
+      result = result.filter((o) => o.market?.originCode === filters.country);
+    }
+    if (filters?.category && filters.category !== "all") {
+      result = result.filter((o) => o.category === filters.category);
+    }
+    const limit = filters?.limit ? Math.min(100, Math.max(1, filters.limit)) : 50;
+    const offset = filters?.offset ? Math.max(0, filters.offset) : 0;
+    return {
+      data: result.slice(offset, offset + limit),
+      total: result.length,
+      limit,
+      offset
+    };
+  }
+  async getOpportunityById(id) {
+    const opp = this.inMemoryCache.opportunities.find((o) => o.id === id);
+    return opp || null;
+  }
+  async createOpportunity(opp) {
+    this.inMemoryCache.opportunities.unshift(opp);
+    this.saveToDisk();
+    return opp;
+  }
+  async updateOpportunity(id, updates) {
+    const index = this.inMemoryCache.opportunities.findIndex((o) => o.id === id);
+    if (index === -1) return null;
+    this.inMemoryCache.opportunities[index] = {
+      ...this.inMemoryCache.opportunities[index],
+      ...updates
+    };
+    this.saveToDisk();
+    return this.inMemoryCache.opportunities[index];
+  }
+  // ====================================================================
+  // PERSONAL PROJECTS REPOSITORY (My Lab & AI Daily Coach)
+  // ====================================================================
+  async getPersonalProjects() {
+    if (this.pool) {
+      try {
+        const res = await this.pool.query("SELECT * FROM personal_projects ORDER BY updated_at DESC");
+        if (res.rows.length > 0) {
+          return res.rows.map((r) => ({
+            id: r.id,
+            opportunityId: r.opportunity_id,
+            title: r.title,
+            tagline: r.tagline,
+            category: r.category,
+            score: r.score,
+            financialMetrics: r.financial_metrics,
+            speedMetrics: r.speed_metrics,
+            investmentMetrics: r.investment_metrics,
+            tasks: r.tasks,
+            progressPercent: r.progress_percent,
+            startedAt: r.started_at,
+            targetCompletionDate: r.target_completion_date,
+            lastCheckinAt: r.last_checkin_at,
+            dailyStreak: r.daily_streak,
+            checkedInToday: r.checked_in_today,
+            status: r.status,
+            userNotes: r.user_notes
+          }));
+        }
+      } catch (err) {
+        console.warn("[DbManager] Falha ao consultar personal_projects no Postgres:", err.message);
+      }
+    }
+    return this.inMemoryCache.personalProjects;
+  }
+  async savePersonalProject(project) {
+    const existingIndex = this.inMemoryCache.personalProjects.findIndex((p) => p.id === project.id);
+    if (existingIndex >= 0) {
+      this.inMemoryCache.personalProjects[existingIndex] = project;
+    } else {
+      this.inMemoryCache.personalProjects.unshift(project);
+    }
+    this.saveToDisk();
+    if (this.pool) {
+      try {
+        await this.pool.query(
+          `INSERT INTO personal_projects (
+            id, opportunity_id, title, tagline, category, score,
+            financial_metrics, speed_metrics, investment_metrics,
+            tasks, progress_percent, started_at, target_completion_date,
+            last_checkin_at, daily_streak, checked_in_today, status, user_notes, updated_at
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, NOW())
+          ON CONFLICT (id) DO UPDATE SET
+            title = EXCLUDED.title,
+            tagline = EXCLUDED.tagline,
+            tasks = EXCLUDED.tasks,
+            progress_percent = EXCLUDED.progress_percent,
+            last_checkin_at = EXCLUDED.last_checkin_at,
+            daily_streak = EXCLUDED.daily_streak,
+            checked_in_today = EXCLUDED.checked_in_today,
+            status = EXCLUDED.status,
+            user_notes = EXCLUDED.user_notes,
+            updated_at = NOW()`,
+          [
+            project.id,
+            project.opportunityId,
+            project.title,
+            project.tagline,
+            project.category,
+            project.score,
+            JSON.stringify(project.financialMetrics),
+            JSON.stringify(project.speedMetrics),
+            JSON.stringify(project.investmentMetrics),
+            JSON.stringify(project.tasks),
+            project.progressPercent,
+            project.startedAt,
+            project.targetCompletionDate,
+            project.lastCheckinAt,
+            project.dailyStreak,
+            project.checkedInToday,
+            project.status,
+            project.userNotes || ""
+          ]
+        );
+      } catch (err) {
+        console.warn("[DbManager] Falha ao persistir no Postgres:", err.message);
+      }
+    }
+    return project;
+  }
+  async updatePersonalProject(id, updates) {
+    const project = this.inMemoryCache.personalProjects.find((p) => p.id === id);
+    if (!project) return null;
+    Object.assign(project, updates);
+    if (updates.tasks) {
+      const completedCount = project.tasks.filter((t) => t.completed).length;
+      project.progressPercent = project.tasks.length > 0 ? Math.round(completedCount / project.tasks.length * 100) : 0;
+      if (project.progressPercent === 100) {
+        project.status = "lancado";
+      } else if (project.progressPercent >= 70) {
+        project.status = "quase_pronto";
+      } else {
+        project.status = "em_andamento";
+      }
+    }
+    return this.savePersonalProject(project);
+  }
+  async updateProjectTask(projectId, taskId, completed) {
+    const project = this.inMemoryCache.personalProjects.find((p) => p.id === projectId);
+    if (!project) return null;
+    const task = project.tasks.find((t) => t.id === taskId);
+    if (!task) return null;
+    task.completed = completed;
+    task.completedAt = completed ? (/* @__PURE__ */ new Date()).toISOString() : void 0;
+    const completedCount = project.tasks.filter((t) => t.completed).length;
+    project.progressPercent = project.tasks.length > 0 ? Math.round(completedCount / project.tasks.length * 100) : 0;
+    if (project.progressPercent === 100) {
+      project.status = "lancado";
+    } else if (project.progressPercent >= 70) {
+      project.status = "quase_pronto";
+    } else {
+      project.status = "em_andamento";
+    }
+    return this.savePersonalProject(project);
+  }
+  async deletePersonalProject(id) {
+    const initialLen = this.inMemoryCache.personalProjects.length;
+    this.inMemoryCache.personalProjects = this.inMemoryCache.personalProjects.filter((p) => p.id !== id);
+    if (this.inMemoryCache.personalProjects.length !== initialLen) {
+      this.saveToDisk();
+      if (this.pool) {
+        try {
+          await this.pool.query("DELETE FROM personal_projects WHERE id = $1", [id]);
+        } catch (e) {
+          console.warn("[DbManager] Falha ao deletar no Postgres:", e.message);
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+  // ====================================================================
+  // HYPOTHESES REPOSITORY
+  // ====================================================================
+  async getHypotheses() {
+    return this.inMemoryCache.hypotheses;
+  }
+  async createHypothesis(hyp) {
+    this.inMemoryCache.hypotheses.unshift(hyp);
+    this.saveToDisk();
+    if (this.pool) {
+      try {
+        await this.pool.query(
+          `INSERT INTO hypotheses (id, title, opportunity_ref_id, status, hypothesis_text, success_metric, confidence_score, notes)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+           ON CONFLICT (id) DO NOTHING`,
+          [
+            hyp.id,
+            hyp.title,
+            hyp.opportunityRefId || null,
+            hyp.status || "Backlog",
+            hyp.hypothesisText || "",
+            hyp.successMetric || "",
+            hyp.confidenceScore || 80,
+            hyp.notes || ""
+          ]
+        );
+      } catch (e) {
+        console.warn("[DbManager] Erro ao salvar hip\xF3tese no Postgres:", e.message);
+      }
+    }
+    return hyp;
+  }
+  async updateHypothesis(id, updates) {
+    const item = this.inMemoryCache.hypotheses.find((h) => h.id === id);
+    if (!item) return null;
+    Object.assign(item, updates);
+    this.saveToDisk();
+    return item;
+  }
+  async deleteHypothesis(id) {
+    const len = this.inMemoryCache.hypotheses.length;
+    this.inMemoryCache.hypotheses = this.inMemoryCache.hypotheses.filter((h) => h.id !== id);
+    if (this.inMemoryCache.hypotheses.length !== len) {
+      this.saveToDisk();
+      return true;
+    }
+    return false;
+  }
+  // ====================================================================
+  // ALERTS REPOSITORY
+  // ====================================================================
+  async getAlerts() {
+    return this.inMemoryCache.alerts;
+  }
+  async createAlert(alert) {
+    this.inMemoryCache.alerts.unshift(alert);
+    this.saveToDisk();
+    if (this.pool) {
+      try {
+        await this.pool.query(
+          `INSERT INTO user_alerts (id, name, query_keywords, min_score, channels, frequency, is_active, triggers_count, last_triggered)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+           ON CONFLICT (id) DO NOTHING`,
+          [
+            alert.id,
+            alert.name,
+            alert.queryOrKeywords || "SaaS",
+            alert.minScore || 85,
+            alert.channels || ["In-App"],
+            alert.frequency || "Tempo Real",
+            alert.isActive !== false,
+            alert.triggersCount || 0,
+            alert.lastTriggered || "Rec\xE9m criado"
+          ]
+        );
+      } catch (e) {
+        console.warn("[DbManager] Erro ao salvar alerta no Postgres:", e.message);
+      }
+    }
+    return alert;
+  }
+  async toggleAlert(id) {
+    const alert = this.inMemoryCache.alerts.find((a) => a.id === id);
+    if (!alert) return null;
+    alert.isActive = !alert.isActive;
+    this.saveToDisk();
+    if (this.pool) {
+      try {
+        await this.pool.query("UPDATE user_alerts SET is_active = $1 WHERE id = $2", [alert.isActive, id]);
+      } catch (e) {
+      }
+    }
+    return alert;
+  }
+  async deleteAlert(id) {
+    const len = this.inMemoryCache.alerts.length;
+    this.inMemoryCache.alerts = this.inMemoryCache.alerts.filter((a) => a.id !== id);
+    if (this.inMemoryCache.alerts.length !== len) {
+      this.saveToDisk();
+      return true;
+    }
+    return false;
+  }
+  // ====================================================================
+  // NEWS REPOSITORY
+  // ====================================================================
+  async getNews(filters) {
+    let result = [...this.inMemoryCache.news];
+    if (filters?.search && filters.search.trim()) {
+      const q = filters.search.toLowerCase();
+      result = result.filter(
+        (n) => n.title.toLowerCase().includes(q) || n.summary.toLowerCase().includes(q) || n.source.toLowerCase().includes(q) || n.tags && n.tags.some((t) => t.toLowerCase().includes(q))
+      );
+    }
+    if (filters?.category && filters.category !== "all") {
+      result = result.filter((n) => n.category.toLowerCase() === filters.category.toLowerCase());
+    }
+    if (filters?.country && filters.country !== "all") {
+      result = result.filter((n) => n.countryCode.toLowerCase() === filters.country.toLowerCase());
+    }
+    if (filters?.interest && filters.interest.trim()) {
+      const interests = filters.interest.toLowerCase().split(",");
+      result = result.filter(
+        (n) => interests.includes(n.category.toLowerCase()) || n.tags && n.tags.some((t) => interests.includes(t.toLowerCase()))
+      );
+    }
+    if (filters?.onlyWithHypotheses) {
+      result = result.filter((n) => n.possibleOpportunities && n.possibleOpportunities.length > 0);
+    }
+    return {
+      data: result,
+      total: result.length,
+      trendingCount: result.filter((n) => n.isTrending).length
+    };
+  }
+  async getNewsById(id) {
+    const item = this.inMemoryCache.news.find((n) => n.id === id);
+    return item || null;
+  }
+  async toggleNewsSaved(id) {
+    const item = this.inMemoryCache.news.find((n) => n.id === id);
+    if (!item) return null;
+    item.isSaved = !item.isSaved;
+    this.saveToDisk();
+    return item.isSaved;
+  }
+  async createProjectFromNewsHypothesis(newsId, hypothesisId) {
+    const newsItem = this.inMemoryCache.news.find((n) => n.id === newsId);
+    if (!newsItem) return null;
+    const hypothesis = newsItem.possibleOpportunities?.find((h) => h.id === hypothesisId);
+    if (!hypothesis) return null;
+    hypothesis.status = "Promovido a Projeto";
+    const newProject = {
+      id: `proj-hyp-${Date.now().toString().slice(-4)}`,
+      title: hypothesis.title.replace(/^Hipótese:\s*/i, ""),
+      opportunityRefId: newsItem.id,
+      status: "Pesquisando",
+      hypothesisText: `${hypothesis.description} (Inspirado em: "${newsItem.title}")`,
+      successMetric: `Validar MVP com 20 clientes do p\xFAblico: ${hypothesis.targetAudience}`,
+      confidenceScore: hypothesis.confidenceScore,
+      notes: `Monetiza\xE7\xE3o esperada: ${hypothesis.monetizationModel}. Esfor\xE7o estimado: ${hypothesis.estimatedEffort}. Fonte original: ${newsItem.source}.`,
+      createdAt: (/* @__PURE__ */ new Date()).toISOString().split("T")[0]
+    };
+    await this.createHypothesis(newProject);
+    return { project: newProject, hypothesis };
+  }
+};
+var dbClient = new DatabaseManager();
+
 // server/index.ts
 dotenv.config();
 var app = express();
@@ -2803,39 +3578,51 @@ var aiLimiter = createRateLimiter({
   maxRequests: 25,
   message: "Limite de an\xE1lises de IA por minuto atingido. Aguarde 60 segundos."
 });
-var opportunitiesDb = [...MOCK_OPPORTUNITIES];
-var alertsDb = [...MOCK_ALERTS];
-var hypothesesDb = [...MOCK_HYPOTHESES];
-var newsDb = [...MOCK_MARKET_NEWS];
 app.get("/api", (req, res) => {
   res.json({
     status: "ok",
-    service: "Opportunity Radar Intelligence API",
-    version: "1.0.0",
+    service: "Opportunity Radar Intelligence API (Persistent Backend)",
+    version: "1.1.0",
     endpoints: [
       "/api/health",
+      "/api/db-status",
       "/api/pulse",
       "/api/countries",
       "/api/opportunities",
-      "/api/market-news",
-      "/api/trends",
-      "/api/brief",
+      "/api/personal-projects",
+      "/api/news",
+      "/api/news/trends",
+      "/api/news/daily-brief",
       "/api/alerts",
-      "/api/signals/live",
+      "/api/signals",
       "/api/hypotheses",
-      "/api/sources",
-      "/api/ai/analyze-project",
-      "/api/ai/detect-opportunities"
+      "/api/admin/sources",
+      "/api/ai/analyze",
+      "/api/ai/stream"
     ],
     timestamp: (/* @__PURE__ */ new Date()).toISOString()
   });
 });
-app.get("/api/health", (req, res) => {
+app.get("/api/db-status", async (req, res) => {
+  try {
+    const status = await dbClient.getDbStatus();
+    res.json(status);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.get("/api/health", async (req, res) => {
+  const dbStatus = await dbClient.getDbStatus();
   res.json({
     status: "ok",
     environment: process.env.NODE_ENV || "production",
     uptimeSeconds: Math.floor(process.uptime()),
     timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+    database: {
+      engine: dbStatus.engine,
+      provider: dbStatus.provider,
+      connected: dbStatus.connected
+    },
     memory: process.memoryUsage()
   });
 });
@@ -2854,45 +3641,130 @@ app.get("/api/opportunities", async (req, res) => {
     cacheKey,
     async () => {
       const realOpps = pipelineManager.getQualifiedOpportunities();
+      const dbResult = await dbClient.getOpportunities({
+        search: typeof search === "string" ? search : void 0,
+        country: typeof country === "string" ? country : void 0,
+        category: typeof category === "string" ? category : void 0,
+        limit: parseInt(limit, 10) || 50,
+        offset: parseInt(offset, 10) || 0
+      });
       let combined = [
         ...realOpps,
-        ...opportunitiesDb.filter((o) => !realOpps.some((ro) => ro.id === o.id))
+        ...dbResult.data.filter((o) => !realOpps.some((ro) => ro.id === o.id))
       ];
-      let filtered = [...combined];
-      if (typeof search === "string" && search.trim()) {
-        const q = search.toLowerCase();
-        filtered = filtered.filter(
-          (o) => o.title.toLowerCase().includes(q) || o.whatDetected.toLowerCase().includes(q) || o.problemExists.toLowerCase().includes(q)
-        );
-      }
-      if (typeof country === "string" && country !== "all") {
-        filtered = filtered.filter((o) => o.market?.originCode === country);
-      }
-      if (typeof category === "string" && category !== "all") {
-        filtered = filtered.filter((o) => o.category === category);
-      }
-      const numLimit = Math.min(100, Math.max(1, parseInt(limit, 10) || 50));
-      const numOffset = Math.max(0, parseInt(offset, 10) || 0);
       return {
-        data: filtered.slice(numOffset, numOffset + numLimit),
-        total: filtered.length,
-        limit: numLimit,
-        offset: numOffset
+        data: combined,
+        total: dbResult.total + realOpps.length,
+        limit: dbResult.limit,
+        offset: dbResult.offset
       };
     },
-    3e4
-    // 30s cache
+    15e3
+    // 15s cache
   );
   res.setHeader("Cache-Control", "public, max-age=15");
   res.json(result);
 });
-app.get("/api/opportunities/:id", (req, res) => {
-  const allOpps = [...pipelineManager.getQualifiedOpportunities(), ...opportunitiesDb];
-  const opp = allOpps.find((o) => o.id === req.params.id);
+app.get("/api/opportunities/:id", async (req, res) => {
+  const realOpps = pipelineManager.getQualifiedOpportunities();
+  const fromPipeline = realOpps.find((o) => o.id === req.params.id);
+  if (fromPipeline) {
+    return res.json(fromPipeline);
+  }
+  const opp = await dbClient.getOpportunityById(req.params.id);
   if (!opp) {
     return res.status(404).json({ error: "Oportunidade n\xE3o encontrada" });
   }
   res.json(opp);
+});
+app.post("/api/opportunities", async (req, res) => {
+  try {
+    const opp = req.body;
+    if (!opp.title || !opp.category) {
+      return res.status(400).json({ error: "T\xEDtulo e categoria s\xE3o obrigat\xF3rios." });
+    }
+    if (!opp.id) {
+      opp.id = `opp-custom-${Date.now().toString().slice(-6)}`;
+    }
+    const saved = await dbClient.createOpportunity(opp);
+    globalCache.clear();
+    res.status(201).json(saved);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.patch("/api/opportunities/:id/status", async (req, res) => {
+  try {
+    const { isSaved, status } = req.body;
+    const updated = await dbClient.updateOpportunity(req.params.id, {
+      ...isSaved !== void 0 ? { isSaved: Boolean(isSaved) } : {},
+      ...status ? { status } : {}
+    });
+    if (!updated) {
+      return res.status(404).json({ error: "Oportunidade n\xE3o encontrada" });
+    }
+    globalCache.clear();
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.get("/api/personal-projects", async (req, res) => {
+  try {
+    const projects = await dbClient.getPersonalProjects();
+    res.json(projects);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.post("/api/personal-projects", async (req, res) => {
+  try {
+    const project = req.body;
+    if (!project.title || !project.opportunityId) {
+      return res.status(400).json({ error: "T\xEDtulo e ID de oportunidade s\xE3o obrigat\xF3rios." });
+    }
+    if (!project.id) {
+      project.id = `proj-personal-${Date.now().toString().slice(-6)}`;
+    }
+    const saved = await dbClient.savePersonalProject(project);
+    res.status(201).json(saved);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.patch("/api/personal-projects/:id", async (req, res) => {
+  try {
+    const updated = await dbClient.updatePersonalProject(req.params.id, req.body);
+    if (!updated) {
+      return res.status(404).json({ error: "Projeto pessoal n\xE3o encontrado." });
+    }
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.patch("/api/personal-projects/:id/tasks/:taskId", async (req, res) => {
+  try {
+    const { completed } = req.body;
+    const updated = await dbClient.updateProjectTask(req.params.id, req.params.taskId, Boolean(completed));
+    if (!updated) {
+      return res.status(404).json({ error: "Projeto ou tarefa n\xE3o encontrada." });
+    }
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.delete("/api/personal-projects/:id", async (req, res) => {
+  try {
+    const deleted = await dbClient.deletePersonalProject(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ error: "Projeto pessoal n\xE3o encontrado." });
+    }
+    res.json({ success: true, message: "Projeto pessoal exclu\xEDdo com sucesso." });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 app.get("/api/signals", (req, res) => {
   res.setHeader("Cache-Control", "public, max-age=15");
@@ -2916,11 +3788,11 @@ app.get("/api/ai/stream", aiLimiter, async (req, res) => {
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
-  const context = oppId ? opportunitiesDb.find((o) => o.id === oppId) : void 0;
+  const context = oppId ? await dbClient.getOpportunityById(oppId) : void 0;
   await aiAnalystService.streamAnalysis(
     {
       query: sanitizeString(query),
-      opportunityContext: context
+      opportunityContext: context || void 0
     },
     (chunk) => {
       res.write(`data: ${JSON.stringify({ chunk, done: false })}
@@ -2935,7 +3807,11 @@ app.get("/api/ai/stream", aiLimiter, async (req, res) => {
     }
   );
 });
-app.post("/api/hypotheses", (req, res) => {
+app.get("/api/hypotheses", async (req, res) => {
+  const list = await dbClient.getHypotheses();
+  res.json(list);
+});
+app.post("/api/hypotheses", async (req, res) => {
   const { title, hypothesisText, successMetric } = req.body;
   if (!title) {
     return res.status(400).json({ error: "T\xEDtulo da hip\xF3tese \xE9 obrigat\xF3rio." });
@@ -2951,10 +3827,21 @@ app.post("/api/hypotheses", (req, res) => {
     notes: "Criada via API segura.",
     createdAt: (/* @__PURE__ */ new Date()).toISOString().split("T")[0]
   };
-  hypothesesDb.unshift(newHyp);
-  res.status(201).json(newHyp);
+  const saved = await dbClient.createHypothesis(newHyp);
+  res.status(201).json(saved);
 });
-app.post("/api/alerts", (req, res) => {
+app.delete("/api/hypotheses/:id", async (req, res) => {
+  const deleted = await dbClient.deleteHypothesis(req.params.id);
+  if (!deleted) {
+    return res.status(404).json({ error: "Hip\xF3tese n\xE3o encontrada." });
+  }
+  res.json({ success: true });
+});
+app.get("/api/alerts", async (req, res) => {
+  const list = await dbClient.getAlerts();
+  res.json(list);
+});
+app.post("/api/alerts", async (req, res) => {
   const { name, queryOrKeywords, minScore, frequency } = req.body;
   if (!name) {
     return res.status(400).json({ error: "Nome do alerta \xE9 obrigat\xF3rio." });
@@ -2970,39 +3857,34 @@ app.post("/api/alerts", (req, res) => {
     triggersCount: 0,
     lastTriggered: "Rec\xE9m criado"
   };
-  alertsDb.unshift(newAlert);
-  res.status(201).json(newAlert);
+  const saved = await dbClient.createAlert(newAlert);
+  res.status(201).json(saved);
 });
-app.get("/api/news", (req, res) => {
+app.patch("/api/alerts/:id/toggle", async (req, res) => {
+  const updated = await dbClient.toggleAlert(req.params.id);
+  if (!updated) {
+    return res.status(404).json({ error: "Alerta n\xE3o encontrado." });
+  }
+  res.json(updated);
+});
+app.delete("/api/alerts/:id", async (req, res) => {
+  const deleted = await dbClient.deleteAlert(req.params.id);
+  if (!deleted) {
+    return res.status(404).json({ error: "Alerta n\xE3o encontrado." });
+  }
+  res.json({ success: true });
+});
+app.get("/api/news", async (req, res) => {
   const { search, category, country, interest, onlyWithHypotheses } = req.query;
-  let filtered = [...newsDb];
-  if (typeof search === "string" && search.trim()) {
-    const q = search.toLowerCase();
-    filtered = filtered.filter(
-      (n) => n.title.toLowerCase().includes(q) || n.summary.toLowerCase().includes(q) || n.source.toLowerCase().includes(q) || n.tags.some((t) => t.toLowerCase().includes(q))
-    );
-  }
-  if (typeof category === "string" && category !== "all") {
-    filtered = filtered.filter((n) => n.category.toLowerCase() === category.toLowerCase());
-  }
-  if (typeof country === "string" && country !== "all") {
-    filtered = filtered.filter((n) => n.countryCode.toLowerCase() === country.toLowerCase());
-  }
-  if (typeof interest === "string" && interest.trim()) {
-    const interests = interest.toLowerCase().split(",");
-    filtered = filtered.filter(
-      (n) => interests.includes(n.category.toLowerCase()) || n.tags.some((t) => interests.includes(t.toLowerCase()))
-    );
-  }
-  if (onlyWithHypotheses === "true") {
-    filtered = filtered.filter((n) => n.possibleOpportunities && n.possibleOpportunities.length > 0);
-  }
-  res.setHeader("Cache-Control", "public, max-age=30");
-  res.json({
-    data: filtered,
-    total: filtered.length,
-    trendingCount: filtered.filter((n) => n.isTrending).length
+  const result = await dbClient.getNews({
+    search: typeof search === "string" ? search : void 0,
+    category: typeof category === "string" ? category : void 0,
+    country: typeof country === "string" ? country : void 0,
+    interest: typeof interest === "string" ? interest : void 0,
+    onlyWithHypotheses: onlyWithHypotheses === "true"
   });
+  res.setHeader("Cache-Control", "public, max-age=30");
+  res.json(result);
 });
 app.get("/api/news/daily-brief", (req, res) => {
   const stats = pipelineManager.getStats();
@@ -3018,48 +3900,30 @@ app.get("/api/news/trends", (req, res) => {
   res.setHeader("Cache-Control", "public, max-age=60");
   res.json(MOCK_EMERGING_TRENDS);
 });
-app.get("/api/news/:id", (req, res) => {
-  const item = newsDb.find((n) => n.id === req.params.id);
+app.get("/api/news/:id", async (req, res) => {
+  const item = await dbClient.getNewsById(req.params.id);
   if (!item) {
     return res.status(404).json({ error: "Not\xEDcia n\xE3o encontrada." });
   }
   res.json(item);
 });
-app.post("/api/news/:id/save", (req, res) => {
-  const item = newsDb.find((n) => n.id === req.params.id);
-  if (!item) {
+app.post("/api/news/:id/save", async (req, res) => {
+  const isSaved = await dbClient.toggleNewsSaved(req.params.id);
+  if (isSaved === null) {
     return res.status(404).json({ error: "Not\xEDcia n\xE3o encontrada." });
   }
-  item.isSaved = !item.isSaved;
-  res.json({ success: true, isSaved: item.isSaved });
+  res.json({ success: true, isSaved });
 });
-app.post("/api/news/:id/create-project", (req, res) => {
+app.post("/api/news/:id/create-project", async (req, res) => {
   const { hypothesisId } = req.body;
-  const newsItem = newsDb.find((n) => n.id === req.params.id);
-  if (!newsItem) {
-    return res.status(404).json({ error: "Not\xEDcia n\xE3o encontrada." });
+  const result = await dbClient.createProjectFromNewsHypothesis(req.params.id, hypothesisId);
+  if (!result) {
+    return res.status(404).json({ error: "Not\xEDcia ou hip\xF3tese de oportunidade n\xE3o encontrada." });
   }
-  const hypothesis = newsItem.possibleOpportunities.find((h) => h.id === hypothesisId);
-  if (!hypothesis) {
-    return res.status(404).json({ error: "Hip\xF3tese de oportunidade n\xE3o encontrada." });
-  }
-  hypothesis.status = "Promovido a Projeto";
-  const newProject = {
-    id: `proj-hyp-${Date.now().toString().slice(-4)}`,
-    title: hypothesis.title.replace(/^Hipótese:\s*/i, ""),
-    opportunityRefId: newsItem.id,
-    status: "Pesquisando",
-    hypothesisText: `${hypothesis.description} (Inspirado em: "${newsItem.title}")`,
-    successMetric: `Validar MVP com 20 clientes do p\xFAblico: ${hypothesis.targetAudience}`,
-    confidenceScore: hypothesis.confidenceScore,
-    notes: `Monetiza\xE7\xE3o esperada: ${hypothesis.monetizationModel}. Esfor\xE7o estimado: ${hypothesis.estimatedEffort}. Fonte original: ${newsItem.source}.`,
-    createdAt: (/* @__PURE__ */ new Date()).toISOString().split("T")[0]
-  };
-  hypothesesDb.unshift(newProject);
-  res.status(201).json({ success: true, project: newProject, hypothesis });
+  res.status(201).json({ success: true, ...result });
 });
 app.post("/api/news/:id/analyze", aiLimiter, async (req, res) => {
-  const newsItem = newsDb.find((n) => n.id === req.params.id);
+  const newsItem = await dbClient.getNewsById(req.params.id);
   if (!newsItem) {
     return res.status(404).json({ error: "Not\xEDcia n\xE3o encontrada." });
   }

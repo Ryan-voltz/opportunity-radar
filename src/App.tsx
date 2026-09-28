@@ -10,6 +10,7 @@ import {
   MOCK_HYPOTHESES,
 } from './data/mockData';
 import { ApiClient } from './services/apiClient';
+import { PersonalProjectService } from './services/personalProjectService';
 
 // Core UI Layout Components (Immediate load)
 import { Sidebar } from './components/layout/Sidebar';
@@ -133,6 +134,7 @@ export function App() {
     let isMounted = true;
     (async () => {
       try {
+        PersonalProjectService.syncWithBackend();
         const [oppsData, signalsData] = await Promise.all([
           ApiClient.getOpportunities(),
           ApiClient.getSignals(),
