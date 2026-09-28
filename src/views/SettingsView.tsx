@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Badge } from '../components/common/Badge';
 import { Button } from '../components/common/Button';
 import { useCurrency, CurrencyMode } from '../context/CurrencyContext';
+import { useToast } from '../context/ToastContext';
 import { ApiClient } from '../services/apiClient';
 import {
   Settings,
@@ -58,6 +59,7 @@ export const SettingsView: React.FC = () => {
   // Form states
   const [workspaceName, setWorkspaceName] = useState('Ryan Solo SaaS Lab');
   const { currency, setCurrency } = useCurrency();
+  const { showToast } = useToast();
   const [apiKeyGemini, setApiKeyGemini] = useState('sk-live-••••••••••••••••••••38f9');
   const [webhookUrl, setWebhookUrl] = useState('https://discord.com/api/webhooks/12345/abcde');
 
@@ -77,6 +79,11 @@ export const SettingsView: React.FC = () => {
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     setSavedSuccess(true);
+    showToast({
+      type: 'success',
+      title: 'Configurações Salvas',
+      message: 'Suas alterações foram gravadas com sucesso.',
+    });
     setTimeout(() => setSavedSuccess(false), 2500);
   };
 
@@ -488,7 +495,13 @@ export const SettingsView: React.FC = () => {
                 variant="outline"
                 size="sm"
                 iconLeft={<Download className="w-3.5 h-3.5" />}
-                onClick={() => alert('Download do arquivo opportunities-radar-backup.json iniciado!')}
+                onClick={() =>
+                  showToast({
+                    type: 'success',
+                    title: 'Download Iniciado',
+                    message: 'O arquivo opportunities-radar-backup.json foi gerado com sucesso.',
+                  })
+                }
               >
                 Exportar Catálogo em JSON
               </Button>
@@ -496,7 +509,13 @@ export const SettingsView: React.FC = () => {
                 variant="outline"
                 size="sm"
                 iconLeft={<Download className="w-3.5 h-3.5" />}
-                onClick={() => alert('Download do arquivo opportunities.csv iniciado!')}
+                onClick={() =>
+                  showToast({
+                    type: 'success',
+                    title: 'Download Iniciado',
+                    message: 'A planilha opportunities.csv foi gerada com sucesso.',
+                  })
+                }
               >
                 Exportar Tabela em CSV
               </Button>

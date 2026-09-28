@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavSection } from '../../types';
 import {
   Search,
@@ -6,13 +6,13 @@ import {
   Menu,
   Sparkles,
   Command,
-  Radio,
   Sun,
   Moon,
 } from 'lucide-react';
 import { Button } from '../common/Button';
 import { useTheme } from '../../context/ThemeContext';
 import { CurrencySwitcher } from '../common/CurrencySwitcher';
+import { NotificationPopover } from '../common/NotificationPopover';
 
 interface HeaderProps {
   currentSection: NavSection;
@@ -20,6 +20,7 @@ interface HeaderProps {
   onToggleMobileMenu: () => void;
   onQuickAction: () => void;
   unhandledAlertsCount: number;
+  onNavigateSection?: (section: NavSection) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -28,8 +29,10 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleMobileMenu,
   onQuickAction,
   unhandledAlertsCount,
+  onNavigateSection,
 }) => {
   const { theme, toggleTheme } = useTheme();
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const getSectionTitle = (section: NavSection) => {
     switch (section) {
       case 'dashboard':
@@ -131,17 +134,31 @@ export const Header: React.FC<HeaderProps> = ({
           )}
         </button>
 
-        {/* Notifications */}
-        <button
-          onClick={() => alert('Você possui 3 novos sinais detectados com Radar Score superior a 90 nas últimas 2 horas.')}
-          className="relative p-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/20 transition-colors"
-          title="Notificações & Alertas"
-        >
-          <Bell className="w-4 h-4" />
-          {unhandledAlertsCount > 0 && (
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-slate-900 dark:bg-white" />
-          )}
-        </button>
+        {/* Real In-App Notifications Pop-up */}
+        <div className="relative">
+          <button
+            onClick={() => setIsNotificationOpen((prev) => !prev)}
+            className={`relative p-2 rounded-xl border transition-colors ${
+              isNotificationOpen
+                ? 'bg-slate-200 dark:bg-white/10 border-slate-400 dark:border-white/30 text-slate-900 dark:text-white'
+                : 'bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/20'
+            }`}
+            title="Notificações & Alertas"
+            aria-expanded={isNotificationOpen}
+            aria-haspopup="dialog"
+          >
+            <Bell className="w-4 h-4" />
+            {unhandledAlertsCount > 0 && (
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-slate-900" />
+            )}
+          </button>
+
+          <NotificationPopover
+            isOpen={isNotificationOpen}
+            onClose={() => setIsNotificationOpen(false)}
+            onNavigateSection={(sec) => onNavigateSection?.(sec as NavSection)}
+          />
+        </div>
 
         {/* Quick Action Button */}
         <Button

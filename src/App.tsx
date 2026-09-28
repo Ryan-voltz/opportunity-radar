@@ -342,6 +342,7 @@ export function App() {
           onToggleMobileMenu={() => setIsMobileMenuOpen(true)}
           onQuickAction={() => handleNavigate('ai-analyst')}
           unhandledAlertsCount={3}
+          onNavigateSection={handleNavigate}
         />
 
         {/* Dynamic Section View Content with Suspense Code Splitting */}

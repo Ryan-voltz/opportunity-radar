@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Badge } from '../components/common/Badge';
 import { Button } from '../components/common/Button';
+import { useToast } from '../context/ToastContext';
 import { SearchCode, ThumbsDown, MessageSquare, AlertCircle, ArrowUpRight, Sparkles } from 'lucide-react';
 
 export const ResearchView: React.FC = () => {
   const [activeNiche, setActiveNiche] = useState<string>('all');
+  const { showToast } = useToast();
 
   const researchItems = [
     {
@@ -126,7 +128,13 @@ export const ResearchView: React.FC = () => {
                 variant="outline"
                 size="xs"
                 iconRight={<ArrowUpRight className="w-3 h-3" />}
-                onClick={() => alert(`Gerando dossiê de solução contra a dor do ${item.software}`)}
+                onClick={() =>
+                  showToast({
+                    type: 'opportunity',
+                    title: 'Dossiê em Processamento',
+                    message: `Gerando síntese de solução contra a dor do ${item.software} via IA.`,
+                  })
+                }
               >
                 Sintetizar Solução
               </Button>
