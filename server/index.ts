@@ -547,7 +547,69 @@ app.get('/api/news/trends', async (req: Request, res: Response) => {
   res.json(MOCK_EMERGING_TRENDS);
 });
 
-// Single News Item
+// Live News Refresh — Collect from all sources and transform to news
+app.post('/api/news/refresh', async (req: Request, res: Response) => {
+  try {
+    console.log('[News Refresh] Iniciando coleta de notícias em tempo real...');
+    const startTime = Date.now();
+
+    // 1. Run the full pipeline sync (HN, GitHub, Reddit, RSS)
+    const pipelineResult = await pipelineManager.syncAll();
+
+    // 2. Get all collected raw signals
+    const rawSignals = pipelineManager.getRawSignals();
+
+    // 3. Transform signals into MarketNewsItem format
+    const liveNews = newsIngestionService.transformSignalsToNews(rawSignals);
+
+    // 4. Merge into database cache
+    const mergeResult = await dbClient.refreshNews(liveNews);
+
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+    console.log(`[News Refresh] Concluído em ${elapsed}s: ${mergeResult.added} novas notícias, ${mergeResult.total} total`);
+
+    res.json({
+      success: true,
+      pipeline: {
+        sourcesProcessed: Object.keys(pipelineResult.results).length,
+        signalsCollected: pipelineResult.totalCollected,
+        qualifiedOpportunities: pipelineResult.totalQualified,
+        sourceResults: pipelineResult.results,
+      },
+      news: {
+        transformed: liveNews.length,
+        newAdded: mergeResult.added,
+        totalInFeed: mergeResult.total,
+      },
+      elapsedSeconds: parseFloat(elapsed),
+      lastRefresh: dbClient.getLastRefresh(),
+    });
+  } catch (err) {
+    console.error('[News Refresh] Erro:', (err as Error).message);
+    res.status(500).json({
+      success: false,
+      error: (err as Error).message,
+    });
+  }
+});
+
+// News feed status
+app.get('/api/news/status', (req: Request, res: Response) => {
+  res.json({
+    lastRefresh: dbClient.getLastRefresh(),
+    totalNews: dbClient.getNewsCount(),
+    pipelineStats: pipelineManager.getStats(),
+    sources: pipelineManager.getSources().map(s => ({
+      id: s.id,
+      name: s.name,
+      status: s.status,
+      lastSync: s.lastSync,
+      records: s.recordsCollected,
+    })),
+  });
+});
+
+// Single News Item (MUST come after specific /news/* routes)
 app.get('/api/news/:id', async (req: Request, res: Response) => {
   const item = await dbClient.getNewsById(req.params.id);
   if (!item) {
@@ -609,70 +671,6 @@ app.post('/api/news/:id/analyze', aiLimiter, async (req: Request, res: Response)
   });
 });
 
-// ====================================================================
-// LIVE NEWS REFRESH — Collect from all sources and transform to news
-// ====================================================================
-
-app.post('/api/news/refresh', async (req: Request, res: Response) => {
-  try {
-    console.log('[News Refresh] Iniciando coleta de notícias em tempo real...');
-    const startTime = Date.now();
-
-    // 1. Run the full pipeline sync (HN, GitHub, Reddit, RSS)
-    const pipelineResult = await pipelineManager.syncAll();
-
-    // 2. Get all collected raw signals
-    const rawSignals = pipelineManager.getRawSignals();
-
-    // 3. Transform signals into MarketNewsItem format
-    const liveNews = newsIngestionService.transformSignalsToNews(rawSignals);
-
-    // 4. Merge into database cache
-    const mergeResult = await dbClient.refreshNews(liveNews);
-
-    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
-    console.log(`[News Refresh] Concluído em ${elapsed}s: ${mergeResult.added} novas notícias, ${mergeResult.total} total`);
-
-    res.json({
-      success: true,
-      pipeline: {
-        sourcesProcessed: Object.keys(pipelineResult.results).length,
-        signalsCollected: pipelineResult.totalCollected,
-        qualifiedOpportunities: pipelineResult.totalQualified,
-        sourceResults: pipelineResult.results,
-      },
-      news: {
-        transformed: liveNews.length,
-        newAdded: mergeResult.added,
-        totalInFeed: mergeResult.total,
-      },
-      elapsedSeconds: parseFloat(elapsed),
-      lastRefresh: dbClient.getLastRefresh(),
-    });
-  } catch (err) {
-    console.error('[News Refresh] Erro:', (err as Error).message);
-    res.status(500).json({
-      success: false,
-      error: (err as Error).message,
-    });
-  }
-});
-
-// News feed status
-app.get('/api/news/status', (req: Request, res: Response) => {
-  res.json({
-    lastRefresh: dbClient.getLastRefresh(),
-    totalNews: dbClient.getNewsCount(),
-    pipelineStats: pipelineManager.getStats(),
-    sources: pipelineManager.getSources().map(s => ({
-      id: s.id,
-      name: s.name,
-      status: s.status,
-      lastSync: s.lastSync,
-      records: s.recordsCollected,
-    })),
-  });
-});
 
 // ====================================================================
 // ADMIN & DATA INGESTION PIPELINE ENDPOINTS

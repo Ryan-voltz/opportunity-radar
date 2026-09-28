@@ -4370,6 +4370,54 @@ app.get("/api/news/trends", async (req, res) => {
   res.setHeader("Cache-Control", "public, max-age=60");
   res.json(MOCK_EMERGING_TRENDS);
 });
+app.post("/api/news/refresh", async (req, res) => {
+  try {
+    console.log("[News Refresh] Iniciando coleta de not\xEDcias em tempo real...");
+    const startTime = Date.now();
+    const pipelineResult = await pipelineManager.syncAll();
+    const rawSignals = pipelineManager.getRawSignals();
+    const liveNews = newsIngestionService.transformSignalsToNews(rawSignals);
+    const mergeResult = await dbClient.refreshNews(liveNews);
+    const elapsed = ((Date.now() - startTime) / 1e3).toFixed(1);
+    console.log(`[News Refresh] Conclu\xEDdo em ${elapsed}s: ${mergeResult.added} novas not\xEDcias, ${mergeResult.total} total`);
+    res.json({
+      success: true,
+      pipeline: {
+        sourcesProcessed: Object.keys(pipelineResult.results).length,
+        signalsCollected: pipelineResult.totalCollected,
+        qualifiedOpportunities: pipelineResult.totalQualified,
+        sourceResults: pipelineResult.results
+      },
+      news: {
+        transformed: liveNews.length,
+        newAdded: mergeResult.added,
+        totalInFeed: mergeResult.total
+      },
+      elapsedSeconds: parseFloat(elapsed),
+      lastRefresh: dbClient.getLastRefresh()
+    });
+  } catch (err) {
+    console.error("[News Refresh] Erro:", err.message);
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
+  }
+});
+app.get("/api/news/status", (req, res) => {
+  res.json({
+    lastRefresh: dbClient.getLastRefresh(),
+    totalNews: dbClient.getNewsCount(),
+    pipelineStats: pipelineManager.getStats(),
+    sources: pipelineManager.getSources().map((s) => ({
+      id: s.id,
+      name: s.name,
+      status: s.status,
+      lastSync: s.lastSync,
+      records: s.recordsCollected
+    }))
+  });
+});
 app.get("/api/news/:id", async (req, res) => {
   const item = await dbClient.getNewsById(req.params.id);
   if (!item) {
@@ -4417,54 +4465,6 @@ app.post("/api/news/:id/analyze", aiLimiter, async (req, res) => {
     title: newsItem.title,
     analysis: analysisResult,
     hypotheses: newsItem.possibleOpportunities
-  });
-});
-app.post("/api/news/refresh", async (req, res) => {
-  try {
-    console.log("[News Refresh] Iniciando coleta de not\xEDcias em tempo real...");
-    const startTime = Date.now();
-    const pipelineResult = await pipelineManager.syncAll();
-    const rawSignals = pipelineManager.getRawSignals();
-    const liveNews = newsIngestionService.transformSignalsToNews(rawSignals);
-    const mergeResult = await dbClient.refreshNews(liveNews);
-    const elapsed = ((Date.now() - startTime) / 1e3).toFixed(1);
-    console.log(`[News Refresh] Conclu\xEDdo em ${elapsed}s: ${mergeResult.added} novas not\xEDcias, ${mergeResult.total} total`);
-    res.json({
-      success: true,
-      pipeline: {
-        sourcesProcessed: Object.keys(pipelineResult.results).length,
-        signalsCollected: pipelineResult.totalCollected,
-        qualifiedOpportunities: pipelineResult.totalQualified,
-        sourceResults: pipelineResult.results
-      },
-      news: {
-        transformed: liveNews.length,
-        newAdded: mergeResult.added,
-        totalInFeed: mergeResult.total
-      },
-      elapsedSeconds: parseFloat(elapsed),
-      lastRefresh: dbClient.getLastRefresh()
-    });
-  } catch (err) {
-    console.error("[News Refresh] Erro:", err.message);
-    res.status(500).json({
-      success: false,
-      error: err.message
-    });
-  }
-});
-app.get("/api/news/status", (req, res) => {
-  res.json({
-    lastRefresh: dbClient.getLastRefresh(),
-    totalNews: dbClient.getNewsCount(),
-    pipelineStats: pipelineManager.getStats(),
-    sources: pipelineManager.getSources().map((s) => ({
-      id: s.id,
-      name: s.name,
-      status: s.status,
-      lastSync: s.lastSync,
-      records: s.recordsCollected
-    }))
   });
 });
 app.get("/api/admin/sources", (req, res) => {
