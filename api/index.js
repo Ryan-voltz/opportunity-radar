@@ -3567,12 +3567,23 @@ app.use(
   })
 );
 app.use((req, res, next) => {
-  if (req.body && typeof req.body === "object") {
+  if (typeof req.body === "string") {
+    try {
+      req.body = JSON.parse(req.body);
+    } catch {
+    }
+  } else if (Buffer.isBuffer(req.body)) {
+    try {
+      req.body = JSON.parse(req.body.toString("utf8"));
+    } catch {
+    }
+  }
+  if (req.body !== void 0 || req.readableEnded || req._readableState?.ended) {
     return next();
   }
-  express.json({ limit: "100kb" })(req, res, (err) => {
+  return express.json({ limit: "100kb" })(req, res, (err) => {
     if (err) {
-      if (req.body) return next();
+      if (req.body !== void 0) return next();
       return res.status(400).json({ error: "Payload JSON inv\xE1lido." });
     }
     next();
@@ -4035,10 +4046,10 @@ app.get("/api/admin/signals", (req, res) => {
   res.json(pipelineManager.getRawSignals());
 });
 app.use((err, req, res, next) => {
-  console.error("[API ERROR]", err.message);
+  console.error("[API ERROR]", err);
   res.status(500).json({
     error: "Internal Server Error",
-    message: "Ocorreu um erro interno seguro no servidor."
+    message: err.message || "Ocorreu um erro interno no servidor."
   });
 });
 if (process.env.NODE_ENV !== "test" && !process.env.VERCEL) {

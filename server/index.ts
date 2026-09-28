@@ -50,12 +50,28 @@ app.use(
 
 // 1.1 Safe JSON body parser (supports pre-parsed Vercel serverless bodies)
 app.use((req: Request, res: Response, next: NextFunction) => {
-  if (req.body && typeof req.body === 'object') {
+  if (typeof req.body === 'string') {
+    try {
+      req.body = JSON.parse(req.body);
+    } catch {
+      // ignore
+    }
+  } else if (Buffer.isBuffer(req.body)) {
+    try {
+      req.body = JSON.parse(req.body.toString('utf8'));
+    } catch {
+      // ignore
+    }
+  }
+
+  // If body is already set or stream has already been consumed by serverless runtime, do not attach body-parser
+  if (req.body !== undefined || req.readableEnded || (req as any)._readableState?.ended) {
     return next();
   }
-  express.json({ limit: '100kb' })(req, res, (err) => {
+
+  return express.json({ limit: '100kb' })(req, res, (err) => {
     if (err) {
-      if (req.body) return next();
+      if (req.body !== undefined) return next();
       return res.status(400).json({ error: 'Payload JSON inválido.' });
     }
     next();
@@ -651,12 +667,12 @@ app.get('/api/admin/signals', (req: Request, res: Response) => {
   res.json(pipelineManager.getRawSignals());
 });
 
-// Central Error Handling Middleware (never leaks stack traces)
+// Central Error Handling Middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error('[API ERROR]', err.message);
+  console.error('[API ERROR]', err);
   res.status(500).json({
     error: 'Internal Server Error',
-    message: 'Ocorreu um erro interno seguro no servidor.',
+    message: err.message || 'Ocorreu um erro interno no servidor.',
   });
 });
 
