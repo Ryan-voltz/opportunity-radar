@@ -101,6 +101,9 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [refreshStatus, setRefreshStatus] = useState<string | null>(null);
+  const [lastRefreshTime, setLastRefreshTime] = useState<string | null>(null);
 
   // Fetch live from server API with fallback
   useEffect(() => {
@@ -133,6 +136,73 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
       isMounted = false;
     };
   }, []);
+
+  // Fetch last refresh status
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/news/status`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.lastRefresh) setLastRefreshTime(data.lastRefresh);
+        }
+      } catch {
+        // ignore
+      }
+    })();
+  }, []);
+
+  // Refresh handler — triggers real-time collection
+  const handleRefreshNews = async () => {
+    setIsRefreshing(true);
+    setRefreshStatus('Coletando dados de Hacker News, GitHub, Reddit e RSS...');
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/news/refresh`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setRefreshStatus(
+          `✅ ${data.news.newAdded} novas notícias coletadas de ${data.pipeline.sourcesProcessed} fontes em ${data.elapsedSeconds}s`
+        );
+        setLastRefreshTime(data.lastRefresh);
+
+        // Re-fetch the updated news feed
+        const newsRes = await fetch(`${API_BASE_URL}/news`);
+        if (newsRes.ok) {
+          const newsJson = await newsRes.json();
+          if (newsJson.data && newsJson.data.length > 0) setNews(newsJson.data);
+        }
+
+        // Re-fetch trends and brief
+        const [briefRes, trendsRes] = await Promise.all([
+          fetch(`${API_BASE_URL}/news/daily-brief`),
+          fetch(`${API_BASE_URL}/news/trends`),
+        ]);
+        if (briefRes.ok) {
+          const json = await briefRes.json();
+          setDailyBrief(json);
+        }
+        if (trendsRes.ok) {
+          const json = await trendsRes.json();
+          setTrends(json);
+        }
+
+        setTimeout(() => setRefreshStatus(null), 6000);
+      } else {
+        setRefreshStatus('⚠️ Erro ao coletar notícias. Tente novamente.');
+        setTimeout(() => setRefreshStatus(null), 5000);
+      }
+    } catch {
+      setRefreshStatus('⚠️ Servidor offline. As notícias atuais continuam disponíveis.');
+      setTimeout(() => setRefreshStatus(null), 5000);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -339,13 +409,38 @@ export const MarketNewsView: React.FC<MarketNewsViewProps> = ({ onNavigateToMyLa
             <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
               Market News & Discovery
             </h1>
-            <span className="px-2 py-0.5 rounded-full text-2xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/[0.08]">
-              Live Intel
+            <span className="px-2 py-0.5 rounded-full text-2xs font-medium bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50 animate-pulse">
+              ● Live Intel
             </span>
           </div>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
-            Monitoramento de notícias globais, mudanças de plataformas e anúncios técnicos convertidos automaticamente em <strong className="text-slate-800 dark:text-slate-200">hipóteses de oportunidade de negócio</strong>.
+            Monitoramento <strong className="text-slate-800 dark:text-slate-200">em tempo real</strong> de Hacker News, GitHub, Reddit, TechCrunch e Product Hunt — convertido automaticamente em <strong className="text-slate-800 dark:text-slate-200">hipóteses de oportunidade de negócio</strong>.
           </p>
+          {/* Refresh Button & Status */}
+          <div className="flex items-center gap-3 mt-2 flex-wrap">
+            <button
+              onClick={handleRefreshNews}
+              disabled={isRefreshing}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all border shadow-sm ${
+                isRefreshing
+                  ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 border-slate-200 dark:border-slate-700 cursor-wait'
+                  : 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 border-slate-900 dark:border-white hover:opacity-90 active:scale-[0.97]'
+              }`}
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
+              {isRefreshing ? 'Coletando notícias...' : 'Atualizar Notícias em Tempo Real'}
+            </button>
+            {lastRefreshTime && !refreshStatus && (
+              <span className="text-2xs text-slate-500 dark:text-slate-500">
+                Última atualização: {new Date(lastRefreshTime).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}
+              </span>
+            )}
+            {refreshStatus && (
+              <span className="text-2xs font-medium text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1 rounded-lg border border-emerald-200 dark:border-emerald-800/40">
+                {refreshStatus}
+              </span>
+            )}
+          </div>
         </div>
 
         {/* View Tabs Switcher */}

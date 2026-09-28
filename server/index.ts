@@ -5,6 +5,7 @@ import { securityHeaders, createRateLimiter, sanitizeString } from './middleware
 import { aiAnalystService } from './services/aiAnalystService';
 import { globalCache } from './services/cacheService';
 import { pipelineManager } from './ingestion/pipelineManager';
+import { newsIngestionService } from './ingestion/newsIngestionService';
 import { dbClient } from './db/dbClient';
 
 // Import domain seed data for pulse and geography
@@ -504,20 +505,44 @@ app.get('/api/news', async (req: Request, res: Response) => {
   res.json(result);
 });
 
-// Get Daily Market Brief
-app.get('/api/news/daily-brief', (req: Request, res: Response) => {
+// Get Daily Market Brief (dynamically generated from real news)
+app.get('/api/news/daily-brief', async (req: Request, res: Response) => {
   const stats = pipelineManager.getStats();
-  const brief = {
-    ...MOCK_DAILY_BRIEF,
-    todaySignalsCount: stats.totalCollected || MOCK_DAILY_BRIEF.todaySignalsCount,
-    saasOpportunitiesCount: stats.totalQualifiedOpportunities || MOCK_DAILY_BRIEF.saasOpportunitiesCount,
-  };
-  res.setHeader('Cache-Control', 'public, max-age=60');
-  res.json(brief);
+  const newsResult = await dbClient.getNews();
+  const allNews = newsResult.data;
+
+  // If we have live news, generate a dynamic brief; otherwise use mock
+  if (allNews.length > 0) {
+    const brief = newsIngestionService.generateDailyBrief(allNews);
+    brief.todaySignalsCount = Math.max(brief.todaySignalsCount, stats.totalCollected || 0);
+    brief.saasOpportunitiesCount = Math.max(brief.saasOpportunitiesCount, stats.totalQualifiedOpportunities || 0);
+    res.setHeader('Cache-Control', 'public, max-age=60');
+    res.json(brief);
+  } else {
+    const brief = {
+      ...MOCK_DAILY_BRIEF,
+      todaySignalsCount: stats.totalCollected || MOCK_DAILY_BRIEF.todaySignalsCount,
+      saasOpportunitiesCount: stats.totalQualifiedOpportunities || MOCK_DAILY_BRIEF.saasOpportunitiesCount,
+    };
+    res.setHeader('Cache-Control', 'public, max-age=60');
+    res.json(brief);
+  }
 });
 
-// Get Emerging Trends
-app.get('/api/news/trends', (req: Request, res: Response) => {
+// Get Emerging Trends (dynamically generated from real news)
+app.get('/api/news/trends', async (req: Request, res: Response) => {
+  const newsResult = await dbClient.getNews();
+  const allNews = newsResult.data;
+
+  if (allNews.length >= 4) {
+    const liveTrends = newsIngestionService.generateTrendsFromNews(allNews);
+    // If we generated meaningful trends, serve them; otherwise fallback
+    if (liveTrends.length > 0) {
+      res.setHeader('Cache-Control', 'public, max-age=60');
+      return res.json(liveTrends);
+    }
+  }
+
   res.setHeader('Cache-Control', 'public, max-age=60');
   res.json(MOCK_EMERGING_TRENDS);
 });
@@ -581,6 +606,71 @@ app.post('/api/news/:id/analyze', aiLimiter, async (req: Request, res: Response)
     title: newsItem.title,
     analysis: analysisResult,
     hypotheses: newsItem.possibleOpportunities,
+  });
+});
+
+// ====================================================================
+// LIVE NEWS REFRESH — Collect from all sources and transform to news
+// ====================================================================
+
+app.post('/api/news/refresh', async (req: Request, res: Response) => {
+  try {
+    console.log('[News Refresh] Iniciando coleta de notícias em tempo real...');
+    const startTime = Date.now();
+
+    // 1. Run the full pipeline sync (HN, GitHub, Reddit, RSS)
+    const pipelineResult = await pipelineManager.syncAll();
+
+    // 2. Get all collected raw signals
+    const rawSignals = pipelineManager.getRawSignals();
+
+    // 3. Transform signals into MarketNewsItem format
+    const liveNews = newsIngestionService.transformSignalsToNews(rawSignals);
+
+    // 4. Merge into database cache
+    const mergeResult = await dbClient.refreshNews(liveNews);
+
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+    console.log(`[News Refresh] Concluído em ${elapsed}s: ${mergeResult.added} novas notícias, ${mergeResult.total} total`);
+
+    res.json({
+      success: true,
+      pipeline: {
+        sourcesProcessed: Object.keys(pipelineResult.results).length,
+        signalsCollected: pipelineResult.totalCollected,
+        qualifiedOpportunities: pipelineResult.totalQualified,
+        sourceResults: pipelineResult.results,
+      },
+      news: {
+        transformed: liveNews.length,
+        newAdded: mergeResult.added,
+        totalInFeed: mergeResult.total,
+      },
+      elapsedSeconds: parseFloat(elapsed),
+      lastRefresh: dbClient.getLastRefresh(),
+    });
+  } catch (err) {
+    console.error('[News Refresh] Erro:', (err as Error).message);
+    res.status(500).json({
+      success: false,
+      error: (err as Error).message,
+    });
+  }
+});
+
+// News feed status
+app.get('/api/news/status', (req: Request, res: Response) => {
+  res.json({
+    lastRefresh: dbClient.getLastRefresh(),
+    totalNews: dbClient.getNewsCount(),
+    pipelineStats: pipelineManager.getStats(),
+    sources: pipelineManager.getSources().map(s => ({
+      id: s.id,
+      name: s.name,
+      status: s.status,
+      lastSync: s.lastSync,
+      records: s.recordsCollected,
+    })),
   });
 });
 

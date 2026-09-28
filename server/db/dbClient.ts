@@ -257,6 +257,7 @@ class DatabaseManager {
   private persistentStorePath: string;
   private inMemoryCache: PersistentState;
   private isInitialized = false;
+  private lastNewsRefresh: string | null = null;
 
   constructor() {
     // Choose writable directory for storage
@@ -938,6 +939,55 @@ class DatabaseManager {
 
     await this.createHypothesis(newProject);
     return { project: newProject, hypothesis };
+  }
+
+  // ====================================================================
+  // LIVE NEWS REFRESH
+  // ====================================================================
+
+  /**
+   * Merge freshly collected news items into the cache.
+   * - Preserves user-saved items (isSaved === true)
+   * - Deduplicates by normalized title
+   * - Prepends new items, keeping a max of 80 total
+   */
+  async refreshNews(freshNews: any[]): Promise<{ added: number; total: number }> {
+    if (!freshNews || freshNews.length === 0) {
+      return { added: 0, total: this.inMemoryCache.news.length };
+    }
+
+    // Keep items the user explicitly saved
+    const savedItems = this.inMemoryCache.news.filter((n) => n.isSaved);
+
+    // Build a dedup set from saved items
+    const existingTitles = new Set(
+      savedItems.map((n) => n.title?.toLowerCase().trim().slice(0, 60))
+    );
+
+    // Filter out duplicates from fresh data
+    const uniqueNew = freshNews.filter((n) => {
+      const normalized = n.title?.toLowerCase().trim().slice(0, 60);
+      if (existingTitles.has(normalized)) return false;
+      existingTitles.add(normalized);
+      return true;
+    });
+
+    // Merge: saved items first, then new items
+    const merged = [...savedItems, ...uniqueNew].slice(0, 80);
+
+    this.inMemoryCache.news = merged;
+    this.lastNewsRefresh = new Date().toISOString();
+    this.saveToDisk();
+
+    return { added: uniqueNew.length, total: merged.length };
+  }
+
+  getLastRefresh(): string | null {
+    return this.lastNewsRefresh;
+  }
+
+  getNewsCount(): number {
+    return this.inMemoryCache.news.length;
   }
 }
 

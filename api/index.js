@@ -1089,6 +1089,387 @@ var PipelineManager = class {
 };
 var pipelineManager = new PipelineManager();
 
+// server/ingestion/newsIngestionService.ts
+var CATEGORY_KEYWORDS = [
+  { category: "IA", keywords: ["ai", "artificial intelligence", "llm", "gpt", "model", "neural", "machine learning", "deep learning", "openai", "gemini", "claude", "transformer", "diffusion"] },
+  { category: "SaaS", keywords: ["saas", "subscription", "mrr", "arr", "churn", "b2b software", "recurring revenue"] },
+  { category: "startups", keywords: ["startup", "seed", "yc", "y combinator", "funding", "series a", "venture", "founder", "incubator"] },
+  { category: "e-commerce", keywords: ["commerce", "shop", "store", "retail", "shopify", "woocommerce", "cart", "checkout", "marketplace"] },
+  { category: "fintech", keywords: ["fintech", "payment", "banking", "stripe", "crypto", "defi", "wallet", "transaction", "financial"] },
+  { category: "trabalho remoto", keywords: ["remote", "work from home", "distributed", "hybrid work", "telecommut", "digital nomad"] },
+  { category: "APIs", keywords: ["api", "sdk", "endpoint", "rest", "graphql", "webhook", "oauth"] },
+  { category: "desenvolvimento", keywords: ["developer", "programming", "code", "github", "open source", "framework", "library", "rust", "typescript", "python", "javascript", "react", "vue", "svelte"] },
+  { category: "novos produtos", keywords: ["product hunt", "product launch", "new release", "announce", "beta", "launch"] },
+  { category: "mudan\xE7as de plataformas", keywords: ["platform", "breaking change", "deprecat", "migration", "policy change", "price increase", "sunset"] },
+  { category: "automa\xE7\xE3o", keywords: ["automat", "workflow", "bot", "n8n", "zapier", "make.com", "integration", "pipeline", "ci/cd"] },
+  { category: "software", keywords: ["software", "app", "tool", "solution", "platform"] },
+  { category: "produtividade", keywords: ["productivity", "efficiency", "time tracking", "project management", "notion", "obsidian"] },
+  { category: "economia digital", keywords: ["digital economy", "creator economy", "monetiz", "market", "growth", "trend"] }
+];
+function classifyCategory(text) {
+  const lower = text.toLowerCase();
+  let bestMatch = "tecnologia";
+  let bestScore = 0;
+  for (const entry of CATEGORY_KEYWORDS) {
+    let score = 0;
+    for (const kw of entry.keywords) {
+      if (lower.includes(kw)) {
+        score += kw.length;
+      }
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      bestMatch = entry.category;
+    }
+  }
+  return bestMatch;
+}
+function calculateImpactScore(signal) {
+  const upvotes = signal.metrics.scoreOrUpvotes || 0;
+  const comments = signal.metrics.commentsCount || 0;
+  const sentiment = signal.metrics.sentimentScore || 0;
+  const raw = Math.floor(
+    upvotes / 5 + comments / 2 + sentiment * 20 + 50
+  );
+  return Math.min(99, Math.max(40, raw));
+}
+function extractTags(title, description, category) {
+  const text = `${title} ${description}`.toLowerCase();
+  const tags = /* @__PURE__ */ new Set();
+  tags.add(category);
+  const techKeywords = [
+    "IA",
+    "SaaS",
+    "APIs",
+    "React",
+    "Python",
+    "TypeScript",
+    "Rust",
+    "Go",
+    "open source",
+    "startup",
+    "fintech",
+    "blockchain",
+    "Web3",
+    "cloud",
+    "automa\xE7\xE3o",
+    "e-commerce",
+    "mobile",
+    "DevOps",
+    "seguran\xE7a",
+    "dados",
+    "machine learning",
+    "LLM",
+    "GPT",
+    "infraestrutura",
+    "serverless"
+  ];
+  for (const kw of techKeywords) {
+    if (text.includes(kw.toLowerCase()) && tags.size < 6) {
+      tags.add(kw);
+    }
+  }
+  if (tags.size < 3) tags.add("tecnologia");
+  if (tags.size < 3) tags.add("software");
+  return Array.from(tags).slice(0, 5);
+}
+var ANALYSIS_TEMPLATES = {
+  friccao_cliente: "Insatisfa\xE7\xE3o crescente detectada neste segmento indica abertura para alternativas mais eficientes e com precifica\xE7\xE3o transparente. Fundadores atentos podem capturar usu\xE1rios migrando.",
+  crescimento_produto: "Crescimento acelerado desta categoria sugere demanda n\xE3o atendida e espa\xE7o para ferramentas verticais especializadas. O timing \xE9 prop\xEDcio para um MVP enxuto.",
+  tecnologia_emergente: "Nova tecnologia em fase de ado\xE7\xE3o cria janela de oportunidade para solu\xE7\xF5es e servi\xE7os que simplifiquem sua integra\xE7\xE3o e reduzam a curva de aprendizado.",
+  lancamento: "Lan\xE7amento recente abre possibilidade de extens\xF5es, integra\xE7\xF5es e servi\xE7os complementares neste ecossistema. Primeiros a construir capturam market share.",
+  demanda_contratacao: "Alta demanda por estas compet\xEAncias indica mercado aquecido para ferramentas de produtividade e automa\xE7\xE3o que multiplicam a capacidade individual."
+};
+function generateAnalysisSummary(signal) {
+  return ANALYSIS_TEMPLATES[signal.signalType] || "Sinal de mercado relevante identificado. An\xE1lise de oportunidades em andamento para mapear possibilidades de neg\xF3cio.";
+}
+function generateHypotheses(signal, category) {
+  const baseId = signal.id.replace(/[^a-z0-9]/gi, "").slice(0, 8);
+  const title = signal.title;
+  const hypotheses = [];
+  hypotheses.push({
+    id: `hyp-live-${baseId}-a`,
+    type: "Criar SaaS",
+    title: `Hip\xF3tese: SaaS vertical inspirado em "${title.slice(0, 60)}..."`,
+    description: `Construir uma ferramenta SaaS especializada que resolva a dor ou capture a demanda indicada por este sinal de mercado. Foco em MVP enxuto com onboarding em menos de 5 minutos.`,
+    confidenceScore: Math.min(92, Math.max(65, calculateImpactScore(signal) - 5)),
+    targetAudience: getCategoryAudience(category),
+    estimatedEffort: "2-3 semanas",
+    monetizationModel: getCategoryPricing(category),
+    status: "Hip\xF3tese"
+  });
+  const secondType = signal.signalType === "friccao_cliente" ? "Ferramenta Vertical" : signal.signalType === "tecnologia_emergente" ? "Integra\xE7\xE3o de Nicho" : signal.signalType === "demanda_contratacao" ? "Servi\xE7o Especializado" : "Arbitragem Geogr\xE1fica";
+  hypotheses.push({
+    id: `hyp-live-${baseId}-b`,
+    type: secondType,
+    title: `Hip\xF3tese: ${secondType} baseado em "${title.slice(0, 50)}..."`,
+    description: getSecondHypothesisDescription(secondType, signal),
+    confidenceScore: Math.min(88, Math.max(60, calculateImpactScore(signal) - 12)),
+    targetAudience: getCategoryAudience(category),
+    estimatedEffort: "1-2 semanas",
+    monetizationModel: getSecondPricing(secondType),
+    status: "Hip\xF3tese"
+  });
+  return hypotheses;
+}
+function getCategoryAudience(category) {
+  const map = {
+    "IA": "Desenvolvedores e empresas que integram IA em produtos",
+    "SaaS": "Fundadores de Micro-SaaS e B2B",
+    "startups": "Empreendedores e investidores early-stage",
+    "e-commerce": "Lojistas digitais e marketplaces",
+    "fintech": "Fintechs, bancos digitais e prestadores financeiros",
+    "trabalho remoto": "Profissionais remotos e empresas distribu\xEDdas",
+    "APIs": "Desenvolvedores e times de engenharia",
+    "desenvolvimento": "Engenheiros de software e DevOps",
+    "novos produtos": "Early adopters e product managers",
+    "automa\xE7\xE3o": "Times de opera\xE7\xF5es e growth hacking"
+  };
+  return map[category] || "Profissionais de tecnologia e neg\xF3cios digitais";
+}
+function getCategoryPricing(category) {
+  const map = {
+    "IA": "US$ 49 - US$ 199/m\xEAs",
+    "SaaS": "US$ 29 - US$ 149/m\xEAs",
+    "fintech": "R$ 97 - R$ 490/m\xEAs",
+    "e-commerce": "R$ 149 - R$ 590/m\xEAs",
+    "trabalho remoto": "US$ 19 - US$ 79/m\xEAs",
+    "automa\xE7\xE3o": "US$ 39 - US$ 129/m\xEAs"
+  };
+  return map[category] || "R$ 79 - R$ 290/m\xEAs";
+}
+function getSecondHypothesisDescription(type, signal) {
+  switch (type) {
+    case "Ferramenta Vertical":
+      return `Ferramenta especializada que endere\xE7a diretamente a fric\xE7\xE3o detectada, oferecendo uma experi\xEAncia superior e pre\xE7o competitivo frente \xE0s solu\xE7\xF5es gen\xE9ricas existentes.`;
+    case "Integra\xE7\xE3o de Nicho":
+      return `Plugin ou conector que facilita a ado\xE7\xE3o desta nova tecnologia em ferramentas j\xE1 utilizadas pelo p\xFAblico-alvo, reduzindo a barreira de entrada.`;
+    case "Servi\xE7o Especializado":
+      return `Servi\xE7o produtizado de consultoria ou implementa\xE7\xE3o para empresas que precisam capitalizar rapidamente esta tend\xEAncia.`;
+    case "Arbitragem Geogr\xE1fica":
+      return `Adaptar modelo j\xE1 validado nos EUA/Europa para mercados latino-americanos onde a demanda est\xE1 crescendo mas a oferta local \xE9 escassa.`;
+    default:
+      return `Oportunidade de neg\xF3cio identificada a partir deste sinal de mercado com potencial de valida\xE7\xE3o r\xE1pida.`;
+  }
+}
+function getSecondPricing(type) {
+  switch (type) {
+    case "Ferramenta Vertical":
+      return "R$ 49 - R$ 197/m\xEAs";
+    case "Integra\xE7\xE3o de Nicho":
+      return "US$ 29 - US$ 99/m\xEAs";
+    case "Servi\xE7o Especializado":
+      return "R$ 2.500 - R$ 8.000 por projeto";
+    case "Arbitragem Geogr\xE1fica":
+      return "R$ 97 - R$ 390/m\xEAs";
+    default:
+      return "R$ 79 - R$ 290/m\xEAs";
+  }
+}
+var MONTH_NAMES_PT = [
+  "Janeiro",
+  "Fevereiro",
+  "Mar\xE7o",
+  "Abril",
+  "Maio",
+  "Junho",
+  "Julho",
+  "Agosto",
+  "Setembro",
+  "Outubro",
+  "Novembro",
+  "Dezembro"
+];
+function formatDatePt(isoDate) {
+  try {
+    const d = new Date(isoDate);
+    const day = d.getDate().toString().padStart(2, "0");
+    const month = (d.getMonth() + 1).toString().padStart(2, "0");
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+  } catch {
+    return (/* @__PURE__ */ new Date()).toLocaleDateString("pt-BR");
+  }
+}
+function formatDateFullPt(date) {
+  return `${date.getDate()} de ${MONTH_NAMES_PT[date.getMonth()]} de ${date.getFullYear()}`;
+}
+function transformSignalToNews(signal) {
+  const combinedText = `${signal.title} ${signal.description} ${signal.category}`;
+  const category = classifyCategory(combinedText);
+  const impactScore = calculateImpactScore(signal);
+  const isTrending = impactScore >= 80 || (signal.metrics.scoreOrUpvotes || 0) >= 200;
+  const sourceTypeMap = {
+    "official_api": "official_api",
+    "rss_feed": "rss_feed",
+    "public_endpoint": "curated_intel"
+  };
+  return {
+    id: `news-live-${signal.id}`,
+    title: signal.title,
+    summary: signal.description.slice(0, 400) || signal.title,
+    source: signal.source,
+    sourceType: sourceTypeMap[signal.sourceType] || "rss_feed",
+    date: formatDatePt(signal.publishedAt),
+    timestamp: signal.publishedAt,
+    country: signal.country || "Global",
+    countryFlag: signal.countryFlag || "\u{1F310}",
+    countryCode: signal.countryCode || "GL",
+    category,
+    originalUrl: signal.url,
+    readTimeMinutes: Math.max(2, Math.min(8, Math.ceil((signal.description?.length || 100) / 500))),
+    impactScore,
+    isTrending,
+    isSaved: false,
+    tags: extractTags(signal.title, signal.description, category),
+    aiQuestion: "Existe uma oportunidade de neg\xF3cio escondida aqui?",
+    aiAnalysisSummary: generateAnalysisSummary(signal),
+    possibleOpportunities: generateHypotheses(signal, category)
+  };
+}
+function normalizeForDedup(title) {
+  return title.toLowerCase().replace(/[^a-z0-9\s]/g, "").replace(/\s+/g, " ").trim().slice(0, 60);
+}
+function transformSignalsToNews(signals) {
+  const seen = /* @__PURE__ */ new Set();
+  const results = [];
+  for (const signal of signals) {
+    const fingerprint = normalizeForDedup(signal.title);
+    if (seen.has(fingerprint)) continue;
+    seen.add(fingerprint);
+    try {
+      results.push(transformSignalToNews(signal));
+    } catch (err) {
+      console.warn(`[NewsIngestion] Falha ao transformar sinal "${signal.title}":`, err.message);
+    }
+  }
+  results.sort((a, b) => b.impactScore - a.impactScore);
+  return results;
+}
+function generateDailyBrief(news) {
+  const now = /* @__PURE__ */ new Date();
+  const sortedByImpact = [...news].sort((a, b) => b.impactScore - a.impactScore);
+  const top3 = sortedByImpact.slice(0, 3);
+  const saasCount = news.filter(
+    (n) => n.tags.some((t) => t.toLowerCase().includes("saas")) || n.category === "SaaS"
+  ).length;
+  const globalCount = news.filter((n) => n.countryCode !== "BR").length;
+  const keyTakeaways = top3.map(
+    (n) => `${n.title.slice(0, 80)} \u2014 impacto ${n.impactScore}/100 no segmento de ${n.category}.`
+  );
+  const topTitle = top3[0]?.title || "Monitoramento ativo";
+  const topCategory = top3[0]?.category || "tecnologia";
+  return {
+    date: formatDateFullPt(now),
+    todaySignalsCount: news.length,
+    emergingTrendsCount: news.filter((n) => n.impactScore > 85).length,
+    saasOpportunitiesCount: saasCount,
+    globalOpportunitiesCount: globalCount,
+    newsWorthWatchingCount: news.filter((n) => n.impactScore > 75).length,
+    aiExecutiveInsight: {
+      highlightTitle: `Destaque: ${topCategory.charAt(0).toUpperCase() + topCategory.slice(1)} \u2014 ${topTitle.slice(0, 60)}`,
+      overview: `An\xE1lise de ${news.length} sinais de mercado coletados em tempo real de Hacker News, GitHub, Reddit e feeds RSS. ${news.filter((n) => n.isTrending).length} sinais classificados como trending com alto potencial de oportunidade.`,
+      keyTakeaways: keyTakeaways.length > 0 ? keyTakeaways : [
+        "Nenhum sinal de alto impacto detectado neste ciclo. Continue monitorando."
+      ],
+      recommendedNextStep: top3[0] ? `Investigue a oportunidade em "${top3[0].title.slice(0, 50)}" e valide com 5 potenciais clientes esta semana.` : "Sincronize as fontes de dados para obter sinais frescos do mercado."
+    },
+    topNewsIds: top3.map((n) => n.id),
+    spotlightTrendId: ""
+  };
+}
+function generateTrendsFromNews(news) {
+  const groups = /* @__PURE__ */ new Map();
+  for (const item of news) {
+    const existing = groups.get(item.category) || [];
+    existing.push(item);
+    groups.set(item.category, existing);
+  }
+  const trends = [];
+  for (const [category, items] of groups.entries()) {
+    if (items.length < 2) continue;
+    const avgImpact = Math.round(items.reduce((sum, i) => sum + i.impactScore, 0) / items.length);
+    const growthPct = Math.round(avgImpact * 1.8 + items.length * 15);
+    const maturityMap = {
+      2: "Emergente",
+      3: "Acelerando"
+    };
+    const maturity = maturityMap[items.length] || (items.length >= 4 ? "Pico Inicial" : "Emergente");
+    const trendDescriptions = {
+      "IA": {
+        trend: "Intelig\xEAncia Artificial e Modelos Generativos",
+        market: "Startups de IA, SaaS B2B e Ferramentas de Produtividade",
+        problem: "Complexidade de integra\xE7\xE3o e custo de infer\xEAncia em produ\xE7\xE3o.",
+        opportunity: "Ferramentas que simplificam integra\xE7\xE3o de IA ou reduzem custos de opera\xE7\xE3o."
+      },
+      "desenvolvimento": {
+        trend: "Ferramentas e Frameworks de Desenvolvimento",
+        market: "Desenvolvedores Full-stack, DevOps e Indie Hackers",
+        problem: "Sobrecarga de ferramentas e fragmenta\xE7\xE3o do ecossistema.",
+        opportunity: "Plataformas unificadas e kits de componentes prontos para produ\xE7\xE3o."
+      },
+      "SaaS": {
+        trend: "Evolu\xE7\xE3o do Modelo SaaS e Micro-SaaS",
+        market: "Fundadores de SaaS, PMEs e times de produto",
+        problem: "Custos crescentes e churn elevado em ferramentas gen\xE9ricas.",
+        opportunity: "SaaS vertical especializado com onboarding simplificado."
+      },
+      "startups": {
+        trend: "Ecossistema de Startups e Investimento",
+        market: "Fundadores, aceleradoras e investidores-anjo",
+        problem: "Dificuldade de valida\xE7\xE3o r\xE1pida e acesso a capital semente.",
+        opportunity: "Ferramentas de valida\xE7\xE3o de hip\xF3teses e pitch deck automation."
+      },
+      "fintech": {
+        trend: "Inova\xE7\xE3o em Servi\xE7os Financeiros Digitais",
+        market: "Fintechs, bancos digitais e consumidores",
+        problem: "Taxas elevadas e experi\xEAncia de usu\xE1rio fragmentada.",
+        opportunity: "Solu\xE7\xF5es de pagamento e gest\xE3o financeira com UX superior."
+      },
+      "automa\xE7\xE3o": {
+        trend: "Automa\xE7\xE3o de Processos e Workflows",
+        market: "Times de opera\xE7\xF5es, marketing e vendas",
+        problem: "Processos manuais repetitivos consumindo horas por semana.",
+        opportunity: "Ferramentas de automa\xE7\xE3o no-code com IA integrada."
+      }
+    };
+    const desc = trendDescriptions[category] || {
+      trend: `Crescimento em ${category.charAt(0).toUpperCase() + category.slice(1)}`,
+      market: `Profissionais e empresas no segmento de ${category}`,
+      problem: `Demanda crescente por solu\xE7\xF5es especializadas em ${category}.`,
+      opportunity: `Ferramentas verticais e servi\xE7os focados em ${category}.`
+    };
+    trends.push({
+      id: `trend-live-${category.replace(/\s+/g, "-").toLowerCase()}`,
+      trend: desc.trend,
+      growth: `+${growthPct}% em sinais detectados nas \xFAltimas 24h`,
+      growthPercentage: growthPct,
+      market: desc.market,
+      problem: desc.problem,
+      opportunity: desc.opportunity,
+      category,
+      maturity,
+      relatedNewsCount: items.length,
+      sparkline: [
+        Math.round(growthPct * 0.15),
+        Math.round(growthPct * 0.28),
+        Math.round(growthPct * 0.42),
+        Math.round(growthPct * 0.58),
+        Math.round(growthPct * 0.72),
+        avgImpact,
+        Math.round(avgImpact * 1.15)
+      ]
+    });
+  }
+  trends.sort((a, b) => b.relatedNewsCount - a.relatedNewsCount);
+  return trends;
+}
+var newsIngestionService = {
+  transformSignalsToNews,
+  generateDailyBrief,
+  generateTrendsFromNews
+};
+
 // server/db/dbClient.ts
 import fs from "fs";
 import path from "path";
@@ -2980,6 +3361,7 @@ var DatabaseManager = class {
   persistentStorePath;
   inMemoryCache;
   isInitialized = false;
+  lastNewsRefresh = null;
   constructor() {
     const isVercel = Boolean(process.env.VERCEL);
     const storeDir = isVercel ? "/tmp" : path.join(process.cwd(), "server", "data");
@@ -3543,6 +3925,41 @@ var DatabaseManager = class {
     await this.createHypothesis(newProject);
     return { project: newProject, hypothesis };
   }
+  // ====================================================================
+  // LIVE NEWS REFRESH
+  // ====================================================================
+  /**
+   * Merge freshly collected news items into the cache.
+   * - Preserves user-saved items (isSaved === true)
+   * - Deduplicates by normalized title
+   * - Prepends new items, keeping a max of 80 total
+   */
+  async refreshNews(freshNews) {
+    if (!freshNews || freshNews.length === 0) {
+      return { added: 0, total: this.inMemoryCache.news.length };
+    }
+    const savedItems = this.inMemoryCache.news.filter((n) => n.isSaved);
+    const existingTitles = new Set(
+      savedItems.map((n) => n.title?.toLowerCase().trim().slice(0, 60))
+    );
+    const uniqueNew = freshNews.filter((n) => {
+      const normalized = n.title?.toLowerCase().trim().slice(0, 60);
+      if (existingTitles.has(normalized)) return false;
+      existingTitles.add(normalized);
+      return true;
+    });
+    const merged = [...savedItems, ...uniqueNew].slice(0, 80);
+    this.inMemoryCache.news = merged;
+    this.lastNewsRefresh = (/* @__PURE__ */ new Date()).toISOString();
+    this.saveToDisk();
+    return { added: uniqueNew.length, total: merged.length };
+  }
+  getLastRefresh() {
+    return this.lastNewsRefresh;
+  }
+  getNewsCount() {
+    return this.inMemoryCache.news.length;
+  }
 };
 var dbClient = new DatabaseManager();
 
@@ -3920,17 +4337,36 @@ app.get("/api/news", async (req, res) => {
   res.setHeader("Cache-Control", "public, max-age=30");
   res.json(result);
 });
-app.get("/api/news/daily-brief", (req, res) => {
+app.get("/api/news/daily-brief", async (req, res) => {
   const stats = pipelineManager.getStats();
-  const brief = {
-    ...MOCK_DAILY_BRIEF,
-    todaySignalsCount: stats.totalCollected || MOCK_DAILY_BRIEF.todaySignalsCount,
-    saasOpportunitiesCount: stats.totalQualifiedOpportunities || MOCK_DAILY_BRIEF.saasOpportunitiesCount
-  };
-  res.setHeader("Cache-Control", "public, max-age=60");
-  res.json(brief);
+  const newsResult = await dbClient.getNews();
+  const allNews = newsResult.data;
+  if (allNews.length > 0) {
+    const brief = newsIngestionService.generateDailyBrief(allNews);
+    brief.todaySignalsCount = Math.max(brief.todaySignalsCount, stats.totalCollected || 0);
+    brief.saasOpportunitiesCount = Math.max(brief.saasOpportunitiesCount, stats.totalQualifiedOpportunities || 0);
+    res.setHeader("Cache-Control", "public, max-age=60");
+    res.json(brief);
+  } else {
+    const brief = {
+      ...MOCK_DAILY_BRIEF,
+      todaySignalsCount: stats.totalCollected || MOCK_DAILY_BRIEF.todaySignalsCount,
+      saasOpportunitiesCount: stats.totalQualifiedOpportunities || MOCK_DAILY_BRIEF.saasOpportunitiesCount
+    };
+    res.setHeader("Cache-Control", "public, max-age=60");
+    res.json(brief);
+  }
 });
-app.get("/api/news/trends", (req, res) => {
+app.get("/api/news/trends", async (req, res) => {
+  const newsResult = await dbClient.getNews();
+  const allNews = newsResult.data;
+  if (allNews.length >= 4) {
+    const liveTrends = newsIngestionService.generateTrendsFromNews(allNews);
+    if (liveTrends.length > 0) {
+      res.setHeader("Cache-Control", "public, max-age=60");
+      return res.json(liveTrends);
+    }
+  }
   res.setHeader("Cache-Control", "public, max-age=60");
   res.json(MOCK_EMERGING_TRENDS);
 });
@@ -3981,6 +4417,54 @@ app.post("/api/news/:id/analyze", aiLimiter, async (req, res) => {
     title: newsItem.title,
     analysis: analysisResult,
     hypotheses: newsItem.possibleOpportunities
+  });
+});
+app.post("/api/news/refresh", async (req, res) => {
+  try {
+    console.log("[News Refresh] Iniciando coleta de not\xEDcias em tempo real...");
+    const startTime = Date.now();
+    const pipelineResult = await pipelineManager.syncAll();
+    const rawSignals = pipelineManager.getRawSignals();
+    const liveNews = newsIngestionService.transformSignalsToNews(rawSignals);
+    const mergeResult = await dbClient.refreshNews(liveNews);
+    const elapsed = ((Date.now() - startTime) / 1e3).toFixed(1);
+    console.log(`[News Refresh] Conclu\xEDdo em ${elapsed}s: ${mergeResult.added} novas not\xEDcias, ${mergeResult.total} total`);
+    res.json({
+      success: true,
+      pipeline: {
+        sourcesProcessed: Object.keys(pipelineResult.results).length,
+        signalsCollected: pipelineResult.totalCollected,
+        qualifiedOpportunities: pipelineResult.totalQualified,
+        sourceResults: pipelineResult.results
+      },
+      news: {
+        transformed: liveNews.length,
+        newAdded: mergeResult.added,
+        totalInFeed: mergeResult.total
+      },
+      elapsedSeconds: parseFloat(elapsed),
+      lastRefresh: dbClient.getLastRefresh()
+    });
+  } catch (err) {
+    console.error("[News Refresh] Erro:", err.message);
+    res.status(500).json({
+      success: false,
+      error: err.message
+    });
+  }
+});
+app.get("/api/news/status", (req, res) => {
+  res.json({
+    lastRefresh: dbClient.getLastRefresh(),
+    totalNews: dbClient.getNewsCount(),
+    pipelineStats: pipelineManager.getStats(),
+    sources: pipelineManager.getSources().map((s) => ({
+      id: s.id,
+      name: s.name,
+      status: s.status,
+      lastSync: s.lastSync,
+      records: s.recordsCollected
+    }))
   });
 });
 app.get("/api/admin/sources", (req, res) => {
